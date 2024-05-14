@@ -55,4 +55,3 @@ fun BanchangoTheme(
         content = content
     )
 }
-
