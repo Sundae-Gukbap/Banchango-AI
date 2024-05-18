@@ -25,6 +25,5 @@ jobs:
     - uses: actions/checkout@v3 
     - name: Build Xcode  
       run: |  
-        xcodebuild clean test -project banchango.xcodeproj \
-        -scheme banchango \
-        -destination 'platform=iOS Simulator,name=iPhone 13,OS=17.0'
+        xcodebuild build -project ./Manito/Manito.xcodeproj -scheme Manito-Prod -destination "platform=iOS Simulator,name=iPhone 13,OS=latest"
+        xcpretty --color --simple
