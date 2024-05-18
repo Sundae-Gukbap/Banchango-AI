@@ -2,9 +2,19 @@ name: iOS CI
 
 on:
   push:
-    branches: [ develop ] 
+    branches:
+      - develop
+      - main
+    paths: [ 'iOS/**' ]
   pull_request:
-    branches: [ develop ]
+    branches:
+      - develop
+      - main
+    paths: 'iOS/**'
+    
+defaults:
+  run:
+    working-directory: iOS
 
 jobs:
   build:  
@@ -12,7 +22,7 @@ jobs:
     runs-on: macos-latest 
 
     steps:
-    - uses: actions/checkout@v4  
+    - uses: actions/checkout@v3 
     - name: Build Xcode  
       run: |  
         xcodebuild clean test -project banchango.xcodeproj \
