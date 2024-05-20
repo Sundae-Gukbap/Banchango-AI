@@ -30,5 +30,6 @@ public class Recipe {
     @NotNull
     int cookingTime;
     @NotNull
+    @Enumerated(EnumType.STRING)
     Difficulty difficulty;
 }
