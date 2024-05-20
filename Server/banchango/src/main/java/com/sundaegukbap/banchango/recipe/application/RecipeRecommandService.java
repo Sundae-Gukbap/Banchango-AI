@@ -26,9 +26,11 @@ public class RecipeRecommandService {
     public List<RecipeDetailResponse> getRecipes(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
-        //TODO AI에게서 레시피들을 받아 온다. List<Long> recipeIds
 
-        List<Long> recipeIds = new ArrayList<>();
+        //TODO AI에게서 레시피들을 받아 온다. List<Long> recipeIds
+        //아래 코드를 캡슐화해야 테스트를 진행할 수 있을거 같은데..
+        List<Long> recipeIds = getRecipeIdsFromAI(userId);
+
         List<Recipe> recipes = recipeRepository.findAllById(recipeIds);
 
         //recipe를 순회하면서 user와 have, need간의 관계 파악
@@ -52,6 +54,16 @@ public class RecipeRecommandService {
             response.add(RecipeDetailResponse.of(recipe, have, need, isBookmarked));
         }
 
+        return response;
+    }
+
+    private List<Long> getRecipeIdsFromAI(Long userId) {
+        //TODO
+        List<Long> response = new ArrayList<>();
+        response.add(1L);
+        response.add(2L);
+        response.add(3L);
+        response.add(4L);
         return response;
     }
 }
