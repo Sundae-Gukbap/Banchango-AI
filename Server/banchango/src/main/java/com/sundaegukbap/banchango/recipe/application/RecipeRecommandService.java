@@ -21,7 +21,10 @@ public class RecipeRecommandService {
         List<Long> recipeIds = new ArrayList<>();
         List<Recipe> recipes = recipeRepository.findAllById(recipeIds);
 
-        //recipe를 순회하면서 user와 비교
+        //recipe를 순회하면서 user와 have, need간의 관계 파악
+        List<String> have, need;
+        for(Recipe recipe : recipes){
+        }
 
         List<RecipeDetailResponse> response = new ArrayList<>();
 
