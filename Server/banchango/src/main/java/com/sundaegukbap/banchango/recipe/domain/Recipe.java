@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.recipe.domain;
 
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
+import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -37,5 +38,10 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     Difficulty difficulty;
     @ManyToMany(mappedBy = "recipes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private Set<Ingredient> requiredIngredients = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_bookmarked_recipe",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> bookmarkers = new HashSet<>();
 }

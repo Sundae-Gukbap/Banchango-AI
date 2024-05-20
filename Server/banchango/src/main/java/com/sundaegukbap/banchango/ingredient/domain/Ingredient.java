@@ -28,14 +28,14 @@ public class Ingredient {
     String kind;
     LocalDateTime expirationDate;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_ingredient",
+    @JoinTable(name = "user_have_ingredient",
             joinColumns = @JoinColumn(name = "ingredient_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    private Set<User> ingredientHolders = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "recipe_ingredient",
+    @JoinTable(name = "recipe_need_ingredient",
             joinColumns = @JoinColumn(name = "ingredient_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id"))
-    private Set<Recipe> recipes = new HashSet<>();
+    private Set<Recipe> recipesWithIngredient = new HashSet<>();
 }

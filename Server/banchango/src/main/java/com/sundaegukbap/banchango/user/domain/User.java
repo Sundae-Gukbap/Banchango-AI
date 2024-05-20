@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.user.domain;
 
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
+import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private Set<Ingredient> havingIngredients = new HashSet<>();
 
-
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Recipe> bookmarkedRecipes = new HashSet<>();
 }
