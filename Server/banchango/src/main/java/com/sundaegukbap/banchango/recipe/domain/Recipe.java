@@ -37,7 +37,7 @@ public class Recipe {
     @NotNull
     @Enumerated(EnumType.STRING)
     Difficulty difficulty;
-    @ManyToMany(mappedBy = "recipes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "recipesWithIngredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ingredient> requiredIngredients = new HashSet<>();
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_bookmarked_recipe",

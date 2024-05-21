@@ -18,9 +18,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "ingredientHolders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ingredient> havingIngredients = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "bookmarkers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Recipe> bookmarkedRecipes = new HashSet<>();
 }
