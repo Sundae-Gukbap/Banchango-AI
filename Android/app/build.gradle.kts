@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,4 +77,10 @@ dependencies {
     // navigation
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
+
+    // status bar
+    implementation(libs.accompanist.systemuicontroller)
+
+    // glide
+    implementation(libs.glide.compose)
 }
