@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.presentation.reciperecommend
+package com.sundaegukbap.banchango.model
 
 data class Recipe(
     val id: Long,
