@@ -2,9 +2,15 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.1.0" apply false
+    alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ktlint) apply true
 }
 
-allprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
