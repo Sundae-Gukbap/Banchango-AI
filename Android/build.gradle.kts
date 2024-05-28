@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ktlint) apply true
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
 
 buildscript {

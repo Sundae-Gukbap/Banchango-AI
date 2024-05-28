@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "banchango"
 include(":app")
+include(":core:domain")
