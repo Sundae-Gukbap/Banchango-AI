@@ -20,7 +20,8 @@ public class User {
     private Long id;
     @ManyToMany(mappedBy = "ingredientHolders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ingredient> havingIngredients = new HashSet<>();
-
     @ManyToMany(mappedBy = "bookmarkers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Recipe> bookmarkedRecipes = new HashSet<>();
+    @ManyToMany(mappedBy = "recommandUsers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Recipe> recommandedRecipes = new HashSet<>();
 }

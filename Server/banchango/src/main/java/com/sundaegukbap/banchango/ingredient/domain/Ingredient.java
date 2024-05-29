@@ -9,14 +9,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="recipes")
+@Table(name="ingredients")
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +25,14 @@ public class Ingredient {
     String name;
     @Size(max=50)
     String kind;
-    LocalDateTime expirationDate;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_have_ingredient",
+    @JoinTable(name = "user_have_ingredients",
             joinColumns = @JoinColumn(name = "ingredient_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> ingredientHolders = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "recipe_need_ingredient",
+    @JoinTable(name = "recipe_need_ingredients",
             joinColumns = @JoinColumn(name = "ingredient_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id"))
     private Set<Recipe> recipesWithIngredient = new HashSet<>();
