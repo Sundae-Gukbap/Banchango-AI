@@ -39,6 +39,7 @@ public class Recipe {
     Difficulty difficulty;
     @ManyToMany(mappedBy = "recipesWithIngredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ingredient> requiredIngredients = new HashSet<>();
+    private String recipeIngredients; //더미데이터용
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_bookmarked_recipe",
             joinColumns = @JoinColumn(name = "recipe_id"),
