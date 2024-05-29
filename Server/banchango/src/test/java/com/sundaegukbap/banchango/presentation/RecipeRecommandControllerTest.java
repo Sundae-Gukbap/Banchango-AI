@@ -49,7 +49,7 @@ class RecipeRecommandControllerTest {
         List<String> need = new ArrayList<>();
         need.add("계란");
         need.add("당근");
-        RecipeDetailResponse recipeDetail = new RecipeDetailResponse(1L, "간장계란볶음밥", "달짝지근함", "test.png", "test.link", have, need, 1, 30, true, Difficulty.BEGINNER);
+        RecipeDetailResponse recipeDetail = new RecipeDetailResponse(1L, "간장계란볶음밥", "달짝지근함", "test.png", "test.link", have, need, 1, 30, true, Difficulty.아무나);
         expected.add(recipeDetail);
         given(recipeRecommandService.getRecipes(anyLong()))
                 .willReturn(expected);
