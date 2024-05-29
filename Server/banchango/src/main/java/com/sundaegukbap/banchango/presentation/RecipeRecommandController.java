@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recipe/recommand")
+@RequestMapping("api/recipe/recommand")
 @Tag(name = "레시피 추천 관련 컨트롤러")
 public class RecipeRecommandController {
     private final RecipeRecommandService recipeRecommandService;
