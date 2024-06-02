@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    // feature
+    implementation(project(":feature:main"))
+    implementation(project(":feature:reciperecommend"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
