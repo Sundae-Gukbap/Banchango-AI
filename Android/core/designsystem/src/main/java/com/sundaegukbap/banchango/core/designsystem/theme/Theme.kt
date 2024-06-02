@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.ui.theme
+package com.sundaegukbap.banchango.core.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -51,7 +51,7 @@ fun BanchangoTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        content = content,
         typography = Typography,
-        content = content
     )
 }

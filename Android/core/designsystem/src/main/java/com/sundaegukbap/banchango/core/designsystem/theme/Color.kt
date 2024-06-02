@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.ui.theme
+package com.sundaegukbap.banchango.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
