@@ -22,3 +22,10 @@ dependencyResolutionManagement {
 rootProject.name = "banchango"
 include(":app")
 include(":core:domain")
+include(":core:model")
+include(":core:designsystem")
+include(":feature:reciperecommend")
+include(":feature:main")
+include(":core:data-api")
+include(":core:navigation")
+include(":feature:home")

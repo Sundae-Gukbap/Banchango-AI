@@ -1,25 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.sundaegukbap.banchango"
+    namespace = "com.sundaegukbap.banchango.feature.main"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.sundaegukbap.banchango"
         minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -44,18 +38,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
-
-    // feature
-    implementation(project(":feature:main"))
+    implementation(project(":core:model"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:navigation"))
     implementation(project(":feature:reciperecommend"))
+    implementation(project(":feature:home"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -73,6 +64,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -86,4 +78,6 @@ dependencies {
 
     // glide
     implementation(libs.glide.compose)
+
+    implementation(libs.kotlinx.immutable)
 }
