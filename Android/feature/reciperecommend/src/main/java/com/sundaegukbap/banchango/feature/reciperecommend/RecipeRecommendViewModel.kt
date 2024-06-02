@@ -1,7 +1,7 @@
-package com.sundaegukbap.banchango.presentation.reciperecommend
+package com.sundaegukbap.banchango.feature.reciperecommend
 
 import androidx.lifecycle.ViewModel
-import com.sundaegukbap.banchango.model.Recipe
+import com.sundaegukbap.banchango.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,7 +1,7 @@
-package com.sundaegukbap.banchango.presentation.reciperecommend
+package com.sundaegukbap.banchango.feature.reciperecommend
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -13,22 +13,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecipesRecommendScreen(
-    modifier: Modifier = Modifier,
+    padding: PaddingValues,
     viewModel: RecipeRecommendViewModel = hiltViewModel(),
 ) {
     val recipesUiState by viewModel.recipes.collectAsStateWithLifecycle()
-
-    val pagerState = rememberPagerState(
-        pageCount = {
-            recipesUiState.size
-        }
-    )
+    val pagerState = rememberPagerState(pageCount = { recipesUiState.size })
     val coroutineScope = rememberCoroutineScope()
+
+    viewModel.getRecipeRecommendation()
+
     VerticalPager(
-        modifier = modifier,
+        modifier = Modifier.padding(padding),
         state = pagerState,
         contentPadding = PaddingValues(vertical = 200.dp, horizontal = 40.dp),
         pageSpacing = 40.dp,

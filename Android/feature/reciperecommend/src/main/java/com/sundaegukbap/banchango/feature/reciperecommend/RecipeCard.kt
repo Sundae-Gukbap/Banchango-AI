@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.presentation.reciperecommend
+package com.sundaegukbap.banchango.feature.reciperecommend
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,14 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sundaegukbap.banchango.core.designsystem.NetworkImage
-import com.sundaegukbap.banchango.model.Recipe
-import com.sundaegukbap.banchango.ui.theme.BanchangoTheme
+import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
+import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 
 @Composable
 fun RecipeCard(
     page: Int,
-    recipe: Recipe,
+    recipe: com.sundaegukbap.banchango.Recipe,
     onHateClick: (page: Int) -> Unit = {},
     onLikeClick: (page: Int) -> Unit = {},
 ) {
@@ -47,7 +46,7 @@ fun RecipeCard(
 
 @Composable
 private fun RecipeInfo(
-    recipe: Recipe,
+    recipe: com.sundaegukbap.banchango.Recipe,
     page: Int,
     onHateClick: (page: Int) -> Unit,
     onLikeClick: (page: Int) -> Unit
@@ -99,7 +98,7 @@ private fun RecipeInfo(
 fun RecipeCardPreview() {
     BanchangoTheme {
         RecipeCard(
-            page = 1, recipe = Recipe(
+            page = 1, recipe = com.sundaegukbap.banchango.Recipe(
                 id = 1,
                 name = "간장계란볶음밥",
                 introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
