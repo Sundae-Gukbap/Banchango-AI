@@ -9,6 +9,7 @@ data class Recipe(
     val cookingTime: Int,
     val servings: Int,
     val difficulty: String,
-    val have: List<Int>,
-    val need: List<Int>
+    val isBookmarked: Boolean,
+    val have: List<String>,
+    val need: List<String>
 )
