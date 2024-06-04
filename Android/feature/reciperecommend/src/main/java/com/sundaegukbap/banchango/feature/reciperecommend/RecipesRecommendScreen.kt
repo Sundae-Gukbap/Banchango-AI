@@ -41,7 +41,8 @@ fun RecipeRecommendRoute(
     RecipeRecommendContent(
         padding = padding,
         uiState = uiState,
-        onHateClick = { viewModel.hateRecipe(it) },
+        onHateClick = viewModel::hateRecipe,
+        onLastPageVisible = viewModel::getRecipeRecommendation,
     )
 }
 
@@ -51,6 +52,7 @@ fun RecipeRecommendContent(
     uiState: RecipeRecommendUiState,
     onHateClick: (Int) -> Unit = {},
     onLikeClick: (Int) -> Unit = {},
+    onLastPageVisible: () -> Unit = {},
 ) {
 
     when (uiState) {
@@ -64,6 +66,7 @@ fun RecipeRecommendContent(
                 padding = padding,
                 onHateClick = onHateClick,
                 onLikeClick = onLikeClick,
+                onLastPageVisible = onLastPageVisible,
             )
         }
     }
@@ -83,6 +86,7 @@ private fun RecipeRecommendScreen(
     recipeRecommends: List<RecipeRecommendItemUiState>,
     onHateClick: (Int) -> Unit,
     onLikeClick: (Int) -> Unit,
+    onLastPageVisible: () -> Unit = {},
 ) {
     val pagerState = rememberPagerState(pageCount = { recipeRecommends.size })
     val coroutineScope = rememberCoroutineScope()
@@ -96,6 +100,10 @@ private fun RecipeRecommendScreen(
 
         var visible by remember { mutableStateOf(true) }
 
+        if (page >= recipeRecommends.size - 2) {
+            onLastPageVisible()
+        }
+
         RecipePage(
             visible = visible,
             page = page,
@@ -103,7 +111,7 @@ private fun RecipeRecommendScreen(
             onLikeClick = {
                 coroutineScope.launch {
                     onLikeClick(it)
-                    pagerState.animateScrollToPage(it)
+                    pagerState.animateScrollToPage(it + 1)
                 }
             },
             onHateClick = { visible = false },
