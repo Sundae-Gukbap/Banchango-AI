@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.sundaegukbap.banchango.feature.reciperecommend.RecipesRecommendScreen
+import com.sundaegukbap.banchango.feature.reciperecommend.RecipeRecommendRoute
 import com.sundaegukbap.banchango.navigation.MainTabRoute
 
 fun NavController.navigateRecipeRecommend(navOptions: NavOptions) {
@@ -14,6 +14,6 @@ fun NavController.navigateRecipeRecommend(navOptions: NavOptions) {
 
 fun NavGraphBuilder.recipeRecommendNavGraph(padding: PaddingValues) {
     composable<MainTabRoute.RecipeRecommend> {
-        RecipesRecommendScreen(padding)
+        RecipeRecommendRoute(padding)
     }
 }

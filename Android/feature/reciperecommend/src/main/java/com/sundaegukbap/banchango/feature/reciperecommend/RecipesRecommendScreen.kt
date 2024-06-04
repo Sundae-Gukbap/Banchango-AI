@@ -3,10 +3,14 @@ package com.sundaegukbap.banchango.feature.reciperecommend
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,26 +18,74 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun RecipesRecommendScreen(
+fun RecipeRecommendRoute(
     padding: PaddingValues,
     viewModel: RecipeRecommendViewModel = hiltViewModel(),
 ) {
-    val recipesUiState by viewModel.recipes.collectAsStateWithLifecycle()
-    var items by remember { mutableStateOf(recipesUiState) }
-    val pagerState = rememberPagerState(pageCount = { items.size })
-    val coroutineScope = rememberCoroutineScope()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getRecipeRecommendation()
     }
+
+    RecipeRecommendContent(
+        padding = padding,
+        uiState = uiState,
+        onHateClick = { viewModel.hateRecipe(it) },
+    )
+}
+
+@Composable
+fun RecipeRecommendContent(
+    padding: PaddingValues,
+    uiState: RecipeRecommendUiState,
+    onHateClick: (Int) -> Unit = {},
+    onLikeClick: (Int) -> Unit = {},
+) {
+
+    when (uiState) {
+        is RecipeRecommendUiState.Loading -> {
+            RecipeRecommendLoading()
+        }
+
+        is RecipeRecommendUiState.Success -> {
+            RecipeRecommendScreen(
+                recipeRecommends = uiState.recipes,
+                padding = padding,
+                onHateClick = onHateClick,
+                onLikeClick = onLikeClick,
+            )
+        }
+    }
+}
+
+
+@Composable
+fun RecipeRecommendLoading() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun RecipeRecommendScreen(
+    padding: PaddingValues,
+    recipeRecommends: List<RecipeRecommendItemUiState>,
+    onHateClick: (Int) -> Unit,
+    onLikeClick: (Int) -> Unit,
+) {
+    val pagerState = rememberPagerState(pageCount = { recipeRecommends.size })
+    val coroutineScope = rememberCoroutineScope()
 
     VerticalPager(
         modifier = Modifier.padding(padding),
@@ -42,51 +94,79 @@ fun RecipesRecommendScreen(
         pageSpacing = 24.dp,
     ) { page ->
 
-        if (page < items.size) {
-            var visible by remember { mutableStateOf(true) }
+        var visible by remember { mutableStateOf(true) }
 
-            LaunchedEffect(visible) {
-                if (!visible) {
-                    delay(300)
-                    coroutineScope.launch {
-                        val currentPage = pagerState.currentPage
-                        val nextPage = currentPage + 1
-                        if (nextPage < items.size) {
-                            if (currentPage > 0) {
-                                visible = true
-                            }
+        RecipePage(
+            visible = visible,
+            page = page,
+            recipeRecommends = recipeRecommends,
+            onLikeClick = {
+                coroutineScope.launch {
+                    onLikeClick(it)
+                    pagerState.animateScrollToPage(it)
+                }
+            },
+            onHateClick = { visible = false },
+        )
+
+        LaunchedEffect(visible) {
+            if (!visible) {
+                delay(300)
+                coroutineScope.launch {
+                    val currentPage = pagerState.currentPage
+                    when {
+                        currentPage + 1 < recipeRecommends.size && currentPage > 0 -> {
+                            visible = true
                             pagerState.animateScrollToPage(page + 1)
                         }
-                        viewModel.hateRecipe(page)
-                        items = items.toMutableList().apply { removeAt(page) }
-                        if (currentPage < items.size) {
-                            pagerState.scrollToPage(currentPage)
-                        } else if (items.isNotEmpty()) {
-                            pagerState.scrollToPage(items.size - 1) // 마지막 페이지로 이동
+
+                        currentPage + 1 < recipeRecommends.size -> {
+                            pagerState.animateScrollToPage(page + 1)
                         }
-                        visible = true
+
+                        currentPage + 1 == recipeRecommends.size -> {
+                            pagerState.animateScrollToPage(page - 1)
+                        }
+                    }
+
+                    delay(300)
+                    onHateClick(page)
+                    visible = true
+
+                    when {
+                        currentPage < recipeRecommends.size -> {
+                            pagerState.scrollToPage(currentPage)
+                        }
+
+                        recipeRecommends.isNotEmpty() -> {
+                            pagerState.scrollToPage(recipeRecommends.size - 1)
+                        }
                     }
                 }
             }
-
-            AnimatedVisibility(
-                visible = visible,
-                enter = EnterTransition.None,
-                exit = fadeOut(),
-            ) {
-                RecipeCard(
-                    page = page,
-                    recipe = items[page],
-                    onLikeClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(it)
-                        }
-                    },
-                    onHateClick = {
-                        visible = false
-                    },
-                )
-            }
         }
+    }
+}
+
+
+@Composable
+private fun RecipePage(
+    visible: Boolean,
+    page: Int,
+    recipeRecommends: List<RecipeRecommendItemUiState>,
+    onLikeClick: (Int) -> Unit,
+    onHateClick: (Int) -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = EnterTransition.None,
+        exit = fadeOut(),
+    ) {
+        RecipeCard(
+            page = page,
+            recipe = recipeRecommends[page].recipe,
+            onLikeClick = onLikeClick,
+            onHateClick = onHateClick,
+        )
     }
 }

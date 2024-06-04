@@ -31,9 +31,10 @@ fun RecipeCard(
     onHateClick: (page: Int) -> Unit = {},
     onLikeClick: (page: Int) -> Unit = {},
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .graphicsLayer { }) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         NetworkImage(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(32.dp))
@@ -103,9 +104,7 @@ private fun RecipeLikeHate(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(start = 24.dp, bottom = 12.dp),
-            onClick = {
-                onHateClick(page)
-            }
+            onClick = { onHateClick(page) }
         ) {
             Text("싫어요")
         }
@@ -113,9 +112,7 @@ private fun RecipeLikeHate(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 24.dp, bottom = 12.dp),
-            onClick = {
-                onLikeClick(page + 1)
-            },
+            onClick = { onLikeClick(page) },
         ) {
             Text("좋아요")
         }
