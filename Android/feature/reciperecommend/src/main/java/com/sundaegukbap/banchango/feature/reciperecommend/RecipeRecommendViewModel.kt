@@ -16,16 +16,25 @@ class RecipeRecommendViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
 ) : ViewModel() {
 
-    private val _recipes: MutableStateFlow<List<Recipe>> = MutableStateFlow(emptyList())
-    val recipes: StateFlow<List<Recipe>> = _recipes.asStateFlow()
+    private val _uiState: MutableStateFlow<RecipeRecommendUiState> =
+        MutableStateFlow(RecipeRecommendUiState.Loading)
+    val uiState: StateFlow<RecipeRecommendUiState> = _uiState.asStateFlow()
 
     fun getRecipeRecommendation() {
+        if (_uiState.value is RecipeRecommendUiState.Success) return
+
         viewModelScope.launch {
             recipeRepository.getRecipeRecommendation().onSuccess {
-                _recipes.value = (it + it + it + it + it + it + it)
-                    .mapIndexed { index, value ->
-                        value.copy(name = value.name + "$index")
-                    }
+                _uiState.value =
+                    RecipeRecommendUiState
+                        .Success((it + it + it + it + it + it + it)
+                            .mapIndexed { index, recipe ->
+                                RecipeRecommendItemUiState(
+                                    recipe = recipe.copy(name = recipe.name + index.toString()),
+                                    isHated = false,
+                                    isLiked = false,
+                                )
+                            })
             }.onFailure { throwable ->
                 throwable.printStackTrace()
             }
@@ -33,6 +42,9 @@ class RecipeRecommendViewModel @Inject constructor(
     }
 
     fun hateRecipe(page: Int) {
-        _recipes.value = _recipes.value.toMutableList().apply { removeAt(page) }
+        val successRecipes = _uiState.value as? RecipeRecommendUiState.Success ?: return
+        _uiState.value = RecipeRecommendUiState.Success(
+            successRecipes.recipes.toMutableList().apply { removeAt(page) }
+        )
     }
 }
