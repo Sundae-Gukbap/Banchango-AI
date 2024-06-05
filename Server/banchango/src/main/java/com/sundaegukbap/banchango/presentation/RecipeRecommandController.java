@@ -25,8 +25,15 @@ public class RecipeRecommandController {
 
     @GetMapping("/{userId}")
     @Operation(description = "추천 레시피를 조회한다.")
-    public ResponseEntity<List> findAll(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List> getRecommandRecipes(@PathVariable("userId") Long userId) {
         List<RecipeDetailResponse> response = recipeRecommandService.getRecipes(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/{recipeId}")
+    @Operation(description = "레시피를 조회한다.")
+    public ResponseEntity<RecipeDetailResponse> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
+        RecipeDetailResponse response = recipeRecommandService.getRecipe(userId,recipeId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
