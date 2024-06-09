@@ -11,7 +11,7 @@ import SwiftUI
 struct banchangoApp: App {
     var body: some Scene {
         WindowGroup {
-            RecipeRecommendView()
+            RecipeRecommendView(recipes: Recipe.list)
         }
     }
 }
