@@ -10,4 +10,10 @@ internal interface RecipeApi {
     suspend fun getRecipeRecommendation(
         @Path("userId") userId: Long
     ): Response<List<RecipeRecommendResponse>>
+
+    @GET("api/recipe/{userId}/{recipeId}")
+    suspend fun getRecipeDetail(
+        @Path("userId") userId: Long,
+        @Path("recipeId") recipeId: Long
+    ): Response<RecipeRecommendResponse>
 }
