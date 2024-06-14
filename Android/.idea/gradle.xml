@@ -20,7 +20,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/main" />
-            <option value="$PROJECT_DIR$/feature/reciperecommend" />
+            <option value="$PROJECT_DIR$/feature/recipe" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

@@ -23,7 +23,7 @@ internal class DefaultRecipeRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRecipeDetail(id: Int): Result<Recipe> {
+    override suspend fun getRecipeDetail(id: Long): Result<Recipe> {
         return runCatching {
             val response = recipeApi.getRecipeDetail(1, id.toLong())
             if (response.isSuccessful) {

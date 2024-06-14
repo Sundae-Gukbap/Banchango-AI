@@ -10,7 +10,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.sundaegukbap.banchango.feature.home.navigation.navigateHome
-import com.sundaegukbap.banchango.feature.reciperecommend.navigation.navigateRecipeRecommend
+import com.sundaegukbap.banchango.feature.recipe.navigation.navigateRecipeDetail
+import com.sundaegukbap.banchango.feature.recipe.navigation.navigateRecipeRecommend
 import com.sundaegukbap.banchango.navigation.MainTabRoute
 import com.sundaegukbap.banchango.navigation.Route
 
@@ -41,6 +42,10 @@ internal class MainNavigator(
             MainTab.RECIPE_RECOMMEND -> navController.navigateRecipeRecommend(navOptions)
             MainTab.HOME -> navController.navigateHome(navOptions)
         }
+    }
+
+    fun navigateRecipeDetail(recipeId: Long) {
+        navController.navigateRecipeDetail(recipeId)
     }
 
     private fun popBackStack() {

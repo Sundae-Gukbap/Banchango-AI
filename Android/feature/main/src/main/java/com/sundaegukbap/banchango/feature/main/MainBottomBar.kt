@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
@@ -100,7 +101,7 @@ private fun RowScope.MainBottomBarItem(
             painter = painterResource(tab.iconResId),
             contentDescription = tab.contentDescription,
             tint = if (selected) {
-                Neon01
+                Orange
             } else {
                 MaterialTheme.colorScheme.outline
             },
@@ -108,5 +109,3 @@ private fun RowScope.MainBottomBarItem(
         )
     }
 }
-
-val Neon01 = Color(0xFF49F300)

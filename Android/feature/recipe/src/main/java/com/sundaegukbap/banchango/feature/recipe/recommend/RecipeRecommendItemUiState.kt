@@ -1,9 +1,8 @@
-package com.sundaegukbap.banchango.feature.reciperecommend
+package com.sundaegukbap.banchango.feature.recipe.recommend
 
 import com.sundaegukbap.banchango.Recipe
 
 data class RecipeRecommendItemUiState(
     val recipe: Recipe,
-    val isHated: Boolean,
     val isLiked: Boolean,
 )

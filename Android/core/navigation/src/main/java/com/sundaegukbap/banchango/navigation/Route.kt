@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     @Serializable
-    data class RecipeDetail(val recipeId: String) : Route
+    data class RecipeDetail(val recipeId: Long) : Route
 }
 
 sealed interface MainTabRoute : Route {
