@@ -1,15 +1,11 @@
 package com.sundaegukbap.banchango.feature.main
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import kotlinx.collections.immutable.PersistentList
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,12 +21,18 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.sundaegukbap.banchango.core.designsystem.theme.Orange
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 internal fun MainBottomBar(
@@ -47,18 +49,21 @@ internal fun MainBottomBar(
         Row(
             modifier = Modifier
                 .navigationBarsPadding()
-                .padding(start = 8.dp, end = 8.dp, bottom = 28.dp)
                 .fillMaxWidth()
                 .height(56.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(size = 28.dp)
-                )
                 .background(
                     color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(28.dp)
                 )
+                .drawBehind {
+                    val borderWidth = 0.2.dp.toPx()
+                    drawLine(
+                        color = Color.Gray,
+                        start = Offset(0f, borderWidth / 2),
+                        end = Offset(size.width, borderWidth / 2),
+                        strokeWidth = borderWidth
+                    )
+                }
                 .padding(horizontal = 28.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -96,7 +101,7 @@ private fun RowScope.MainBottomBarItem(
             painter = painterResource(tab.iconResId),
             contentDescription = tab.contentDescription,
             tint = if (selected) {
-                Neon01
+                Orange
             } else {
                 MaterialTheme.colorScheme.outline
             },
@@ -104,5 +109,3 @@ private fun RowScope.MainBottomBarItem(
         )
     }
 }
-
-val Neon01 = Color(0xFF49F300)

@@ -44,7 +44,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(project(":feature:reciperecommend"))
+    implementation(project(":feature:recipe"))
     implementation(project(":feature:home"))
 
     implementation(libs.androidx.core.ktx)
