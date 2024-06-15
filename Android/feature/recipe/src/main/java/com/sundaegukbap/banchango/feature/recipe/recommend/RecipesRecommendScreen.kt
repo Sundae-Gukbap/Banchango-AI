@@ -3,6 +3,8 @@ package com.sundaegukbap.banchango.feature.recipe.recommend
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -51,7 +53,10 @@ fun RecipeRecommendContent(
 ) {
     when (uiState) {
         is RecipeRecommendUiState.Loading -> {
-            RecipeRecommendLoading()
+            RecipeRecommendLoading(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            )
         }
 
         is RecipeRecommendUiState.Success -> {
@@ -67,8 +72,8 @@ fun RecipeRecommendContent(
 }
 
 @Composable
-fun RecipeRecommendLoading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+fun RecipeRecommendLoading(modifier: Modifier, contentAlignment: Alignment) {
+    Box(modifier = modifier, contentAlignment = contentAlignment) {
         CircularProgressIndicator()
     }
 }
@@ -81,26 +86,37 @@ private fun RecipeRecommendScreen(
     onRecipeClick: (Recipe) -> Unit,
     onLastPageVisible: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = { recipeRecommends.size })
+    val pagerState = rememberPagerState(pageCount = { recipeRecommends.size + 1 })
 
-    VerticalPager(
-        modifier = Modifier.padding(padding),
-        state = pagerState,
-        contentPadding = PaddingValues(vertical = 136.dp, horizontal = 32.dp),
-        pageSpacing = 24.dp,
-    ) { page ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        VerticalPager(
+            modifier = Modifier.padding(padding),
+            state = pagerState,
+            contentPadding = PaddingValues(vertical = 136.dp, horizontal = 32.dp),
+            pageSpacing = 24.dp,
+        ) { page ->
+            if (page >= recipeRecommends.size - 2) {
+                onLastPageVisible()
+            }
+            val pageOffset =
+                (pagerState.currentPage - page + pagerState.currentPageOffsetFraction).absoluteValue
 
-        if (page >= recipeRecommends.size - 2) {
-            onLastPageVisible()
+            if (page == pagerState.pageCount - 1) {
+                RecipeRecommendLoading(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    contentAlignment = Alignment.Center
+                )
+            } else {
+                RecipeItem(
+                    recipeItemUiState = recipeRecommends[page],
+                    onRecipeClick = onRecipeClick,
+                    onRecipeLikeClick = onLikeClick,
+                    pageOffset = pageOffset,
+                )
+            }
         }
-        val pageOffset =
-            (pagerState.currentPage - page + pagerState.currentPageOffsetFraction).absoluteValue
-        RecipeItem(
-            recipeItemUiState = recipeRecommends[page],
-            onRecipeClick = onRecipeClick,
-            onRecipeLikeClick = onLikeClick,
-            pageOffset = pageOffset,
-        )
     }
 }
 
