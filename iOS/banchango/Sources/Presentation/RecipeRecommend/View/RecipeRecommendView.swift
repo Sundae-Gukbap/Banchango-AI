@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct RecipeRecommendView: View {
+    @ObservedObject private var recipeRecommendVM: RecipeRecommendViewModel
+    
+    init() {
+        self.recipeRecommendVM = RecipeRecommendViewModel()
+        recipeRecommendVM.getRecipeRecommend()
+    }
+    
     let colors:[Color] = [.purple, .pink, .orange]
-    let recipes: [Recipe]
     
     var body: some View {
+        if recipeRecommendVM.recipes.isEmpty {
+            Text("Loading...") // Placeholder text while loading
+                .font(.largeTitle)
+        } else {
             GeometryReader { proxy in
                 ScrollView(.vertical) {
                     VStack(spacing: 0) {
-                        ForEach(recipes.indices, id: \.self) { index in
+                        ForEach(recipeRecommendVM.recipes.indices, id: \.self) { index in
                             ZStack {
                                 colors[index % colors.count]
                                 Circle()
@@ -23,15 +33,15 @@ struct RecipeRecommendView: View {
                                     .frame(width: 200, height: 200)
                                     .overlay(
                                         VStack {
-                                            Text(recipes[index].name)
+                                            Text(recipeRecommendVM.recipes[index].name)
                                                 .font(.largeTitle)
                                                 .foregroundColor(.black)
-                                            Text(recipes[index].introduction)
+                                            Text(recipeRecommendVM.recipes[index].introduction)
                                                 .font(.caption)
                                                 .foregroundColor(.gray)
                                                 .multilineTextAlignment(.center)
                                         }
-                                        .padding()
+                                            .padding()
                                     )
                             }
                             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -42,8 +52,9 @@ struct RecipeRecommendView: View {
                 UIScrollView.appearance().isPagingEnabled = true
             }
         }
+    }
 }
 
 #Preview {
-    RecipeRecommendView(recipes: Recipe.list)
+    RecipeRecommendView()
 }
