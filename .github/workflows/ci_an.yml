@@ -35,7 +35,7 @@ jobs:
 
       - name: add local.properties
         run: |
-          echo base_url=\"$${{ secrets.ANDROID_USER_BASE_URL }}\" >> ./local.properties
+          echo base_url=\"$${{ secrets.ANDROID_BASE_URL }}\" >> ./local.properties
 
       - name: Build with Gradle
         run: ./gradlew build
