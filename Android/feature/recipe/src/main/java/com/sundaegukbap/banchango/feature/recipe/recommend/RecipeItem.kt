@@ -1,54 +1,113 @@
 package com.sundaegukbap.banchango.feature.recipe.recommend
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
+import com.sundaegukbap.banchango.feature.reciperecommend.R
 
 @Composable
 fun RecipeItem(
     recipeItemUiState: RecipeRecommendItemUiState,
+    pageOffset: Float,
     onRecipeClick: (Recipe) -> Unit = {},
     onRecipeLikeClick: (Recipe) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-
+            .graphicsLayer {
+                scaleX = lerp(
+                    start = 0.9f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                )
+                scaleY = lerp(
+                    start = 0.9f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                )
+            }
+            .clip(shape = RoundedCornerShape(44.dp))
+            .clickable {
+                onRecipeClick(recipeItemUiState.recipe)
+            }
     ) {
         NetworkImage(
             modifier = Modifier
-                .clip(shape = RoundedCornerShape(32.dp))
-                .fillMaxSize()
-                .clickable {
-                    onRecipeClick(recipeItemUiState.recipe)
-                },
+                .fillMaxSize(),
             url = recipeItemUiState.recipe.image,
         )
         RecipeInfo(
             recipeItemUiState.recipe,
             modifier = Modifier.fillMaxSize(),
-            onLikeClick = { onRecipeLikeClick(recipeItemUiState.recipe) }
         )
+
+        RecipeIngredientCount(
+            modifier = Modifier
+                .align(Alignment.BottomStart),
+            have = recipeItemUiState.recipe.have.count(),
+            need = recipeItemUiState.recipe.need.count(),
+            imageSize = 95,
+        )
+
+        RecipeLikeButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd),
+            isLiked = recipeItemUiState.isLiked,
+            onLikeClick = { onRecipeLikeClick(recipeItemUiState.recipe) },
+        )
+
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(
+                    color = Color.Black.copy(
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop = 0f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                    ),
+                )
+        ) {
+
+        }
     }
 }
 
@@ -56,42 +115,58 @@ fun RecipeItem(
 private fun RecipeInfo(
     recipe: Recipe,
     modifier: Modifier,
-    onLikeClick: () -> Unit,
 ) {
     Box(modifier = modifier) {
         Text(
             text = recipe.name,
             color = Color.White,
-            fontSize = 16.sp,
+            fontSize = 24.sp,
+            maxLines = 2,
+            minLines = 2,
             style = TextStyle(fontWeight = Bold),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(horizontal = 24.dp, vertical = 12.dp)
-                .clip(shape = RoundedCornerShape(32.dp))
-                .background(Color.Black.copy(alpha = 0.5f))
+                .background(
+                    brush = Brush.verticalGradient(listOf(Color.Black, Color.Transparent)),
+                    alpha = 0.8f
+                )
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(top = 40.dp, bottom = 40.dp),
         )
-
-        Text(
-            text = "${recipe.have.count()} / ${recipe.need.count() + recipe.have.count()}",
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = 24.dp, bottom = 24.dp),
-            color = Color.White,
-        )
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 24.dp, bottom = 12.dp),
-            onClick = onLikeClick,
-        ) {
-            Text("좋아요")
-        }
     }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun RecipeLikeButton(
+    modifier: Modifier,
+    isLiked: Boolean,
+    onLikeClick: () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onLikeClick
+            )
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.img_btn_right),
+            contentDescription = null,
+            modifier = Modifier.size(95.dp),
+        )
+        Image(
+            painter = painterResource(id = if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart),
+            contentDescription = null,
+            modifier = Modifier
+                .size(32.dp)
+                .align(Alignment.Center)
+                .padding(top = 8.dp),
+        )
+    }
+}
+
+@Preview(showBackground = false)
 @Composable
 fun RecipeItemPreview() {
     BanchangoTheme {
@@ -112,6 +187,43 @@ fun RecipeItemPreview() {
                 ),
                 isLiked = true,
             ),
+            pageOffset = 0f,
         )
+    }
+}
+
+@Composable
+fun RecipeIngredientCount(
+    modifier: Modifier,
+    imageSize: Int,
+    have: Int,
+    need: Int,
+) {
+    Box(modifier = modifier) {
+        Image(
+            modifier = Modifier.size(imageSize.dp),
+            painter = painterResource(id = R.drawable.img_wave),
+            contentDescription = null,
+        )
+        Text(
+            text = "$have / ${need + have}",
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .align(Alignment.Center),
+            color = Color.White,
+            style = TextStyle(
+                letterSpacing = 0.1.sp,
+                fontWeight = Bold,
+                fontSize = 20.sp
+            ),
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun RecipeIngredientCountPreview() {
+    BanchangoTheme {
+        RecipeIngredientCount(modifier = Modifier, have = 3, need = 7, imageSize = 120)
     }
 }

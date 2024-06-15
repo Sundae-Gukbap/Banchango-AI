@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
+import kotlin.math.absoluteValue
 
 @Composable
 fun RecipeRecommendRoute(
@@ -92,10 +93,13 @@ private fun RecipeRecommendScreen(
         if (page >= recipeRecommends.size - 2) {
             onLastPageVisible()
         }
+        val pageOffset =
+            (pagerState.currentPage - page + pagerState.currentPageOffsetFraction).absoluteValue
         RecipeItem(
             recipeItemUiState = recipeRecommends[page],
             onRecipeClick = onRecipeClick,
             onRecipeLikeClick = onLikeClick,
+            pageOffset = pageOffset,
         )
     }
 }

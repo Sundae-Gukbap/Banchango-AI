@@ -22,11 +22,12 @@ class RecipeRecommendViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            recipeRepository.getRecipeRecommendation().onSuccess { recipes ->
-                _uiState.value = RecipeRecommendUiState.Success(recipes.toUiState())
-            }.onFailure { throwable ->
-                throwable.printStackTrace()
-            }
+            recipeRepository.getRecipeRecommendation()
+                .onSuccess { recipes ->
+                    _uiState.value = RecipeRecommendUiState.Success(recipes.toUiState())
+                }.onFailure { throwable ->
+                    throwable.printStackTrace()
+                }
         }
     }
 
@@ -49,7 +50,7 @@ class RecipeRecommendViewModel @Inject constructor(
         val successUiState = _uiState.value as? RecipeRecommendUiState.Success ?: return
         val likedRecipeUiStates = successUiState.recipes.map { recipeUiState ->
             if (recipeUiState.recipe.id == recipe.id) {
-                recipeUiState.copy(isLiked = true)
+                recipeUiState.copy(isLiked = !recipeUiState.isLiked)
             } else {
                 recipeUiState
             }
