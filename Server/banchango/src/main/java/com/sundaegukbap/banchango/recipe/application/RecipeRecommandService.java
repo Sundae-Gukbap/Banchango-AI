@@ -35,10 +35,7 @@ public class RecipeRecommandService {
             List<String> have = getHaveIngredients(user, recipe);
             List<String> need = getNeedIngredients(user, recipe);
 
-            boolean isBookmarked = user.getBookmarkedRecipes().stream()
-                    .anyMatch(r -> r.getId().equals(recipe.getId()));
-
-            response.add(RecipeDetailResponse.of(recipe, have, need, isBookmarked));
+            response.add(RecipeDetailResponse.of(recipe, have, need));
         }
 
         return response;
@@ -54,7 +51,7 @@ public class RecipeRecommandService {
         List<String> have = getHaveIngredients(user, recipe);
         List<String> need = getNeedIngredients(user, recipe);
 
-        return RecipeDetailResponse.of(recipe, have, need, false);
+        return RecipeDetailResponse.of(recipe, have, need);
     }
 
     private static List<String> getNeedIngredients(User user, Recipe recipe) {
