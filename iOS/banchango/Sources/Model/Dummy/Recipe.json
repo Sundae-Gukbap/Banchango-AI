@@ -1,0 +1,30 @@
+{
+    "content" : [
+        {
+            "recipeId" : 1L,
+            "recipeName" : "간장계란볶음밥",
+            "introduction" : "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+            "image" : "https://image.com/image.png",
+            "link" : "https://www.10000recipe.com/recipe/6889616",
+            "have" : ["김치", "밥", . . .],
+            "need" : ["햄", "간장", . . .],
+            "servings" : 1,
+            "cookingTime" : 30,
+            "isBookmarked" : true,
+            "difficulty" : "Beginner"
+        },
+        {
+            "recipeId" : 2L,
+            "recipeName" : "간장계란볶음밥",
+            "introduction" : "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+            "image" : "https://image.com/image.png",
+            "link" : "https://www.10000recipe.com/recipe/6889616",
+            "have" : ["김치", "밥", . . .],
+            "need" : ["햄", "간장", . . .],
+            "servings" : 1,
+            "cookingTime" : 30,
+            "isBookmarked" : true,
+            "difficulty" : "Beginner"
+        }
+    ]
+}

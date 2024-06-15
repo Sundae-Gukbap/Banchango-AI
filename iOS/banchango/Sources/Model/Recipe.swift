@@ -7,24 +7,30 @@
 
 import Foundation
 
-struct Recipe: Hashable{
+struct Recipe: Hashable, Codable{
     let id: Int
     let name: String
     let introduction: String
     let image: String
     let link: String
-    let cookingTime: Int
+    let have: [String]
+    let need: [String]
     let servings: Int
+    let cookingTime: Int
+    let isBookmarked: Bool
     let difficulty: String
-    let have: [Int]
-    let need: [Int]
-}
-
-extension Recipe {
-    static let list: [Recipe] = [
-        Recipe(id: 1, name: "김치찌개", introduction: "김치찌개임", image: "dd", link: "dd", cookingTime: 30, servings: 30, difficulty: "5", have: [1,2,3,4], need: [1,2,3,4]),
-        Recipe(id: 2, name: "순대국밥", introduction: "순대국밥임", image: "dd", link: "dd", cookingTime: 30, servings: 30, difficulty: "5", have: [1,2,3,4], need: [1,2,3,4]),
-        Recipe(id: 3, name: "제육볶음", introduction: "제육볶음임", image: "dd", link: "dd", cookingTime: 30, servings: 30, difficulty: "5", have: [1,2,3,4], need: [1,2,3,4]),
-        Recipe(id: 4, name: "계란말이", introduction: "계란말이임", image: "dd", link: "dd", cookingTime: 30, servings: 30, difficulty: "5", have: [1,2,3,4], need: [1,2,3,4])
-    ]
+    
+    private enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case introduction = "introduction"
+        case image = "image"
+        case link = "link"
+        case have = "have"
+        case need = "need"
+        case servings = "servings"
+        case cookingTime = "cookingTime"
+        case isBookmarked = "isBookmarked"
+        case difficulty = "difficulty"
+    }
 }
