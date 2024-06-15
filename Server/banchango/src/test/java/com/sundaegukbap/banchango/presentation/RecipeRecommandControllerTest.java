@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sundaegukbap.banchango.recipe.application.RecipeRecommandService;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
 import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
+import com.sundaegukbap.banchango.recipe.presentation.RecipeRecommandController;
 import com.sundaegukbap.banchango.support.CustomWebMvcTest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -49,7 +50,7 @@ class RecipeRecommandControllerTest {
         List<String> need = new ArrayList<>();
         need.add("계란");
         need.add("당근");
-        RecipeDetailResponse recipeDetail = new RecipeDetailResponse(1L, "간장계란볶음밥", "달짝지근함", "test.png", "test.link", have, need, 1, 30, true, Difficulty.아무나);
+        RecipeDetailResponse recipeDetail = new RecipeDetailResponse(1L, "간장계란볶음밥", "달짝지근함", "test.png", "test.link", have, need, 1, 30, Difficulty.아무나);
         expected.add(recipeDetail);
         given(recipeRecommandService.getRecipes(anyLong()))
                 .willReturn(expected);

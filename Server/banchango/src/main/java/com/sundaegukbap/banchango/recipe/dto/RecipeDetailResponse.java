@@ -15,9 +15,8 @@ public record RecipeDetailResponse(
     List<String> need,
     int servings,
     int cookingTime,
-    boolean isBookmarked,
     Difficulty difficulty) {
-    public static RecipeDetailResponse of(Recipe recipe, List<String> have, List<String> need, boolean isBookmarked) {
+    public static RecipeDetailResponse of(Recipe recipe, List<String> have, List<String> need) {
         return new RecipeDetailResponse(
                 recipe.getId(),
                 recipe.getName(),
@@ -28,7 +27,6 @@ public record RecipeDetailResponse(
                 need,
                 recipe.getServings(),
                 recipe.getCookingTime(),
-                isBookmarked,
                 recipe.getDifficulty()
         );
     }

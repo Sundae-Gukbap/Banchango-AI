@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.presentation;
+package com.sundaegukbap.banchango.recipe.presentation;
 
 import com.sundaegukbap.banchango.recipe.application.RecipeRecommandService;
 import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
