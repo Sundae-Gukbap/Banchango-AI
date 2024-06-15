@@ -12,7 +12,7 @@ class RecipeRecommendViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    func getRecipeRecommendViewModelandomly() {
+    func getRecipeRecommend() {
         guard let url = URL.recipeRecommendURL(1) else {
             print("URL이 잘못되었습니다.") // URL이 잘못된 경우
             return
@@ -27,11 +27,10 @@ class RecipeRecommendViewModel: ObservableObject {
                 case .failure(let error):
                     print("네트워크 오류: \(error)")
                 case .finished:
-                    print("네트워크 요청이 완료되었습니다.")
+                    print("추천 레시피 데이터 요청이 완료되었습니다.")
                 }
             }, receiveValue: { [weak self] recipes in
                 self?.recipes = recipes
-                print("받아온 레시피: \(recipes)")
             })
             .store(in: &cancellables)
     }

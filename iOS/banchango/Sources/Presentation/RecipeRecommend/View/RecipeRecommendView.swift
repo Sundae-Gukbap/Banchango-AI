@@ -18,39 +18,54 @@ struct RecipeRecommendView: View {
     let colors:[Color] = [.purple, .pink, .orange]
     
     var body: some View {
-        if recipeRecommendVM.recipes.isEmpty {
-            Text("Loading...") // Placeholder text while loading
-                .font(.largeTitle)
-        } else {
-            GeometryReader { proxy in
-                ScrollView(.vertical) {
-                    VStack(spacing: 0) {
-                        ForEach(recipeRecommendVM.recipes.indices, id: \.self) { index in
-                            ZStack {
-                                colors[index % colors.count]
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 200, height: 200)
-                                    .overlay(
-                                        VStack {
-                                            Text(recipeRecommendVM.recipes[index].name)
-                                                .font(.largeTitle)
-                                                .foregroundColor(.black)
-                                            Text(recipeRecommendVM.recipes[index].introduction)
-                                                .font(.caption)
-                                                .foregroundColor(.gray)
-                                                .multilineTextAlignment(.center)
-                                        }
-                                            .padding()
-                                    )
-                            }
+        GeometryReader { proxy in
+            ScrollView(.vertical) {
+                VStack(spacing: 0) {
+                    ForEach(recipeRecommendVM.recipes.indices, id: \.self) { index in
+                        RecipeCardView(recipe: recipeRecommendVM.recipes[index])
                             .frame(width: proxy.size.width, height: proxy.size.height)
-                        }
                     }
                 }
-            }.onAppear() {
-                UIScrollView.appearance().isPagingEnabled = true
             }
+        }.onAppear() {
+            UIScrollView.appearance().isPagingEnabled = true
+        }
+    }
+}
+
+
+struct RecipeCardView: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.clear)
+                .background(
+                    AsyncImage(url: URL(string: recipe.image)) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 300, height: 550)
+                    } placeholder: {
+                        Color.gray.opacity(0.3)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                )
+                .frame(width: 300, height: 550)
+                .overlay(
+                    VStack {
+                        Text(recipe.name)
+                            .font(.largeTitle)
+                            .foregroundColor(.black)
+                        Spacer()
+                        Text(recipe.introduction)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                )
         }
     }
 }
