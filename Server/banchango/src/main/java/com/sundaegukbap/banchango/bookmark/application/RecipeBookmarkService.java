@@ -1,5 +1,7 @@
 package com.sundaegukbap.banchango.bookmark.application;
 
+import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
+import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
 import com.sundaegukbap.banchango.user.domain.User;
@@ -15,21 +17,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class RecipeBookmarkService {
+    private final RecipeBookmarkRepository recipeBookmarkRepository;
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
 
     public List<Long> getBookmarkedRecipes(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("no user"));
+                .orElseThrow(() -> new NoSuchElementException());
 
-        List<Long> recipeIds = user.getBookmarkedRecipes().stream()
-                .map(b -> b.getId())
+        List<RecipeBookmark> recipeBookmarks = recipeBookmarkRepository.findAllByUser(user);
+
+        List<Long> result = recipeBookmarks.stream()
+                .map(b -> b.getRecipe().getId())
                 .collect(Collectors.toList());
 
-        return recipeIds;
+        return result;
     }
 
     public String clickBookmark(Long userId, Long recipeId) {
@@ -39,13 +44,12 @@ public class RecipeBookmarkService {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new NoSuchElementException("no recipe"));
 
-        Set<Recipe> bookmarkedRecipes = user.getBookmarkedRecipes();
-        boolean isBookmarked = bookmarkedRecipes.contains(recipe);
-        if(!isBookmarked){
-            bookmarkedRecipes.add(recipe);
+        Optional<RecipeBookmark> optionalRecipeBookmark = recipeBookmarkRepository.findByUserAndRecipe(user, recipe);
+        if(optionalRecipeBookmark.isEmpty()){
+            recipeBookmarkRepository.save(new RecipeBookmark(user, recipe));
             return "add bookmark";
         } else{
-            bookmarkedRecipes.remove(recipe);
+            recipeBookmarkRepository.delete(optionalRecipeBookmark.get());
             return "delete bookmark";
         }
     }
