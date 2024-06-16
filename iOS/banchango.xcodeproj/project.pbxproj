@@ -38,6 +38,8 @@
 		12BCCAD92C1EB3DA006853E5 /* Inter-V.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */; };
 		12BCCADA2C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */; };
 		12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */; };
+		12BCCAE62C1EC406006853E5 /* RecipeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCAE52C1EC406006853E5 /* RecipeDetailViewModel.swift */; };
+		12BCCAE82C1EC419006853E5 /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCAE72C1EC419006853E5 /* RecipeDetailView.swift */; };
 		12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */; };
 		12E1649C2C0CD9F4006FC786 /* RecommendRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1649B2C0CD9F4006FC786 /* RecommendRecipe.swift */; };
 		12E94FA42C1DA92800C525B9 /* RecommendRecipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 12E94FA22C1DA92800C525B9 /* RecommendRecipe.json */; };
@@ -98,6 +100,8 @@
 		12BCCADB2C1EB469006853E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.otf; sourceTree = "<group>"; };
 		12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardView.swift; sourceTree = "<group>"; };
+		12BCCAE52C1EC406006853E5 /* RecipeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModel.swift; sourceTree = "<group>"; };
+		12BCCAE72C1EC419006853E5 /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendView.swift; sourceTree = "<group>"; };
 		12E1649B2C0CD9F4006FC786 /* RecommendRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipe.swift; sourceTree = "<group>"; };
 		12E94FA22C1DA92800C525B9 /* RecommendRecipe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RecommendRecipe.json; sourceTree = "<group>"; };
@@ -210,6 +214,7 @@
 			children = (
 				12E94FB22C1DB85E00C525B9 /* Main */,
 				12E94FAD2C1DAA6B00C525B9 /* RecipeRecommend */,
+				12BCCAE22C1EC3D5006853E5 /* RecipeDetail */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -267,6 +272,31 @@
 				12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */,
 			);
 			path = cafe24Ssurround;
+			sourceTree = "<group>";
+		};
+		12BCCAE22C1EC3D5006853E5 /* RecipeDetail */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCAE32C1EC3EC006853E5 /* ViewModel */,
+				12BCCAE42C1EC3F6006853E5 /* View */,
+			);
+			path = RecipeDetail;
+			sourceTree = "<group>";
+		};
+		12BCCAE32C1EC3EC006853E5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCAE52C1EC406006853E5 /* RecipeDetailViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		12BCCAE42C1EC3F6006853E5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCAE72C1EC419006853E5 /* RecipeDetailView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		12E164982C0CD62F006FC786 /* Model */ = {
@@ -498,9 +528,11 @@
 				124C4D242BF87ECA00FC9EE4 /* MainView.swift in Sources */,
 				12E1649C2C0CD9F4006FC786 /* RecommendRecipe.swift in Sources */,
 				12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */,
+				12BCCAE62C1EC406006853E5 /* RecipeDetailViewModel.swift in Sources */,
 				124C4D222BF87ECA00FC9EE4 /* banchangoApp.swift in Sources */,
 				12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */,
 				12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */,
+				12BCCAE82C1EC419006853E5 /* RecipeDetailView.swift in Sources */,
 				12BCCA5E2C1EADFF006853E5 /* HTTPClient.swift in Sources */,
 				12BCCA5F2C1EADFF006853E5 /* URLExtensions.swift in Sources */,
 				12BCCA5D2C1EADFF006853E5 /* Config.swift in Sources */,

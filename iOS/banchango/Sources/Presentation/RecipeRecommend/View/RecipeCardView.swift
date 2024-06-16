@@ -17,36 +17,38 @@ struct RecipeCardView: View {
     }
     
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.clear)
-                .frame(width: 300, height: 550)
-                .background(
-                    AsyncImage(url: URL(string: recipe.image)) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 300, height: 550)
-                    } placeholder: {
-                        Color.gray.opacity(0.3)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                )
-                .overlay(
-                    VStack {
-                        Text(recipe.name)
-                            .font(.custom("Inter-Bold", size: 30))
-                            .lineLimit(2)
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text(haveNeedIngr(have: recipe.have, need:recipe.need))
-                            .font(.custom("Inter-Bold", size: 30))
-                            .foregroundColor(.white)
-                    }
-                    .padding()
-                )
-        }.onTapGesture {
-            print("Hello")
+        NavigationView{
+            NavigationLink(destination: RecipeDetailView(recipeid:recipe.id)){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.clear)
+                        .frame(width: 300, height: 550)
+                        .background(
+                            AsyncImage(url: URL(string: recipe.image)) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 300, height: 550)
+                            } placeholder: {
+                                Color.gray.opacity(0.3)
+                            }
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                        )
+                        .overlay(
+                            VStack {
+                                Text(recipe.name)
+                                    .font(.custom("Inter-Bold", size: 30))
+                                    .lineLimit(2)
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(haveNeedIngr(have: recipe.have, need:recipe.need))
+                                    .font(.custom("Inter-Bold", size: 30))
+                                    .foregroundColor(.white)
+                            }
+                                .padding()
+                        )
+                }
+            }
         }
     }
 }
