@@ -7,9 +7,9 @@ import javax.inject.Inject
 class FakeRecipeRepository @Inject constructor() : RecipeRepository {
     override suspend fun getRecipeRecommendation(): Result<List<Recipe>> {
         return Result.success(
-            listOf(
+            List(3) {
                 Recipe(
-                    id = 1,
+                    id = (it + 1).toLong(),
                     name = "간장계란볶음밥",
                     introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
                     image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
@@ -17,38 +17,11 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                     cookingTime = 10,
                     servings = 2,
                     difficulty = "Easy",
-                    have = listOf(""),
-                    need = listOf(""),
+                    have = listOf("계란", "간장"),
+                    need = listOf("식초", "당근", "감자"),
                     isBookmarked = false,
-                ),
-                Recipe(
-                    id = 2,
-                    name = "간장계란볶음밥",
-                    introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                    image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                    link = "https://www.10000recipe.com/recipe/6889616",
-                    cookingTime = 10,
-                    servings = 2,
-                    difficulty = "Easy",
-                    have = listOf(""),
-                    need = listOf(""),
-                    isBookmarked = false,
-                ),
-
-                Recipe(
-                    id = 3,
-                    name = "간장계란볶음밥",
-                    introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                    image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                    link = "https://www.10000recipe.com/recipe/6889616",
-                    cookingTime = 10,
-                    servings = 2,
-                    difficulty = "Easy",
-                    have = listOf(""),
-                    need = listOf(""),
-                    isBookmarked = false,
-                ),
-            )
+                )
+            }
         )
     }
 
@@ -63,8 +36,8 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 cookingTime = 10,
                 servings = 2,
                 difficulty = "Easy",
-                have = listOf(""),
-                need = listOf(""),
+                have = listOf("계란", "간장"),
+                need = listOf("식초", "당근", "감자"),
                 isBookmarked = false,
             )
         )

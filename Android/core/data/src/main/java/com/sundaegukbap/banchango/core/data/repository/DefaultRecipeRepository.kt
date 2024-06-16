@@ -25,7 +25,7 @@ internal class DefaultRecipeRepository @Inject constructor(
 
     override suspend fun getRecipeDetail(id: Long): Result<Recipe> {
         return runCatching {
-            val response = recipeApi.getRecipeDetail(1, id.toLong())
+            val response = recipeApi.getRecipeDetail(1, id)
             if (response.isSuccessful) {
                 if (response.body() == null) {
                     throw IllegalStateException("Response body is null")
