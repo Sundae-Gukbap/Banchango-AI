@@ -17,7 +17,7 @@ struct Recipe: Hashable, Codable{
     let need: [String]
     let servings: Int
     let cookingTime: Int
-    let isBookmarked: Bool
+    let isBookmarked: Bool?
     let difficulty: String
     
     private enum CodingKeys: String, CodingKey {
