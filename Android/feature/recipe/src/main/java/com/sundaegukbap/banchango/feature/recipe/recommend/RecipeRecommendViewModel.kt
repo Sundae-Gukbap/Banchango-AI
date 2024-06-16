@@ -26,7 +26,6 @@ class RecipeRecommendViewModel @Inject constructor(
         val remainRecipes = (_uiState.value as? RecipeRecommendUiState.Success)?.recipes ?: listOf()
 
         viewModelScope.launch {
-            delay(5000)
             recipeRepository.getRecipeRecommendation()
                 .onSuccess { recipes ->
                     _uiState.value = RecipeRecommendUiState.Success(
@@ -51,11 +50,8 @@ class RecipeRecommendViewModel @Inject constructor(
     }
 
     private fun List<Recipe>.toUiState(): List<RecipeRecommendItemUiState> {
-        return mapIndexed { index, recipe ->
-            RecipeRecommendItemUiState(
-                recipe = recipe.copy(name = recipe.name + index.toString()),
-                isLiked = false,
-            )
+        return map { recipe ->
+            RecipeRecommendItemUiState(recipe = recipe, isLiked = false)
         }
     }
 }
