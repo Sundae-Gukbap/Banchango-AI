@@ -14,13 +14,13 @@
 		124C4D332BF87ECB00FC9EE4 /* banchangoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D322BF87ECB00FC9EE4 /* banchangoTests.swift */; };
 		124C4D3D2BF87ECB00FC9EE4 /* banchangoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D3C2BF87ECB00FC9EE4 /* banchangoUITests.swift */; };
 		124C4D3F2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D3E2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift */; };
+		12BCCA5D2C1EADFF006853E5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA592C1EADFF006853E5 /* Constants.swift */; };
+		12BCCA5E2C1EADFF006853E5 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */; };
+		12BCCA5F2C1EADFF006853E5 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */; };
 		12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */; };
 		12E1649C2C0CD9F4006FC786 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1649B2C0CD9F4006FC786 /* Recipe.swift */; };
 		12E94FA42C1DA92800C525B9 /* Recipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 12E94FA22C1DA92800C525B9 /* Recipe.json */; };
-		12E94FA82C1DA93200C525B9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E94FA52C1DA93200C525B9 /* Constants.swift */; };
-		12E94FAA2C1DA93200C525B9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E94FA72C1DA93200C525B9 /* URLExtensions.swift */; };
 		12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E94FB02C1DAAB100C525B9 /* RecipeRecommendViewModel.swift */; };
-		12E94FB62C1DB95900C525B9 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E94FB52C1DB95900C525B9 /* HTTPClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,13 +51,13 @@
 		124C4D382BF87ECB00FC9EE4 /* banchangoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = banchangoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		124C4D3C2BF87ECB00FC9EE4 /* banchangoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = banchangoUITests.swift; sourceTree = "<group>"; };
 		124C4D3E2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = banchangoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		12BCCA592C1EADFF006853E5 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendView.swift; sourceTree = "<group>"; };
 		12E1649B2C0CD9F4006FC786 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		12E94FA22C1DA92800C525B9 /* Recipe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Recipe.json; sourceTree = "<group>"; };
-		12E94FA52C1DA93200C525B9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = banchango/Sources/Network/Constants.swift; sourceTree = SOURCE_ROOT; };
-		12E94FA72C1DA93200C525B9 /* URLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLExtensions.swift; path = banchango/Sources/Network/URLExtensions.swift; sourceTree = SOURCE_ROOT; };
 		12E94FB02C1DAAB100C525B9 /* RecipeRecommendViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendViewModel.swift; sourceTree = "<group>"; };
-		12E94FB52C1DB95900C525B9 /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HTTPClient.swift; path = banchango/Sources/Network/HTTPClient.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,7 +144,7 @@
 			children = (
 				12E94F9A2C1DA8F100C525B9 /* App */,
 				12E164982C0CD62F006FC786 /* Model */,
-				12E94F9E2C1DA90200C525B9 /* Network */,
+				12BCCA5C2C1EADFF006853E5 /* Network */,
 				1254CEF72BF87F790067E217 /* Presentation */,
 			);
 			path = Sources;
@@ -168,6 +168,16 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		12BCCA5C2C1EADFF006853E5 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCA592C1EADFF006853E5 /* Constants.swift */,
+				12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */,
+				12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		12E164982C0CD62F006FC786 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,17 +193,6 @@
 				124C4D212BF87ECA00FC9EE4 /* banchangoApp.swift */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		12E94F9E2C1DA90200C525B9 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				12E94FA52C1DA93200C525B9 /* Constants.swift */,
-				12E94FA72C1DA93200C525B9 /* URLExtensions.swift */,
-				12E94FB52C1DB95900C525B9 /* HTTPClient.swift */,
-			);
-			name = Network;
-			path = Model/Network;
 			sourceTree = "<group>";
 		};
 		12E94FA32C1DA92800C525B9 /* Dummy */ = {
@@ -388,10 +387,10 @@
 				12E1649C2C0CD9F4006FC786 /* Recipe.swift in Sources */,
 				124C4D222BF87ECA00FC9EE4 /* banchangoApp.swift in Sources */,
 				12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */,
-				12E94FB62C1DB95900C525B9 /* HTTPClient.swift in Sources */,
 				12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */,
-				12E94FAA2C1DA93200C525B9 /* URLExtensions.swift in Sources */,
-				12E94FA82C1DA93200C525B9 /* Constants.swift in Sources */,
+				12BCCA5E2C1EADFF006853E5 /* HTTPClient.swift in Sources */,
+				12BCCA5F2C1EADFF006853E5 /* URLExtensions.swift in Sources */,
+				12BCCA5D2C1EADFF006853E5 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
