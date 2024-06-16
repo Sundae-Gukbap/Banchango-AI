@@ -12,8 +12,8 @@ class RecipeRecommendViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    func getRecipeRecommend() {
-        guard let url = URL.recipeRecommendURL(1) else {
+    func getRecipeRecommend(userId: Int) {
+        guard let url = URL.recipeRecommendURL(userId) else {
             print("URL이 잘못되었습니다.") // URL이 잘못된 경우
             return
         }

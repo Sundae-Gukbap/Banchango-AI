@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RecipeCardView: View {
+    let userId: Int
     let recipe: RecommendRecipe
     func haveNeedIngr(have : [String], need : [String]) -> String {
         let haveCount = have.count
@@ -18,7 +19,7 @@ struct RecipeCardView: View {
     
     var body: some View {
         NavigationView{
-            NavigationLink(destination: RecipeDetailView(recipeid:recipe.id)){
+            NavigationLink(destination: RecipeDetailView(recipeId:recipe.id, userId: userId)){
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.clear)

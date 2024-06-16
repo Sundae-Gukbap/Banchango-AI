@@ -14,9 +14,9 @@ enum NetworkError: Error {
 }
 
 class HTTPClient {
-    func getRecipe(completion: @escaping (Result<RecommendRecipe, NetworkError>) -> Void) {
-        guard let url = URL.recipeRecommendURL(1) else {
-            return completion(.failure(.badURL))    
+    func getRecipe(userId: Int, completion: @escaping (Result<RecommendRecipe, NetworkError>) -> Void) {
+        guard let url = URL.recipeRecommendURL(userId) else {
+            return completion(.failure(.badURL))
         }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {

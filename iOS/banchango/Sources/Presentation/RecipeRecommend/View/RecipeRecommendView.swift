@@ -10,9 +10,11 @@ import SwiftUI
 struct RecipeRecommendView: View {
     @ObservedObject private var recipeRecommendVM: RecipeRecommendViewModel
     
+    let userId = 1
+    
     init() {
         self.recipeRecommendVM = RecipeRecommendViewModel()
-        recipeRecommendVM.getRecipeRecommend()
+        recipeRecommendVM.getRecipeRecommend(userId: userId)
     }
     
     var body: some View {
@@ -20,7 +22,7 @@ struct RecipeRecommendView: View {
             ScrollView(.vertical) {
                 VStack(spacing: 0) {
                     ForEach(recipeRecommendVM.recipes.indices, id: \.self) { index in
-                        RecipeCardView(recipe: recipeRecommendVM.recipes[index])
+                        RecipeCardView(userId: userId, recipe: recipeRecommendVM.recipes[index])
                             .frame(width: proxy.size.width, height: proxy.size.height)
                     }
                 }
