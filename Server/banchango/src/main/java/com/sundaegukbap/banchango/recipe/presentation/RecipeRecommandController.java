@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/recipe/recommand")
+@RequestMapping("api/recipe")
 @Tag(name = "레시피 추천 관련 컨트롤러")
 public class RecipeRecommandController {
     private final RecipeRecommandService recipeRecommandService;
@@ -23,7 +23,7 @@ public class RecipeRecommandController {
         this.recipeRecommandService = recipeRecommandService;
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/recommand/{userId}")
     @Operation(description = "추천 레시피를 조회한다.")
     public ResponseEntity<List> getRecommandRecipes(@PathVariable("userId") Long userId) {
         List<RecipeDetailResponse> response = recipeRecommandService.getRecipes(userId);
