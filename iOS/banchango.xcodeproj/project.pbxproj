@@ -37,6 +37,7 @@
 		12BCCAD82C1EB3DA006853E5 /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC42C1EB3DA006853E5 /* Inter-Light.otf */; };
 		12BCCAD92C1EB3DA006853E5 /* Inter-V.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */; };
 		12BCCADA2C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */; };
+		12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */; };
 		12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */; };
 		12E1649C2C0CD9F4006FC786 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1649B2C0CD9F4006FC786 /* Recipe.swift */; };
 		12E94FA42C1DA92800C525B9 /* Recipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 12E94FA22C1DA92800C525B9 /* Recipe.json */; };
@@ -96,6 +97,7 @@
 		12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-SemiBoldItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-SemiBoldItalic.otf"; sourceTree = SOURCE_ROOT; };
 		12BCCADB2C1EB469006853E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.otf; sourceTree = "<group>"; };
+		12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardView.swift; sourceTree = "<group>"; };
 		12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendView.swift; sourceTree = "<group>"; };
 		12E1649B2C0CD9F4006FC786 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		12E94FA22C1DA92800C525B9 /* Recipe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Recipe.json; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */,
+				12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 			files = (
 				124C4D242BF87ECA00FC9EE4 /* MainView.swift in Sources */,
 				12E1649C2C0CD9F4006FC786 /* Recipe.swift in Sources */,
+				12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */,
 				124C4D222BF87ECA00FC9EE4 /* banchangoApp.swift in Sources */,
 				12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */,
 				12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */,
