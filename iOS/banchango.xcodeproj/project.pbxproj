@@ -97,7 +97,7 @@
 		12BCCAC42C1EB3DA006853E5 /* Inter-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Light.otf"; path = "banchango/Resources/fonts/inter/Inter-Light.otf"; sourceTree = SOURCE_ROOT; };
 		12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-V.ttf"; path = "banchango/Resources/fonts/inter/Inter-V.ttf"; sourceTree = SOURCE_ROOT; };
 		12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-SemiBoldItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-SemiBoldItalic.otf"; sourceTree = SOURCE_ROOT; };
-		12BCCADB2C1EB469006853E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		12BCCADB2C1EB469006853E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.otf; sourceTree = "<group>"; };
 		12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardView.swift; sourceTree = "<group>"; };
 		12BCCAE52C1EC406006853E5 /* RecipeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModel.swift; sourceTree = "<group>"; };
@@ -156,7 +156,6 @@
 		124C4D202BF87ECA00FC9EE4 /* banchango */ = {
 			isa = PBXGroup;
 			children = (
-				12BCCADB2C1EB469006853E5 /* Info.plist */,
 				1254CEF52BF87F660067E217 /* Sources */,
 				1254CEF62BF87F6E0067E217 /* Resources */,
 			);
@@ -202,6 +201,7 @@
 		1254CEF62BF87F6E0067E217 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12BCCADB2C1EB469006853E5 /* Info.plist */,
 				12BCCA602C1EB2DB006853E5 /* fonts */,
 				124C4D252BF87ECB00FC9EE4 /* Assets.xcassets */,
 				124C4D272BF87ECB00FC9EE4 /* Preview Content */,
@@ -702,7 +702,7 @@
 				DEVELOPMENT_TEAM = 34X3BT977M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = banchango/Info.plist;
+				INFOPLIST_FILE = banchango/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -733,7 +733,7 @@
 				DEVELOPMENT_TEAM = 34X3BT977M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = banchango/Info.plist;
+				INFOPLIST_FILE = banchango/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
