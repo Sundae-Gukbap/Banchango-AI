@@ -8,7 +8,7 @@ import Foundation
 import Combine
 
 class RecipeRecommendViewModel: ObservableObject {
-    @Published var recipes: [Recipe] = []
+    @Published var recipes: [RecommendRecipe] = []
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -20,7 +20,7 @@ class RecipeRecommendViewModel: ObservableObject {
         
         URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
-            .decode(type: [Recipe].self, decoder: JSONDecoder())
+            .decode(type: [RecommendRecipe].self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -37,10 +37,10 @@ class RecipeRecommendViewModel: ObservableObject {
     }
     
     private func loadDummyData() {
-        if let url = Bundle.main.url(forResource: "Recipe", withExtension: "json"),
+        if let url = Bundle.main.url(forResource: "RecommendRecipe", withExtension: "json"),
            let data = try? Data(contentsOf: url) {
             let decoder = JSONDecoder()
-            if let dummyRecipes = try? decoder.decode([Recipe].self, from: data) {
+            if let dummyRecipes = try? decoder.decode([RecommendRecipe].self, from: data) {
                 self.recipes = dummyRecipes
                 print("더미 데이터를 로드했습니다.")
             } else {

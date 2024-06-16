@@ -14,7 +14,7 @@ enum NetworkError: Error {
 }
 
 class HTTPClient {
-    func getRecipe(completion: @escaping (Result<Recipe, NetworkError>) -> Void) {
+    func getRecipe(completion: @escaping (Result<RecommendRecipe, NetworkError>) -> Void) {
         guard let url = URL.recipeRecommendURL(1) else {
             return completion(.failure(.badURL))    
         }
@@ -22,11 +22,10 @@ class HTTPClient {
             guard let data = data, error == nil else {
                 return completion(.failure(.noData))
             }
-            guard let recipe = try? JSONDecoder().decode(Recipe.self, from: data) else {
+            guard let recipe = try? JSONDecoder().decode(RecommendRecipe.self, from: data) else {
                 return completion(.failure(.decodingError))
             }
             completion(.success(recipe))
         }.resume()
-        
     }
 }

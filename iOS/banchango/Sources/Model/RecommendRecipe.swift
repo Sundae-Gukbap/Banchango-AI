@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Recipe: Hashable, Codable{
+struct RecommendRecipe: Hashable, Codable{
     let id: Int
     let name: String
     let introduction: String

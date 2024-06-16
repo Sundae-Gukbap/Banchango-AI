@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeCardView: View {
-    let recipe: Recipe
+    let recipe: RecommendRecipe
     func haveNeedIngr(have : [String], need : [String]) -> String {
         let haveCount = have.count
         let needCount = need.count
