@@ -8,12 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		124C4D222BF87ECA00FC9EE4 /* banchangoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D212BF87ECA00FC9EE4 /* banchangoApp.swift */; };
-		124C4D242BF87ECA00FC9EE4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D232BF87ECA00FC9EE4 /* ContentView.swift */; };
+		124C4D242BF87ECA00FC9EE4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D232BF87ECA00FC9EE4 /* MainView.swift */; };
 		124C4D262BF87ECB00FC9EE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124C4D252BF87ECB00FC9EE4 /* Assets.xcassets */; };
 		124C4D292BF87ECB00FC9EE4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124C4D282BF87ECB00FC9EE4 /* Preview Assets.xcassets */; };
 		124C4D332BF87ECB00FC9EE4 /* banchangoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D322BF87ECB00FC9EE4 /* banchangoTests.swift */; };
 		124C4D3D2BF87ECB00FC9EE4 /* banchangoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D3C2BF87ECB00FC9EE4 /* banchangoUITests.swift */; };
 		124C4D3F2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C4D3E2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift */; };
+		12BCCA5D2C1EADFF006853E5 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA592C1EADFF006853E5 /* Config.swift */; };
+		12BCCA5E2C1EADFF006853E5 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */; };
+		12BCCA5F2C1EADFF006853E5 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */; };
+		12BCCAC72C1EB3DA006853E5 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB32C1EB3DA006853E5 /* Inter-SemiBold.otf */; };
+		12BCCAC82C1EB3DA006853E5 /* Inter-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB42C1EB3DA006853E5 /* Inter-Bold.otf */; };
+		12BCCAC92C1EB3DA006853E5 /* Inter-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB52C1EB3DA006853E5 /* Inter-ThinItalic.otf */; };
+		12BCCACA2C1EB3DA006853E5 /* Inter-ExtraLightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB62C1EB3DA006853E5 /* Inter-ExtraLightItalic.otf */; };
+		12BCCACB2C1EB3DA006853E5 /* Inter-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB72C1EB3DA006853E5 /* Inter-BlackItalic.otf */; };
+		12BCCACC2C1EB3DA006853E5 /* Inter-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB82C1EB3DA006853E5 /* Inter-Black.otf */; };
+		12BCCACD2C1EB3DA006853E5 /* Inter-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAB92C1EB3DA006853E5 /* Inter-ExtraBold.otf */; };
+		12BCCACE2C1EB3DA006853E5 /* Inter-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABA2C1EB3DA006853E5 /* Inter-LightItalic.otf */; };
+		12BCCACF2C1EB3DA006853E5 /* Inter-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABB2C1EB3DA006853E5 /* Inter-MediumItalic.otf */; };
+		12BCCAD02C1EB3DA006853E5 /* SIL Open Font License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABC2C1EB3DA006853E5 /* SIL Open Font License.txt */; };
+		12BCCAD12C1EB3DA006853E5 /* Inter-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABD2C1EB3DA006853E5 /* Inter-ExtraBoldItalic.otf */; };
+		12BCCAD22C1EB3DA006853E5 /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABE2C1EB3DA006853E5 /* Inter-Medium.otf */; };
+		12BCCAD32C1EB3DA006853E5 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCABF2C1EB3DA006853E5 /* Inter-Regular.otf */; };
+		12BCCAD42C1EB3DA006853E5 /* Inter-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC02C1EB3DA006853E5 /* Inter-ExtraLight.otf */; };
+		12BCCAD52C1EB3DA006853E5 /* Inter-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC12C1EB3DA006853E5 /* Inter-Italic.otf */; };
+		12BCCAD62C1EB3DA006853E5 /* Inter-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC22C1EB3DA006853E5 /* Inter-Thin.otf */; };
+		12BCCAD72C1EB3DA006853E5 /* Inter-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC32C1EB3DA006853E5 /* Inter-BoldItalic.otf */; };
+		12BCCAD82C1EB3DA006853E5 /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC42C1EB3DA006853E5 /* Inter-Light.otf */; };
+		12BCCAD92C1EB3DA006853E5 /* Inter-V.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */; };
+		12BCCADA2C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */; };
+		12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */; };
+		12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */; };
+		12E1649C2C0CD9F4006FC786 /* RecommendRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1649B2C0CD9F4006FC786 /* RecommendRecipe.swift */; };
+		12E94FA42C1DA92800C525B9 /* RecommendRecipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 12E94FA22C1DA92800C525B9 /* RecommendRecipe.json */; };
+		12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E94FB02C1DAAB100C525B9 /* RecipeRecommendViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +64,7 @@
 /* Begin PBXFileReference section */
 		124C4D1E2BF87ECA00FC9EE4 /* banchango.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = banchango.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		124C4D212BF87ECA00FC9EE4 /* banchangoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = banchangoApp.swift; sourceTree = "<group>"; };
-		124C4D232BF87ECA00FC9EE4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		124C4D232BF87ECA00FC9EE4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		124C4D252BF87ECB00FC9EE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		124C4D282BF87ECB00FC9EE4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		124C4D2E2BF87ECB00FC9EE4 /* banchangoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = banchangoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +72,36 @@
 		124C4D382BF87ECB00FC9EE4 /* banchangoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = banchangoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		124C4D3C2BF87ECB00FC9EE4 /* banchangoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = banchangoUITests.swift; sourceTree = "<group>"; };
 		124C4D3E2BF87ECB00FC9EE4 /* banchangoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = banchangoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		12BCCA592C1EADFF006853E5 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
+		12BCCAB32C1EB3DA006853E5 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-SemiBold.otf"; path = "banchango/Resources/fonts/inter/Inter-SemiBold.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB42C1EB3DA006853E5 /* Inter-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Bold.otf"; path = "banchango/Resources/fonts/inter/Inter-Bold.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB52C1EB3DA006853E5 /* Inter-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ThinItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-ThinItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB62C1EB3DA006853E5 /* Inter-ExtraLightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraLightItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-ExtraLightItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB72C1EB3DA006853E5 /* Inter-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-BlackItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-BlackItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB82C1EB3DA006853E5 /* Inter-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Black.otf"; path = "banchango/Resources/fonts/inter/Inter-Black.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAB92C1EB3DA006853E5 /* Inter-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraBold.otf"; path = "banchango/Resources/fonts/inter/Inter-ExtraBold.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCABA2C1EB3DA006853E5 /* Inter-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-LightItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-LightItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCABB2C1EB3DA006853E5 /* Inter-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-MediumItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-MediumItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCABC2C1EB3DA006853E5 /* SIL Open Font License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "SIL Open Font License.txt"; path = "banchango/Resources/fonts/inter/SIL Open Font License.txt"; sourceTree = SOURCE_ROOT; };
+		12BCCABD2C1EB3DA006853E5 /* Inter-ExtraBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraBoldItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-ExtraBoldItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCABE2C1EB3DA006853E5 /* Inter-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Medium.otf"; path = "banchango/Resources/fonts/inter/Inter-Medium.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCABF2C1EB3DA006853E5 /* Inter-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Regular.otf"; path = "banchango/Resources/fonts/inter/Inter-Regular.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC02C1EB3DA006853E5 /* Inter-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraLight.otf"; path = "banchango/Resources/fonts/inter/Inter-ExtraLight.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC12C1EB3DA006853E5 /* Inter-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Italic.otf"; path = "banchango/Resources/fonts/inter/Inter-Italic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC22C1EB3DA006853E5 /* Inter-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Thin.otf"; path = "banchango/Resources/fonts/inter/Inter-Thin.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC32C1EB3DA006853E5 /* Inter-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-BoldItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-BoldItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC42C1EB3DA006853E5 /* Inter-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Light.otf"; path = "banchango/Resources/fonts/inter/Inter-Light.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-V.ttf"; path = "banchango/Resources/fonts/inter/Inter-V.ttf"; sourceTree = SOURCE_ROOT; };
+		12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-SemiBoldItalic.otf"; path = "banchango/Resources/fonts/inter/Inter-SemiBoldItalic.otf"; sourceTree = SOURCE_ROOT; };
+		12BCCADB2C1EB469006853E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Ssurround.otf; sourceTree = "<group>"; };
+		12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardView.swift; sourceTree = "<group>"; };
+		12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendView.swift; sourceTree = "<group>"; };
+		12E1649B2C0CD9F4006FC786 /* RecommendRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipe.swift; sourceTree = "<group>"; };
+		12E94FA22C1DA92800C525B9 /* RecommendRecipe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RecommendRecipe.json; sourceTree = "<group>"; };
+		12E94FB02C1DAAB100C525B9 /* RecipeRecommendViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRecommendViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +152,7 @@
 		124C4D202BF87ECA00FC9EE4 /* banchango */ = {
 			isa = PBXGroup;
 			children = (
-				124C4D212BF87ECA00FC9EE4 /* banchangoApp.swift */,
+				12BCCADB2C1EB469006853E5 /* Info.plist */,
 				1254CEF52BF87F660067E217 /* Sources */,
 				1254CEF62BF87F6E0067E217 /* Resources */,
 			);
@@ -129,7 +187,10 @@
 		1254CEF52BF87F660067E217 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				1254CEF72BF87F790067E217 /* Views */,
+				12E94F9A2C1DA8F100C525B9 /* App */,
+				12E164982C0CD62F006FC786 /* Model */,
+				12BCCA5C2C1EADFF006853E5 /* Network */,
+				1254CEF72BF87F790067E217 /* Presentation */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -137,18 +198,150 @@
 		1254CEF62BF87F6E0067E217 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12BCCA602C1EB2DB006853E5 /* fonts */,
 				124C4D252BF87ECB00FC9EE4 /* Assets.xcassets */,
 				124C4D272BF87ECB00FC9EE4 /* Preview Content */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		1254CEF72BF87F790067E217 /* Views */ = {
+		1254CEF72BF87F790067E217 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				124C4D232BF87ECA00FC9EE4 /* ContentView.swift */,
+				12E94FB22C1DB85E00C525B9 /* Main */,
+				12E94FAD2C1DAA6B00C525B9 /* RecipeRecommend */,
 			);
-			path = Views;
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		12BCCA5C2C1EADFF006853E5 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCA592C1EADFF006853E5 /* Config.swift */,
+				12BCCA5A2C1EADFF006853E5 /* HTTPClient.swift */,
+				12BCCA5B2C1EADFF006853E5 /* URLExtensions.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		12BCCA602C1EB2DB006853E5 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCADC2C1EB6A8006853E5 /* cafe24Ssurround */,
+				12BCCAB22C1EB3CA006853E5 /* inter */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		12BCCAB22C1EB3CA006853E5 /* inter */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCAB82C1EB3DA006853E5 /* Inter-Black.otf */,
+				12BCCAB72C1EB3DA006853E5 /* Inter-BlackItalic.otf */,
+				12BCCAB42C1EB3DA006853E5 /* Inter-Bold.otf */,
+				12BCCAC32C1EB3DA006853E5 /* Inter-BoldItalic.otf */,
+				12BCCAB92C1EB3DA006853E5 /* Inter-ExtraBold.otf */,
+				12BCCABD2C1EB3DA006853E5 /* Inter-ExtraBoldItalic.otf */,
+				12BCCAC02C1EB3DA006853E5 /* Inter-ExtraLight.otf */,
+				12BCCAB62C1EB3DA006853E5 /* Inter-ExtraLightItalic.otf */,
+				12BCCAC12C1EB3DA006853E5 /* Inter-Italic.otf */,
+				12BCCAC42C1EB3DA006853E5 /* Inter-Light.otf */,
+				12BCCABA2C1EB3DA006853E5 /* Inter-LightItalic.otf */,
+				12BCCABE2C1EB3DA006853E5 /* Inter-Medium.otf */,
+				12BCCABB2C1EB3DA006853E5 /* Inter-MediumItalic.otf */,
+				12BCCABF2C1EB3DA006853E5 /* Inter-Regular.otf */,
+				12BCCAB32C1EB3DA006853E5 /* Inter-SemiBold.otf */,
+				12BCCAC62C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf */,
+				12BCCAC22C1EB3DA006853E5 /* Inter-Thin.otf */,
+				12BCCAB52C1EB3DA006853E5 /* Inter-ThinItalic.otf */,
+				12BCCAC52C1EB3DA006853E5 /* Inter-V.ttf */,
+				12BCCABC2C1EB3DA006853E5 /* SIL Open Font License.txt */,
+			);
+			name = inter;
+			path = ../inter;
+			sourceTree = "<group>";
+		};
+		12BCCADC2C1EB6A8006853E5 /* cafe24Ssurround */ = {
+			isa = PBXGroup;
+			children = (
+				12BCCADE2C1EB6DC006853E5 /* Cafe24Ssurround.otf */,
+			);
+			path = cafe24Ssurround;
+			sourceTree = "<group>";
+		};
+		12E164982C0CD62F006FC786 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				12E94FA32C1DA92800C525B9 /* Dummy */,
+				12E1649B2C0CD9F4006FC786 /* RecommendRecipe.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		12E94F9A2C1DA8F100C525B9 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				124C4D212BF87ECA00FC9EE4 /* banchangoApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		12E94FA32C1DA92800C525B9 /* Dummy */ = {
+			isa = PBXGroup;
+			children = (
+				12E94FA22C1DA92800C525B9 /* RecommendRecipe.json */,
+			);
+			path = Dummy;
+			sourceTree = "<group>";
+		};
+		12E94FAD2C1DAA6B00C525B9 /* RecipeRecommend */ = {
+			isa = PBXGroup;
+			children = (
+				12E94FAF2C1DAAA000C525B9 /* ViewModel */,
+				12E94FAE2C1DAA9B00C525B9 /* View */,
+			);
+			path = RecipeRecommend;
+			sourceTree = "<group>";
+		};
+		12E94FAE2C1DAA9B00C525B9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				12E164992C0CD6B3006FC786 /* RecipeRecommendView.swift */,
+				12BCCADF2C1EBDFA006853E5 /* RecipeCardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		12E94FAF2C1DAAA000C525B9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				12E94FB02C1DAAB100C525B9 /* RecipeRecommendViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		12E94FB22C1DB85E00C525B9 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				12E94FB42C1DB86800C525B9 /* ViewModel */,
+				12E94FB32C1DB86400C525B9 /* View */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		12E94FB32C1DB86400C525B9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				124C4D232BF87ECA00FC9EE4 /* MainView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		12E94FB42C1DB86800C525B9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,8 +448,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12E94FA42C1DA92800C525B9 /* RecommendRecipe.json in Resources */,
 				124C4D292BF87ECB00FC9EE4 /* Preview Assets.xcassets in Resources */,
+				12BCCAC92C1EB3DA006853E5 /* Inter-ThinItalic.otf in Resources */,
+				12BCCAD42C1EB3DA006853E5 /* Inter-ExtraLight.otf in Resources */,
+				12BCCACA2C1EB3DA006853E5 /* Inter-ExtraLightItalic.otf in Resources */,
+				12BCCAD72C1EB3DA006853E5 /* Inter-BoldItalic.otf in Resources */,
+				12BCCACC2C1EB3DA006853E5 /* Inter-Black.otf in Resources */,
+				12BCCAD82C1EB3DA006853E5 /* Inter-Light.otf in Resources */,
+				12BCCAD02C1EB3DA006853E5 /* SIL Open Font License.txt in Resources */,
 				124C4D262BF87ECB00FC9EE4 /* Assets.xcassets in Resources */,
+				12BCCAD52C1EB3DA006853E5 /* Inter-Italic.otf in Resources */,
+				12BCCAD92C1EB3DA006853E5 /* Inter-V.ttf in Resources */,
+				12BCCACF2C1EB3DA006853E5 /* Inter-MediumItalic.otf in Resources */,
+				12BCCAC82C1EB3DA006853E5 /* Inter-Bold.otf in Resources */,
+				12BCCACD2C1EB3DA006853E5 /* Inter-ExtraBold.otf in Resources */,
+				12BCCAD32C1EB3DA006853E5 /* Inter-Regular.otf in Resources */,
+				12BCCACB2C1EB3DA006853E5 /* Inter-BlackItalic.otf in Resources */,
+				12BCCAD22C1EB3DA006853E5 /* Inter-Medium.otf in Resources */,
+				12BCCADA2C1EB3DA006853E5 /* Inter-SemiBoldItalic.otf in Resources */,
+				12BCCACE2C1EB3DA006853E5 /* Inter-LightItalic.otf in Resources */,
+				12BCCAD62C1EB3DA006853E5 /* Inter-Thin.otf in Resources */,
+				12BCCAD12C1EB3DA006853E5 /* Inter-ExtraBoldItalic.otf in Resources */,
+				12BCCAC72C1EB3DA006853E5 /* Inter-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,8 +495,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				124C4D242BF87ECA00FC9EE4 /* ContentView.swift in Sources */,
+				124C4D242BF87ECA00FC9EE4 /* MainView.swift in Sources */,
+				12E1649C2C0CD9F4006FC786 /* RecommendRecipe.swift in Sources */,
+				12BCCAE02C1EBDFA006853E5 /* RecipeCardView.swift in Sources */,
 				124C4D222BF87ECA00FC9EE4 /* banchangoApp.swift in Sources */,
+				12E1649A2C0CD6B3006FC786 /* RecipeRecommendView.swift in Sources */,
+				12E94FB12C1DAAB100C525B9 /* RecipeRecommendViewModel.swift in Sources */,
+				12BCCA5E2C1EADFF006853E5 /* HTTPClient.swift in Sources */,
+				12BCCA5F2C1EADFF006853E5 /* URLExtensions.swift in Sources */,
+				12BCCA5D2C1EADFF006853E5 /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +670,7 @@
 				DEVELOPMENT_TEAM = 34X3BT977M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = banchango/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -479,6 +701,7 @@
 				DEVELOPMENT_TEAM = 34X3BT977M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = banchango/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
