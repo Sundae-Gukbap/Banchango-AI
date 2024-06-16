@@ -9,25 +9,27 @@ import SwiftUI
 
 struct RecipeDetailView: View {
     
-    let userId:Int
-    let recipeId:Int
+    let userId: Int
+    let recipeId: Int
     
-    @ObservedObject private var recipeRecommendVM: RecipeRecommendViewModel
+    @ObservedObject private var recipeDetailVM: RecipeDetailViewModel
     
-    init(recipeId: Int, userId: Int) {
+    init(userId: Int, recipeId: Int) {
         self.recipeId = recipeId
         self.userId = userId
-        self.recipeRecommendVM = RecipeRecommendViewModel()
-//        recipeRecommendVM.getRecipeRecommend(userId:, recipeId : recipeId)
+        self.recipeDetailVM = RecipeDetailViewModel()
+        recipeDetailVM.getRecipeDetail(userId: userId, recipeId : recipeId)
     }
     
     
     var body: some View {
-        Text(String(userId))
+        Text(String(recipeDetailVM.recipes!.id))
+        Text(String(recipeDetailVM.recipes!.name))
+        Text(String(recipeDetailVM.recipes!.introduction))
         Text(String(recipeId))
     }
 }
 
 #Preview {
-    RecipeDetailView(recipeId:6952728, userId: 1)
+    RecipeDetailView(userId: 1, recipeId:6952728)
 }

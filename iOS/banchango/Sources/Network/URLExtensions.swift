@@ -13,5 +13,8 @@ extension URL {
         return URL(string: Config.baseURL + Config.recipeRecommedEndPoint + String(userId))
     }
     
+    static func recipeDetailURL(userId: Int, recipeId: Int) -> URL? {
+        return URL(string: Config.baseURL + Config.recipeDetailEndPoint + String(userId) + "/" + String(recipeId))
+    }
     
 }

@@ -19,7 +19,7 @@ struct RecipeCardView: View {
     
     var body: some View {
         NavigationView{
-            NavigationLink(destination: RecipeDetailView(recipeId:recipe.id, userId: userId)){
+            NavigationLink(destination: RecipeDetailView(userId: userId, recipeId: recipe.id)){
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.clear)
