@@ -3,8 +3,6 @@ package com.sundaegukbap.banchango.feature.recipe.recommend
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -14,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,11 +26,13 @@ fun RecipeRecommendRoute(
     padding: PaddingValues,
     viewModel: RecipeRecommendViewModel = hiltViewModel(),
     onRecipeClick: (Recipe) -> Unit,
+    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.getRecipeRecommendation()
+    LaunchedEffect(uiState) {
+        if (uiState is RecipeRecommendUiState.Loading)
+            viewModel.getRecipeRecommendation()
     }
 
     RecipeRecommendContent(
@@ -39,7 +40,8 @@ fun RecipeRecommendRoute(
         uiState = uiState,
         onLikeClick = { viewModel.likeRecipe(it) },
         onLastPageVisible = { viewModel.getRecipeRecommendation() },
-        onRecipeClick = onRecipeClick
+        onRecipeClick = onRecipeClick,
+        onChangeSystemBarsColor = onChangeSystemBarsColor
     )
 }
 
@@ -50,6 +52,7 @@ fun RecipeRecommendContent(
     onLikeClick: (Recipe) -> Unit,
     onLastPageVisible: () -> Unit,
     onRecipeClick: (Recipe) -> Unit,
+    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
     when (uiState) {
         is RecipeRecommendUiState.Loading -> {
@@ -103,9 +106,7 @@ private fun RecipeRecommendScreen(
 
             if (page == pagerState.pageCount - 1) {
                 RecipeRecommendLoading(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 )
             } else {
@@ -129,6 +130,7 @@ fun RecipePagePreview() {
             onLikeClick = {},
             onLastPageVisible = {},
             onRecipeClick = {},
+            onChangeSystemBarsColor = { _, _ -> },
             uiState = RecipeRecommendUiState.Success(
                 listOf(
                     RecipeRecommendItemUiState(

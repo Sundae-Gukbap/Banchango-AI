@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.feature.home.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -12,8 +13,11 @@ fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(MainTabRoute.Home, navOptions)
 }
 
-fun NavGraphBuilder.homeNavGraph(padding: PaddingValues) {
+fun NavGraphBuilder.homeNavGraph(
+    padding: PaddingValues,
+    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
+) {
     composable<MainTabRoute.Home> {
-        HomeScreen(padding)
+        HomeScreen(padding, onChangeSystemBarsColor)
     }
 }
