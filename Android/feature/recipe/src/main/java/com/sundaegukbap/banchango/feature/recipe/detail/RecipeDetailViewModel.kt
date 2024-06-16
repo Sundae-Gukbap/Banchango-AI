@@ -1,0 +1,31 @@
+package com.sundaegukbap.banchango.feature.recipe.detail
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class RecipeDetailViewModel @Inject constructor(
+    private val recipeRepository: RecipeRepository
+) : ViewModel() {
+    private val _uiState: MutableStateFlow<RecipeDetailUiState> =
+        MutableStateFlow(RecipeDetailUiState.Loading)
+    val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
+
+    fun getRecipeDetail(recipeId: Long) {
+        viewModelScope.launch {
+            recipeRepository.getRecipeDetail(recipeId)
+                .onSuccess { recipe ->
+                    _uiState.value = RecipeDetailUiState.Success(recipe)
+                }.onFailure { throwable ->
+                    _uiState.value = RecipeDetailUiState.Error(throwable)
+                }
+        }
+    }
+}
