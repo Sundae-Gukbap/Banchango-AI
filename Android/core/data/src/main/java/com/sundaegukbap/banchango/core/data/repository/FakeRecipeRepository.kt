@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.core.data.repository
 
 import com.sundaegukbap.banchango.Recipe
+import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
 import javax.inject.Inject
 
@@ -16,10 +17,9 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                     link = "https://www.10000recipe.com/recipe/6889616",
                     cookingTime = 10,
                     servings = 2,
-                    difficulty = "Easy",
+                    difficulty = RecipeDifficulty.BEGINNER,
                     have = listOf("계란", "간장"),
                     need = listOf("식초", "당근", "감자"),
-                    isBookmarked = false,
                 )
             }
         )
@@ -35,10 +35,9 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 link = "https://www.10000recipe.com/recipe/6889616",
                 cookingTime = 10,
                 servings = 2,
-                difficulty = "Easy",
+                difficulty = RecipeDifficulty.BEGINNER,
                 have = listOf("계란", "간장"),
                 need = listOf("식초", "당근", "감자"),
-                isBookmarked = false,
             )
         )
     }

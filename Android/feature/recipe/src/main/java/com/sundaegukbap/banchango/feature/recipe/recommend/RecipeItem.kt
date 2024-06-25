@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.sundaegukbap.banchango.Recipe
+import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import com.sundaegukbap.banchango.feature.reciperecommend.R
@@ -120,7 +121,7 @@ private fun RecipeInfo(
                     alpha = 0.8f
                 )
                 .fillMaxWidth()
-                .padding(top = 40.dp, bottom = 40.dp),
+                .padding(vertical = 40.dp, horizontal = 16.dp),
         )
     }
 }
@@ -169,10 +170,9 @@ fun RecipeItemPreview() {
                     link = "https://www.10000recipe.com/recipe/6889616",
                     cookingTime = 10,
                     servings = 2,
-                    difficulty = "Easy",
+                    difficulty = RecipeDifficulty.BEGINNER,
                     have = listOf(""),
                     need = listOf(""),
-                    isBookmarked = false,
                 ),
                 isLiked = true,
             ),

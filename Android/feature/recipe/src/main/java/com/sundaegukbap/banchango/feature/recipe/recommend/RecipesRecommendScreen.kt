@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sundaegukbap.banchango.Recipe
+import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import kotlin.math.absoluteValue
 
@@ -30,7 +31,7 @@ fun RecipeRecommendRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState) {
+    LaunchedEffect(Unit) {
         if (uiState is RecipeRecommendUiState.Loading)
             viewModel.getRecipeRecommendation()
     }
@@ -142,10 +143,9 @@ fun RecipePagePreview() {
                             link = "https://www.10000recipe.com/recipe/6889616",
                             cookingTime = 10,
                             servings = 2,
-                            difficulty = "Easy",
+                            difficulty = RecipeDifficulty.BEGINNER,
                             have = listOf(""),
                             need = listOf(""),
-                            isBookmarked = false,
                         ),
                         isLiked = false
                     ),
@@ -158,10 +158,9 @@ fun RecipePagePreview() {
                             link = "https://www.10000recipe.com/recipe/6889616",
                             cookingTime = 10,
                             servings = 2,
-                            difficulty = "Easy",
+                            difficulty = RecipeDifficulty.BEGINNER,
                             have = listOf(""),
                             need = listOf(""),
-                            isBookmarked = false,
                         ),
                         isLiked = false
                     ),
@@ -174,10 +173,9 @@ fun RecipePagePreview() {
                             link = "https://www.10000recipe.com/recipe/6889616",
                             cookingTime = 10,
                             servings = 2,
-                            difficulty = "Easy",
+                            difficulty = RecipeDifficulty.BEGINNER,
                             have = listOf(""),
                             need = listOf(""),
-                            isBookmarked = false,
                         ),
                         isLiked = false
                     ),
