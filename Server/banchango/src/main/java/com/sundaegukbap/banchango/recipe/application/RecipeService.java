@@ -14,16 +14,16 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
-public class RecipeRecommandService {
+public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
 
-    public RecipeRecommandService(RecipeRepository recipeRepository, UserRepository userRepository) {
+    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
     }
 
-    public List<RecipeDetailResponse> getRecipes(Long userId) {
+    public List<RecipeDetailResponse> getRecommandedRecipes(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
 
@@ -41,7 +41,8 @@ public class RecipeRecommandService {
         return response;
     }
 
-    public RecipeDetailResponse getRecipe(Long userId, Long recipeId) { //TODO bookmark
+    //TODO bookmark
+    public RecipeDetailResponse getRecipe(Long userId, Long recipeId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
 
@@ -71,6 +72,4 @@ public class RecipeRecommandService {
                 .collect(Collectors.toList());
         return have;
     }
-
-
 }

@@ -1,11 +1,10 @@
-package com.sundaegukbap.banchango.presentation;
+package com.sundaegukbap.banchango.recipe.presentation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sundaegukbap.banchango.recipe.application.RecipeRecommandService;
+import com.sundaegukbap.banchango.recipe.application.RecipeService;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
 import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
-import com.sundaegukbap.banchango.recipe.presentation.RecipeRecommandController;
 import com.sundaegukbap.banchango.support.CustomWebMvcTest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -26,37 +25,48 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@CustomWebMvcTest(RecipeRecommandController.class)
+@CustomWebMvcTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class RecipeRecommandControllerTest {
+public class RecipeControllerTest {
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
+
     @MockBean
-    RecipeRecommandService recipeRecommandService;
+    RecipeService recipeService;
 
     @Test
     void 추천_레시피_조회() throws Exception {
         //given
+        List<RecipeDetailResponse> expected = new ArrayList<>(
+            List.of(
+                    new RecipeDetailResponse(
+                            1L,
+                            "간장계란볶음밥",
+                            "달짝지근함",
+                            "test.png",
+                            "test.link",
+                            new ArrayList<>(
+                                    List.of("간장", "밥")
+                            ),
+                            new ArrayList<>(
+                                    List.of("계란", "당근")
+                            ),
+                            1,
+                            30,
+                            Difficulty.아무나
+                    )
+            )
+        );
 
-        List<RecipeDetailResponse> expected = new ArrayList<>();
-        List<String> have = new ArrayList<>();
-        have.add("간장");
-        have.add("밥");
-        List<String> need = new ArrayList<>();
-        need.add("계란");
-        need.add("당근");
-        RecipeDetailResponse recipeDetail = new RecipeDetailResponse(1L, "간장계란볶음밥", "달짝지근함", "test.png", "test.link", have, need, 1, 30, Difficulty.아무나);
-        expected.add(recipeDetail);
-        given(recipeRecommandService.getRecipes(anyLong()))
+        given(recipeService.getRecommandedRecipes(anyLong()))
                 .willReturn(expected);
 
         // when & then
-        String content = mockMvc.perform(get("/recipe/recommand/{userId}", 1L)
+        String content = mockMvc.perform(get("/api/recipe/recommand/{userId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -67,4 +77,5 @@ class RecipeRecommandControllerTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
 }

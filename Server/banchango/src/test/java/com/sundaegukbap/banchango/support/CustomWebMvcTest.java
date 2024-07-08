@@ -1,22 +1,20 @@
 package com.sundaegukbap.banchango.support;
 
-import com.sundaegukbap.banchango.config.ErrorLoggerConfig;
+import com.sundaegukbap.banchango.recipe.presentation.RecipeController;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.annotation.AliasFor;
+import org.springframework.test.context.TestExecutionListeners;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@WebMvcTest
-@Import({ErrorLoggerConfig.class})
+//@EnableAspectJAutoProxy
+@WebMvcTest(controllers=RecipeController.class)
+@Import({/*TestAuthConfig.class,*/ MockAllServiceBeanFactoryPostProcessor.class/*, ValidPageableAspect.class*/})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CustomWebMvcTest { //컨트롤러 테스트를 위한 클래스
+@TestExecutionListeners(value = {/*MockAuthTestExecutionListener.class,*/
+        ResetMockTestExecutionListener.class}, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+public @interface CustomWebMvcTest {
 
-    //controller와 alias는 같은 매개변수에 대한 별칭
-    @AliasFor("controllers")
     Class<?>[] value() default {};
-
-    @AliasFor("value")
-    Class<?>[] controllers() default {};
 }
