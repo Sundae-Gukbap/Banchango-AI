@@ -4,6 +4,7 @@ import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,11 @@ public class UserHavingIngredient {
     private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ingredient ingredient;
+
+    @Builder
+    public UserHavingIngredient(Long id, User user, Ingredient ingredient) {
+        this.id = id;
+        this.user = user;
+        this.ingredient = ingredient;
+    }
 }
