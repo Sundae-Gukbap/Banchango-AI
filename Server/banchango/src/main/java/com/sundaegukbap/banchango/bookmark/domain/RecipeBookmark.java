@@ -18,9 +18,11 @@ public class RecipeBookmark {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id")
     User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="recipe_id")
     Recipe recipe;
 
     @Builder

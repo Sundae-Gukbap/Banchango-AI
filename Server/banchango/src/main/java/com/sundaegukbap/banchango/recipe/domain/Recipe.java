@@ -39,12 +39,6 @@ public class Recipe {
     @NotNull
     @Enumerated(EnumType.STRING)
     Difficulty difficulty;
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<RecipeBookmark> userBookmarkedRecipes;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<RecipeRequiringIngredient> requiringIngredients;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<UserRecommandedRecipe> recommandUsers;
 
     @Builder
     public Recipe(Long id, String name, String introduction, String image, String link, int servings, int cookingTime, Difficulty difficulty) {

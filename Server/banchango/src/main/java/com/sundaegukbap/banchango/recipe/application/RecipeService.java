@@ -1,7 +1,9 @@
 package com.sundaegukbap.banchango.recipe.application;
 
 import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
-import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
+import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
+import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
+import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
 import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
@@ -21,18 +23,25 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
+    private final RecipeBookmarkRepository recipeBookmarkRepository;
+    private final UserHavingIngredientRepository userHavingIngredientRepository;
+    private final RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository) {
+    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository, RecipeBookmarkRepository recipeBookmarkRepository, UserHavingIngredientRepository userHavingIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
+        this.recipeBookmarkRepository = recipeBookmarkRepository;
+        this.userHavingIngredientRepository = userHavingIngredientRepository;
+        this.recipeRequiringIngredientRepository = recipeRequiringIngredientRepository;
     }
 
     public List<RecipeDetailResponse> getRecommandedRecipes(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
 
-        List<Recipe> recipes = user.getBookmarkedRecipes().stream()
-                .map(r -> r.getRecipe())
+        List<RecipeBookmark> recipeBookmarks = recipeBookmarkRepository.findAllByUser(user);
+        List<Recipe> recipes = recipeBookmarks.stream()
+                .map(b -> b.getRecipe())
                 .collect(Collectors.toList());
 
         //recipe를 순회하면서 user와 have, need간의 관계 파악
@@ -61,26 +70,26 @@ public class RecipeService {
         return RecipeDetailResponse.of(recipe, have, need);
     }
 
-    private static List<String> getNeedIngredients(User user, Recipe recipe) {
-        List<UserHavingIngredient> havingIngredients = user.getHavingIngredients();
-        List<RecipeRequiringIngredient> requiringIngredients = recipe.getRequiringIngredients();
+    private List<String> getNeedIngredients(User user, Recipe recipe) {
+        List<UserHavingIngredient> havingIngredients = userHavingIngredientRepository.findAllByUser(user);
+        List<RecipeRequiringIngredient> requiringIngredients = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
 
-        List<String> need = havingIngredients.stream()
-                .filter(hi -> requiringIngredients.stream()
-                        .anyMatch(ri -> !hi.getIngredient().equals(ri.getIngredient())))
+        List<String> need = requiringIngredients.stream()
+                .filter(ri -> havingIngredients.stream()
+                        .anyMatch(hi -> !ri.getIngredient().equals(hi.getIngredient())))
                 .map(i -> i.getIngredient().getName())
                 .collect(Collectors.toList());
 
         return need;
     }
 
-    private static List<String> getHaveIngredients(User user, Recipe recipe) {
-        List<UserHavingIngredient> havingIngredients = user.getHavingIngredients();
-        List<RecipeRequiringIngredient> requiringIngredients = recipe.getRequiringIngredients();
+    private List<String> getHaveIngredients(User user, Recipe recipe) {
+        List<UserHavingIngredient> havingIngredients = userHavingIngredientRepository.findAllByUser(user);
+        List<RecipeRequiringIngredient> requiringIngredients = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
 
-        List<String> have = havingIngredients.stream()
-                .filter(hi -> requiringIngredients.stream()
-                        .anyMatch(ri -> hi.getIngredient().equals(ri.getIngredient())))
+        List<String> have = requiringIngredients.stream()
+                .filter(ri -> havingIngredients.stream()
+                        .anyMatch(hi -> ri.getIngredient().equals(hi.getIngredient())))
                 .map(i -> i.getIngredient().getName())
                 .collect(Collectors.toList());
 

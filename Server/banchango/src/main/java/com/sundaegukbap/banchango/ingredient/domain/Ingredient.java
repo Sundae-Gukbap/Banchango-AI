@@ -1,17 +1,13 @@
 package com.sundaegukbap.banchango.ingredient.domain;
 
-import com.sundaegukbap.banchango.recipe.domain.Recipe;
-import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -26,12 +22,11 @@ public class Ingredient {
     String name;
     @Size(max=50)
     String kind;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_have_ingredients",
-            joinColumns = @JoinColumn(name = "ingredient_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> ingredientHolders = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<RecipeRequiringIngredient> recipesWithIngredient;
+    @Builder
+    public Ingredient(Long id, String name, String kind) {
+        this.id = id;
+        this.name = name;
+        this.kind = kind;
+    }
 }
