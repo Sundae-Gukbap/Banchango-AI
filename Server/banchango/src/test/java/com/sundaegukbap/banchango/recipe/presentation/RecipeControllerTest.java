@@ -37,9 +37,10 @@ public class RecipeControllerTest {
     RecipeService recipeService;
 
     @Nested
-    @DisplayName("레시피 조회")
+    @DisplayName("/api/recipe/")
     class 레시피_조회 {
         @Test
+        @DisplayName("/recommand/{userId}")
         void 추천_레시피_조회() throws Exception {
             //given
             List<RecipeDetailResponse> expected = new ArrayList<>(

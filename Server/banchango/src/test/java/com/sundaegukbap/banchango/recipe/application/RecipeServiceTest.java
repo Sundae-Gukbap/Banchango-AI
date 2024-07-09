@@ -101,28 +101,32 @@ public class RecipeServiceTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("recipeService.getRecipe()")
-    void 단일_레시피_상세정보_조회(){
-        //given
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
-        when(userHavingIngredientRepository.findAllByUser(user)).thenReturn(new ArrayList<>(List.of(userHavingIngredient)));
-        when(recipeRequiringIngredientRepository.findAllByRecipe(recipe)).thenReturn(new ArrayList<>(List.of(recipeRequiringIngredient1, recipeRequiringIngredient2)));
-        RecipeDetailResponse expected = RecipeDetailResponse.of(
-                recipe,
-                new ArrayList<>(List.of(
-                        "김치"
-                )),
-                new ArrayList<>(List.of(
-                        "밥"
-                ))
-        );
+    @Nested
+    @DisplayName("recipeServiceQueryService")
+    class 레시피_조회 {
+        @Test
+        @DisplayName("recipeService.getRecipe()")
+        void 단일_레시피_상세정보_조회() {
+            //given
+            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
+            when(userHavingIngredientRepository.findAllByUser(user)).thenReturn(new ArrayList<>(List.of(userHavingIngredient)));
+            when(recipeRequiringIngredientRepository.findAllByRecipe(recipe)).thenReturn(new ArrayList<>(List.of(recipeRequiringIngredient1, recipeRequiringIngredient2)));
+            RecipeDetailResponse expected = RecipeDetailResponse.of(
+                    recipe,
+                    new ArrayList<>(List.of(
+                            "김치"
+                    )),
+                    new ArrayList<>(List.of(
+                            "밥"
+                    ))
+            );
 
-        //when
-        RecipeDetailResponse result = recipeService.getRecipe(1L, 1L);
+            //when
+            RecipeDetailResponse result = recipeService.getRecipe(1L, 1L);
 
-        //then
-        assertThat(result).isEqualTo(expected);
+            //then
+            assertThat(result).isEqualTo(expected);
+        }
     }
 }
