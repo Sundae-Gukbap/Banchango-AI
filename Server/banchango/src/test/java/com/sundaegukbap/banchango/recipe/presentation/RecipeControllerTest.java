@@ -36,6 +36,27 @@ public class RecipeControllerTest {
     @MockBean
     RecipeService recipeService;
 
+    RecipeDetailResponse recipeDetailResponse;
+    @BeforeEach
+    void setUp() {
+        recipeDetailResponse =
+                new RecipeDetailResponse(
+                        1L,
+                        "간장계란볶음밥",
+                        "달짝지근함",
+                        "test.png",
+                        "test.link",
+                        new ArrayList<>(
+                                List.of("간장", "밥")
+                        ),
+                        new ArrayList<>(
+                                List.of("계란", "당근")
+                        ),
+                        1,
+                        30,
+                        Difficulty.아무나
+                );
+    }
     @Nested
     @DisplayName("/api/recipe/")
     class 레시피_조회 {
@@ -44,30 +65,13 @@ public class RecipeControllerTest {
         void 추천_레시피_조회() throws Exception {
             //given
             List<RecipeDetailResponse> expected = new ArrayList<>(
-                    List.of(
-                            new RecipeDetailResponse(
-                                    1L,
-                                    "간장계란볶음밥",
-                                    "달짝지근함",
-                                    "test.png",
-                                    "test.link",
-                                    new ArrayList<>(
-                                            List.of("간장", "밥")
-                                    ),
-                                    new ArrayList<>(
-                                            List.of("계란", "당근")
-                                    ),
-                                    1,
-                                    30,
-                                    Difficulty.아무나
-                            )
-                    )
+                    List.of(recipeDetailResponse)
             );
 
             given(recipeService.getRecommandedRecipes(anyLong()))
                     .willReturn(expected);
 
-            // when & then
+            // when
             String content = mockMvc.perform(get("/api/recipe/recommand/{userId}", 1L)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
@@ -78,6 +82,30 @@ public class RecipeControllerTest {
             List<RecipeDetailResponse> actual = objectMapper.readValue(content, new TypeReference<List<RecipeDetailResponse>>() {
             });
 
+            //then
+            assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("/{userId}/{recipeId}")
+        void 상세_레시피_조회() throws Exception {
+            //given
+            RecipeDetailResponse expected = recipeDetailResponse;
+
+            given(recipeService.getRecipe(anyLong(), anyLong()))
+                    .willReturn(expected);
+
+            // when
+            String content = mockMvc.perform(get("/api/recipe/{userId}/{recipeId}", 1L, 1L)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString(StandardCharsets.UTF_8);
+            RecipeDetailResponse actual = objectMapper.readValue(content, new TypeReference<RecipeDetailResponse>() {});
+
+            //then
             assertThat(actual).isEqualTo(expected);
         }
     }
