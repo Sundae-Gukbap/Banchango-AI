@@ -17,14 +17,14 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -39,7 +39,10 @@ public class RecipeServiceTest {
     private UserHavingIngredientRepository userHavingIngredientRepository;
     @Mock
     private RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
+    @Mock
+    private RecipeBookmarkRepository recipeBookmarkRepository;
     @InjectMocks
+    @Spy
     private RecipeService recipeService;
 
     User user;
@@ -48,6 +51,8 @@ public class RecipeServiceTest {
     RecipeBookmark recipeBookmark;
     UserHavingIngredient userHavingIngredient;
     RecipeRequiringIngredient recipeRequiringIngredient1, recipeRequiringIngredient2;
+    List<String> have,need;
+    RecipeDetailResponse recipeDetailResponse;
 
     @BeforeEach
     void setUp(){
@@ -99,6 +104,20 @@ public class RecipeServiceTest {
                 .user(user)
                 .ingredient(ingredient1)
                 .build();
+
+        have = new ArrayList<>(List.of(
+                "김치"
+        ));
+
+        need = new ArrayList<>(List.of(
+                "밥"
+        ));
+
+        recipeDetailResponse = RecipeDetailResponse.of(
+                recipe,
+                have,
+                need
+        );
     }
 
     @Nested
@@ -110,20 +129,28 @@ public class RecipeServiceTest {
             //given
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
-            when(userHavingIngredientRepository.findAllByUser(user)).thenReturn(new ArrayList<>(List.of(userHavingIngredient)));
-            when(recipeRequiringIngredientRepository.findAllByRecipe(recipe)).thenReturn(new ArrayList<>(List.of(recipeRequiringIngredient1, recipeRequiringIngredient2)));
-            RecipeDetailResponse expected = RecipeDetailResponse.of(
-                    recipe,
-                    new ArrayList<>(List.of(
-                            "김치"
-                    )),
-                    new ArrayList<>(List.of(
-                            "밥"
-                    ))
-            );
+            when(userHavingIngredientRepository.findAllByUser(user)).thenReturn(Arrays.asList(userHavingIngredient));
+            when(recipeRequiringIngredientRepository.findAllByRecipe(recipe)).thenReturn(Arrays.asList(recipeRequiringIngredient1, recipeRequiringIngredient2));
+            RecipeDetailResponse expected = recipeDetailResponse;
 
             //when
             RecipeDetailResponse result = recipeService.getRecipe(1L, 1L);
+
+            //then
+            assertThat(result).isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("recipeService.getRecommandedRecipes()")
+        void 추천_레시피_목록_조회() {
+            //given
+            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(recipeBookmarkRepository.findAllByUser(user)).thenReturn(Arrays.asList(recipeBookmark));
+            doReturn(recipeDetailResponse).when(recipeService).getRecipe(user.getId(),recipe.getId());
+            List<RecipeDetailResponse> expected = Arrays.asList(recipeDetailResponse);
+
+            //when
+            List<RecipeDetailResponse> result = recipeService.getRecommandedRecipes(user.getId());
 
             //then
             assertThat(result).isEqualTo(expected);
