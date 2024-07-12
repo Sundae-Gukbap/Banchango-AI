@@ -2,6 +2,7 @@ package com.sundaegukbap.banchango.recipe.application;
 
 import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
 import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
+import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
 import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
@@ -36,9 +37,7 @@ public class RecipeServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private UserHavingIngredientRepository userHavingIngredientRepository;
-    @Mock
-    private RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
+    private IngredientMatcher ingredientMatcher;
     @Mock
     private RecipeBookmarkRepository recipeBookmarkRepository;
     @InjectMocks
@@ -46,12 +45,10 @@ public class RecipeServiceTest {
     private RecipeService recipeService;
 
     User user;
-    Ingredient ingredient1, ingredient2;
     Recipe recipe;
     RecipeBookmark recipeBookmark;
-    UserHavingIngredient userHavingIngredient;
-    RecipeRequiringIngredient recipeRequiringIngredient1, recipeRequiringIngredient2;
     List<String> have,need;
+    HashMap<String,List> ingredientRelation;
     RecipeDetailResponse recipeDetailResponse;
 
     @BeforeEach
@@ -77,40 +74,17 @@ public class RecipeServiceTest {
                 .recipe(recipe)
                 .build();
 
-        ingredient1 = Ingredient.builder()
-                .id(1L)
-                .name("김치")
-                .kind("채소")
-                .build();
-        ingredient2 = Ingredient.builder()
-                .id(2L)
-                .name("밥")
-                .kind("밥")
-                .build();
-
-        recipeRequiringIngredient1 = RecipeRequiringIngredient.builder()
-                .id(1L)
-                .recipe(recipe)
-                .ingredient(ingredient1)
-                .build();
-        recipeRequiringIngredient2 = RecipeRequiringIngredient.builder()
-                .id(2L)
-                .recipe(recipe)
-                .ingredient(ingredient2)
-                .build();
-
-        userHavingIngredient = UserHavingIngredient.builder()
-                .id(1L)
-                .user(user)
-                .ingredient(ingredient1)
-                .build();
-
         have = new ArrayList<>(List.of(
                 "김치"
         ));
 
         need = new ArrayList<>(List.of(
                 "밥"
+        ));
+
+        ingredientRelation = new HashMap<>(Map.of(
+                "have", have,
+                "need", need
         ));
 
         recipeDetailResponse = RecipeDetailResponse.of(
@@ -129,8 +103,7 @@ public class RecipeServiceTest {
             //given
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
-            when(userHavingIngredientRepository.findAllByUser(user)).thenReturn(Arrays.asList(userHavingIngredient));
-            when(recipeRequiringIngredientRepository.findAllByRecipe(recipe)).thenReturn(Arrays.asList(recipeRequiringIngredient1, recipeRequiringIngredient2));
+            when(ingredientMatcher.checkIngredientRelation(user,recipe)).thenReturn(ingredientRelation);
             RecipeDetailResponse expected = recipeDetailResponse;
 
             //when
