@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface UserHavingIngredientRepository extends JpaRepository<UserHavingIngredient, Long> {
     List<UserHavingIngredient> findAllByUser(User user);
+    List<UserHavingIngredient> findAllByUserId(Long userId);
 }
