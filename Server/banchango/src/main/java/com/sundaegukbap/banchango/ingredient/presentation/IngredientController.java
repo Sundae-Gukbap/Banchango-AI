@@ -30,6 +30,14 @@ public class IngredientController {
         return new ResponseEntity<>("success add ingredient", HttpStatus.OK);
     }
 
+    @DeleteMapping ("/{userId}/{ingredientId}")
+    @Operation(description = "소유한 재료를 제거한다.")
+    public ResponseEntity<String> removeIngredient(@PathVariable("userId") Long userId,
+                                                   @PathVariable("ingredientId") Long ingredientId) {
+        ingredientService.removeIngredient(userId, ingredientId);
+        return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
+    }
+
     @GetMapping("/list/{userId}")
     @Operation(description = "소유한 재료 목록을 조회한다.")
     public ResponseEntity<IngredientDetailResponses> getIngredientDetailResponses(@PathVariable("userId") Long userId) {

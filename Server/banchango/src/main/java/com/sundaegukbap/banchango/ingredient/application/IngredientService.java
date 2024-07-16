@@ -32,4 +32,15 @@ public class IngredientService {
         UserHavingIngredient userHavingIngredient = request.toEntity(user, ingredient);
         userHavingIngredientRepository.save(userHavingIngredient);
     }
+
+    public void removeIngredient(Long userId, Long ingredientId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("no user"));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new NoSuchElementException("no ingredient"));
+
+        UserHavingIngredient userHavingIngredient = userHavingIngredientRepository.findByUserAndIngredient(user, ingredient)
+                .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
+        userHavingIngredientRepository.delete(userHavingIngredient);
+    }
 }
