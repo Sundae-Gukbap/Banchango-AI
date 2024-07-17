@@ -4,22 +4,17 @@ import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponse;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponses;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
-import com.sundaegukbap.banchango.user.domain.User;
-import com.sundaegukbap.banchango.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
 public class IngredientQueryService {
-    private final IngredientRepository ingredientRepository;
     private final UserHavingIngredientRepository userHavingIngredientRepository;
 
-    public IngredientQueryService(IngredientRepository ingredientRepository, UserHavingIngredientRepository userHavingIngredientRepository) {
-        this.ingredientRepository = ingredientRepository;
+    public IngredientQueryService(UserHavingIngredientRepository userHavingIngredientRepository) {
         this.userHavingIngredientRepository = userHavingIngredientRepository;
     }
 
@@ -31,5 +26,11 @@ public class IngredientQueryService {
                 .collect(Collectors.toList());
 
         return IngredientDetailResponses.of(ingredientDetailResponseList);
+    }
+
+    public IngredientDetailResponse getIngredientDetailResponse(Long userId, Long ingredientId) {
+        UserHavingIngredient userHavingIngredient = userHavingIngredientRepository.findByUserIdAndIngredientId(userId, ingredientId)
+                .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
+        return IngredientDetailResponse.of(userHavingIngredient);
     }
 }

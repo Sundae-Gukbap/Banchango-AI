@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface UserHavingIngredientRepository extends JpaRepository<UserHavingIngredient, Long> {
     Optional<UserHavingIngredient> findByUserAndIngredient(User user, Ingredient ingredient);
+    Optional<UserHavingIngredient> findByUserIdAndIngredientId(Long userId, Long ingredientId);
     List<UserHavingIngredient> findAllByUser(User user);
     List<UserHavingIngredient> findAllByUserId(Long userId);
+
 }

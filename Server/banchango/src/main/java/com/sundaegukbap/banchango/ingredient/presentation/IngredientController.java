@@ -2,6 +2,7 @@ package com.sundaegukbap.banchango.ingredient.presentation;
 
 import com.sundaegukbap.banchango.ingredient.application.IngredientQueryService;
 import com.sundaegukbap.banchango.ingredient.application.IngredientService;
+import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponse;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponses;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +37,14 @@ public class IngredientController {
                                                    @PathVariable("ingredientId") Long ingredientId) {
         ingredientService.removeIngredient(userId, ingredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
+    }
+
+    @GetMapping ("/{userId}/{ingredientId}")
+    @Operation(description = "소유한 재료의 상세 정보를 확인한다.")
+    public ResponseEntity<IngredientDetailResponse> getIngredientDetailResponse(@PathVariable("userId") Long userId,
+                                                   @PathVariable("ingredientId") Long ingredientId) {
+        IngredientDetailResponse response = ingredientQueryService.getIngredientDetailResponse(userId, ingredientId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/list/{userId}")
