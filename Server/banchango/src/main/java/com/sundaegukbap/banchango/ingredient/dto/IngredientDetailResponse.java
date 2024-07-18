@@ -1,6 +1,5 @@
 package com.sundaegukbap.banchango.ingredient.dto;
 
-import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
 
 import java.time.LocalDateTime;

@@ -2,9 +2,7 @@ package com.sundaegukbap.banchango.ingredient.presentation;
 
 import com.sundaegukbap.banchango.ingredient.application.IngredientQueryService;
 import com.sundaegukbap.banchango.ingredient.application.IngredientService;
-import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponse;
-import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponses;
-import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
+import com.sundaegukbap.banchango.ingredient.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -51,6 +49,13 @@ public class IngredientController {
     @Operation(description = "소유한 재료 목록을 조회한다.")
     public ResponseEntity<IngredientDetailResponses> getIngredientDetailResponses(@PathVariable("userId") Long userId) {
         IngredientDetailResponses response = ingredientQueryService.getIngredientDetailResponses(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{userId}")
+    @Operation(description = "소유한 재료 목록을 카테고리별로 조회한다.")
+    public ResponseEntity<CategoryIngredientResponses> getCategoryIngredientResponses(@PathVariable("userId") Long userId) {
+        CategoryIngredientResponses response = ingredientQueryService.getCategoryIngredientResponses(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
