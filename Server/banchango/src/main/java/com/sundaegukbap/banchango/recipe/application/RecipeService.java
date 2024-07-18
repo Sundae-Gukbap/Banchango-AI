@@ -3,8 +3,6 @@ package com.sundaegukbap.banchango.recipe.application;
 import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
 import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
-import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
-import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
