@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sundaegukbap.banchango.LikableRecipe
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
@@ -62,15 +63,18 @@ fun RecipeDetailRoute(
         uiState = uiState,
         onChangeSystemBarsColor = onChangeSystemBarsColor,
         modifier = modifier,
-    )
+    ) { likableRecipe ->
+        viewModel.likeRecipe(likableRecipe.recipe.id, !likableRecipe.isLiked)
+    }
 }
 
 @Composable
 fun RecipeDetailContent(
+    modifier: Modifier = Modifier,
     uiState: RecipeDetailUiState,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit = {},
     onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    onLikeCLick: (likableRecipe: LikableRecipe) -> Unit,
 ) {
     when (uiState) {
         is RecipeDetailUiState.Loading -> {
@@ -79,7 +83,12 @@ fun RecipeDetailContent(
 
         is RecipeDetailUiState.Success -> {
             onChangeSystemBarsColor(Color.Transparent, false)
-            RecipeDetailScreen(recipe = uiState.recipe, modifier = modifier)
+            RecipeDetailScreen(
+                likableRecipe = uiState.likableRecipe,
+                modifier = modifier,
+                onLikeCLick = { onLikeCLick(uiState.likableRecipe) },
+                onChangeSystemBarsColor = onChangeSystemBarsColor,
+            )
         }
 
         is RecipeDetailUiState.Error -> {
@@ -102,8 +111,10 @@ private fun RecipeDetailLoading() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecipeDetailScreen(
-    recipe: Recipe,
-    modifier: Modifier = Modifier
+    likableRecipe: LikableRecipe,
+    modifier: Modifier = Modifier,
+    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
+    onLikeCLick: () -> Unit,
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         rememberStandardBottomSheetState(initialValue = SheetValue.PartiallyExpanded)
@@ -114,9 +125,10 @@ private fun RecipeDetailScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-        NetworkImage(
-            url = recipe.image,
-            modifier = Modifier
+        RecipeImage(
+            imageUrl = likableRecipe.recipe.image,
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(screenHeight * 0.5f)
                 .align(Alignment.TopCenter),
@@ -125,8 +137,8 @@ private fun RecipeDetailScreen(
             scaffoldState = scaffoldState,
             sheetContent = {
                 RecipeDetailCard(
-                    recipe = recipe,
-                    modifier = Modifier
+                    likableRecipe.recipe,
+                    Modifier.height(screenHeight * 0.98f),
                 )
             },
             sheetContainerColor = Color.White,
@@ -262,17 +274,24 @@ fun RecipeDetailCardPreview() {
 @Composable
 fun RecipeDetailScreenPreview() {
     RecipeDetailScreen(
-        recipe = Recipe(
-            id = 1,
-            name = "간장계란볶음밥",
-            introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-            image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-            link = "https://www.10000recipe.com/recipe/6889616",
-            cookingTime = 10,
-            servings = 2,
-            difficulty = RecipeDifficulty.BEGINNER,
-            have = listOf("계란", "간장"),
-            need = listOf("식초", "당근", "감자"),
-        ),
+        likableRecipe =
+            LikableRecipe(
+                recipe =
+                    Recipe(
+                        id = 1,
+                        name = "간장계란볶음밥",
+                        introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+                        image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                        link = "https://www.10000recipe.com/recipe/6889616",
+                        cookingTime = 10,
+                        servings = 2,
+                        difficulty = RecipeDifficulty.BEGINNER,
+                        have = listOf("계란", "간장"),
+                        need = listOf("식초", "당근", "감자"),
+                    ),
+                isLiked = false,
+            ),
+        onLikeCLick = {},
+        onChangeSystemBarsColor = { color, darkIcons -> },
     )
 }
