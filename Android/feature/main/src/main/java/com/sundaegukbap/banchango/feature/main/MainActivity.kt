@@ -10,28 +10,25 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     private lateinit var systemUiController: SystemUiController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContent {
             BanchangoTheme {
                 val navController = rememberMainNavigator()
-
                 systemUiController = rememberSystemUiController()
                 systemUiController.setNavigationBarColor(color = Color(0xFFFFFFFF))
 
                 MainScreen(
                     navigator = navController,
                     onChangeDarkTheme = {},
-                    onChangeSystemBarsColor = { color, darkIcons ->
-                        systemUiController.setSystemBarsColor(color = color, darkIcons = darkIcons)
-                    }
+                    onChangeStatusBarColor = { color, darkIcons ->
+                        systemUiController.setStatusBarColor(color = color, darkIcons = darkIcons,)
+                    },
                 )
             }
         }

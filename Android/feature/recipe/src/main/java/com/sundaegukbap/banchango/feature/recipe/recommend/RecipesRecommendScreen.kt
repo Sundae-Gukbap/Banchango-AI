@@ -27,7 +27,7 @@ fun RecipeRecommendRoute(
     padding: PaddingValues,
     viewModel: RecipeRecommendViewModel = hiltViewModel(),
     onRecipeClick: (Recipe) -> Unit,
-    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
+    onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -42,7 +42,7 @@ fun RecipeRecommendRoute(
         onLikeClick = { viewModel.likeRecipe(it) },
         onLastPageVisible = { viewModel.getRecipeRecommendation() },
         onRecipeClick = onRecipeClick,
-        onChangeSystemBarsColor = onChangeSystemBarsColor
+        onChangeSystemBarsColor = onChangeStatusBarColor
     )
 }
 

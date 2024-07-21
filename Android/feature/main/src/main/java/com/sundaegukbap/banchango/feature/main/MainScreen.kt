@@ -17,7 +17,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
     onChangeDarkTheme: (Boolean) -> Unit,
-    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit
+    onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
     Scaffold(
         content = { padding ->
@@ -32,12 +32,12 @@ internal fun MainScreen(
                 ) {
                     homeNavGraph(
                         padding = padding,
-                        onChangeSystemBarsColor = onChangeSystemBarsColor
+                        onChangeStatusBarColor = onChangeStatusBarColor
                     )
                     recipeNavGraph(
                         padding = padding,
                         onRecipeClick = { navigator.navigateRecipeDetail(it.id) },
-                        onChangeSystemBarsColor = onChangeSystemBarsColor
+                        onChangeStatusBarColor = onChangeStatusBarColor
                     )
                 }
             }

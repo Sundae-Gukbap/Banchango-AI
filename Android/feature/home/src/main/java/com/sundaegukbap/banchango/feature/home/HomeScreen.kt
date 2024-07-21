@@ -7,6 +7,6 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
-    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
+    onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
 }

@@ -25,18 +25,18 @@ fun NavController.navigateRecipeDetail(recipeId: Long) {
 fun NavGraphBuilder.recipeNavGraph(
     padding: PaddingValues,
     onRecipeClick: (Recipe) -> Unit,
-    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit
+    onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
     composable<MainTabRoute.RecipeRecommend> {
         RecipeRecommendRoute(
             padding = padding,
             onRecipeClick = onRecipeClick,
-            onChangeSystemBarsColor = onChangeSystemBarsColor
+            onChangeStatusBarColor = onChangeStatusBarColor
         )
     }
 
     composable<Route.RecipeDetail> { navBackStackEntry ->
         val recipeId = navBackStackEntry.toRoute<Route.RecipeDetail>().recipeId
-        RecipeDetailRoute(recipeId = recipeId, onChangeSystemBarsColor = onChangeSystemBarsColor)
+        RecipeDetailRoute(recipeId = recipeId, onChangeSystemBarsColor = onChangeStatusBarColor)
     }
 }

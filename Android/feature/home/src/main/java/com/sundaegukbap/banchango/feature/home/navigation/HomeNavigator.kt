@@ -15,9 +15,9 @@ fun NavController.navigateHome(navOptions: NavOptions) {
 
 fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
-    onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
+    onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
     composable<MainTabRoute.Home> {
-        HomeScreen(padding, onChangeSystemBarsColor)
+        HomeScreen(padding, onChangeStatusBarColor)
     }
 }
