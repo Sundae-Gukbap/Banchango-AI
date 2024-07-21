@@ -133,7 +133,10 @@ private fun RecipeDetailScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier =
+        modifier
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .fillMaxSize(),
     ) {
         RecipeImage(
             imageUrl = likableRecipe.recipe.image,
