@@ -116,11 +116,31 @@ private fun RecipeDetailScreen(
     onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
     onLikeCLick: () -> Unit,
 ) {
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(initialValue = SheetValue.PartiallyExpanded)
-    )
+    val scaffoldState =
+        rememberBottomSheetScaffoldState(
+            rememberStandardBottomSheetState(initialValue = SheetValue.PartiallyExpanded),
+        )
 
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    var topBarIconColor by remember { mutableStateOf(Color.White) } // 초기 아이콘 색상 설정
+    var topBarBackgroundColor by remember { mutableStateOf(Color.Transparent) }
+
+    LaunchedEffect(scaffoldState.bottomSheetState) {
+        snapshotFlow { scaffoldState.bottomSheetState.requireOffset() }
+            .collect { offsetValue ->
+                if (offsetValue.dp >= (screenHeight * 0.4f)) {
+                    topBarBackgroundColor = Color.Transparent
+                    topBarIconColor = Color.White
+                    onChangeSystemBarsColor(Color.Transparent, false)
+                } else {
+                    topBarBackgroundColor = Color.White
+                    topBarIconColor = Color.Gray
+                    onChangeSystemBarsColor(Color.White, true)
+                }
+            }
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -144,9 +164,19 @@ private fun RecipeDetailScreen(
             sheetContainerColor = Color.White,
             sheetPeekHeight = screenHeight * 0.7f,
         ) {}
-        val context = LocalContext.current
-        Button(
-            modifier = Modifier
+
+        RecipeTobBar(
+            backgroundColor = topBarBackgroundColor,
+            navigationIconColor = topBarIconColor,
+            actionIconColor = topBarIconColor,
+            onBackClick = { onBackPressedDispatcher?.onBackPressed() },
+            onLikeClick = onLikeCLick,
+        )
+
+        BtnMoveToRecipe(
+            likableRecipe.recipe.link,
+            modifier =
+            Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 60.dp),
             colors = ButtonColors(
