@@ -11,21 +11,37 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecipeDetailViewModel @Inject constructor(
-    private val recipeRepository: RecipeRepository
-) : ViewModel() {
-    private val _uiState: MutableStateFlow<RecipeDetailUiState> =
-        MutableStateFlow(RecipeDetailUiState.Loading)
-    val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
+class RecipeDetailViewModel
+    @Inject
+    constructor(
+        private val recipeRepository: RecipeRepository,
+    ) : ViewModel() {
+        private val _uiState: MutableStateFlow<RecipeDetailUiState> =
+            MutableStateFlow(RecipeDetailUiState.Loading)
+        val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
 
-    fun getRecipeDetail(recipeId: Long) {
-        viewModelScope.launch {
-            recipeRepository.getRecipeDetail(recipeId)
-                .onSuccess { recipe ->
-                    _uiState.value = RecipeDetailUiState.Success(recipe)
-                }.onFailure { throwable ->
-                    _uiState.value = RecipeDetailUiState.Error(throwable)
-                }
+        fun getRecipeDetail(recipeId: Long) {
+            viewModelScope.launch {
+                recipeRepository
+                    .getRecipeDetail(recipeId)
+                    .onSuccess { likableRecipe ->
+                        _uiState.value =
+                            RecipeDetailUiState.Success(likableRecipe)
+                    }.onFailure { throwable ->
+                        _uiState.value = RecipeDetailUiState.Error(throwable)
+                    }
+            }
+        }
+
+        fun likeRecipe(
+            recipeId: Long,
+            isLiked: Boolean,
+        ) {
+            val successUiState = uiState.value as? RecipeDetailUiState.Success ?: return
+            viewModelScope.launch {
+                recipeRepository.likeRecipe(recipeId, isLiked)
+                _uiState.value =
+                    RecipeDetailUiState.Success(successUiState.likableRecipe.copy(isLiked = isLiked))
+            }
         }
     }
-}
