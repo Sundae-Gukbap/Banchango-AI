@@ -29,19 +29,18 @@ public class IngredientController {
         return new ResponseEntity<>("success add ingredient", HttpStatus.OK);
     }
 
-    @DeleteMapping ("/{userId}/{ingredientId}")
+    @DeleteMapping ("/{containerId}/{ingredientId}")
     @Operation(description = "소유한 재료를 제거한다.")
-    public ResponseEntity<String> removeIngredient(@PathVariable("userId") Long userId,
+    public ResponseEntity<String> removeIngredient(@PathVariable("containerId") Long containerId,
                                                    @PathVariable("ingredientId") Long ingredientId) {
-        ingredientService.removeIngredient(userId, ingredientId);
+        ingredientService.removeIngredient(containerId, ingredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
     }
 
-    @GetMapping ("/{userId}/{ingredientId}")
-    @Operation(description = "소유한 재료의 상세 정보를 확인한다.")
-    public ResponseEntity<IngredientDetailResponse> getIngredientDetailResponse(@PathVariable("userId") Long userId,
+    @GetMapping ("/{containerId}/{ingredientId}")
+    @Operation(description = "소유한 재료의 상세 정보를 확인한다.") public ResponseEntity<IngredientDetailResponse> getIngredientDetailResponse(@PathVariable("containerId") Long containerId,
                                                    @PathVariable("ingredientId") Long ingredientId) {
-        IngredientDetailResponse response = ingredientQueryService.getIngredientDetailResponse(userId, ingredientId);
+        IngredientDetailResponse response = ingredientQueryService.getIngredientDetailResponse(containerId, ingredientId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

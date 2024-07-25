@@ -22,7 +22,7 @@ public class ConatinerIngredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="container_id")
     private Container container;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="ingredient_id")
@@ -30,4 +30,13 @@ public class ConatinerIngredient {
     @CreatedDate
     private LocalDateTime createdAt;
     private LocalDateTime expriationDate;
+
+    @Builder
+    public ConatinerIngredient(Long id, Container container, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
+        this.id = id;
+        this.container = container;
+        this.ingredient = ingredient;
+        this.createdAt = createdAt;
+        this.expriationDate = expriationDate;
+    }
 }
