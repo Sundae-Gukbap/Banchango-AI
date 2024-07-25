@@ -5,7 +5,7 @@ import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
-import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
+import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponse;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
 import com.sundaegukbap.banchango.user.domain.User;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
@@ -43,7 +43,7 @@ public class RecipeServiceTest {
     RecipeBookmark recipeBookmark;
     List<String> have,need;
     HashMap<String,List> ingredientRelation;
-    RecipeDetailResponse recipeDetailResponse;
+    RecommandedRecipeResponse recommandedRecipeResponse;
 
     @BeforeEach
     void setUp(){
@@ -81,7 +81,7 @@ public class RecipeServiceTest {
                 "need", need
         ));
 
-        recipeDetailResponse = RecipeDetailResponse.of(
+        recommandedRecipeResponse = RecommandedRecipeResponse.of(
                 recipe,
                 have,
                 need
@@ -98,10 +98,10 @@ public class RecipeServiceTest {
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
             when(ingredientMatcher.checkIngredientRelation(user,recipe)).thenReturn(ingredientRelation);
-            RecipeDetailResponse expected = recipeDetailResponse;
+            RecommandedRecipeResponse expected = recommandedRecipeResponse;
 
             //when
-            RecipeDetailResponse result = recipeService.getRecipe(1L, 1L);
+            RecommandedRecipeResponse result = recipeService.getRecipe(1L, 1L);
 
             //then
             assertThat(result).isEqualTo(expected);
@@ -113,11 +113,11 @@ public class RecipeServiceTest {
             //given
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             when(recipeBookmarkRepository.findAllByUser(user)).thenReturn(Arrays.asList(recipeBookmark));
-            doReturn(recipeDetailResponse).when(recipeService).getRecipe(user.getId(),recipe.getId());
-            List<RecipeDetailResponse> expected = Arrays.asList(recipeDetailResponse);
+            doReturn(recommandedRecipeResponse).when(recipeService).getRecipe(user.getId(),recipe.getId());
+            List<RecommandedRecipeResponse> expected = Arrays.asList(recommandedRecipeResponse);
 
             //when
-            List<RecipeDetailResponse> result = recipeService.getRecommandedRecipes(user.getId());
+            List<RecommandedRecipeResponse> result = recipeService.getRecommandedRecipes(user.getId());
 
             //then
             assertThat(result).isEqualTo(expected);

@@ -19,14 +19,9 @@ public class Ingredient {
     private Long id;
     @NotNull
     @Size(max=50)
-    String name;
+    private String name;
     @Size(max=50)
-    String kind;
+    private String kind;
+    private String image;
 
-    @Builder
-    public Ingredient(Long id, String name, String kind) {
-        this.id = id;
-        this.name = name;
-        this.kind = kind;
-    }
 }

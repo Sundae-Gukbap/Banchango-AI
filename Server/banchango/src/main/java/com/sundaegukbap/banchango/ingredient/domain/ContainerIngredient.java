@@ -1,7 +1,6 @@
 package com.sundaegukbap.banchango.ingredient.domain;
 
 import com.sundaegukbap.banchango.container.domain.Container;
-import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="container_ingredients")
 @EntityListeners(AuditingEntityListener.class)
-public class ConatinerIngredient {
+public class ContainerIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +31,7 @@ public class ConatinerIngredient {
     private LocalDateTime expriationDate;
 
     @Builder
-    public ConatinerIngredient(Long id, Container container, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
+    public ContainerIngredient(Long id, Container container, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
         this.id = id;
         this.container = container;
         this.ingredient = ingredient;

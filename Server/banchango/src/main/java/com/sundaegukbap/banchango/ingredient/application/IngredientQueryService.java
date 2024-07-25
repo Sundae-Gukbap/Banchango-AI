@@ -1,5 +1,5 @@
 package com.sundaegukbap.banchango.ingredient.application;
-import com.sundaegukbap.banchango.ingredient.domain.ConatinerIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.CategoryIngredientResponse;
 import com.sundaegukbap.banchango.ingredient.dto.CategoryIngredientResponses;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponse;
@@ -19,7 +19,7 @@ public class IngredientQueryService {
     }
 
     public IngredientDetailResponses getIngredientDetailResponses(Long containerId) {
-        List<ConatinerIngredient> havingIngredientList = containerIngredientRepository.findAllByContainerId(containerId);
+        List<ContainerIngredient> havingIngredientList = containerIngredientRepository.findAllByContainerId(containerId);
 
         List<IngredientDetailResponse> ingredientDetailResponseList = havingIngredientList.stream()
                 .map(IngredientDetailResponse::of)
@@ -29,15 +29,15 @@ public class IngredientQueryService {
     }
 
     public IngredientDetailResponse getIngredientDetailResponse(Long containerId, Long ingredientId) {
-        ConatinerIngredient conatinerIngredient = containerIngredientRepository.findByContainerIdAndIngredientId(containerId, ingredientId)
+        ContainerIngredient containerIngredient = containerIngredientRepository.findByContainerIdAndIngredientId(containerId, ingredientId)
                 .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
-        return IngredientDetailResponse.of(conatinerIngredient);
+        return IngredientDetailResponse.of(containerIngredient);
     }
 
     public CategoryIngredientResponses getCategoryIngredientResponses(Long containerId) {
-        List<ConatinerIngredient> conatinerIngredients = containerIngredientRepository.findAllByContainerId(containerId);
+        List<ContainerIngredient> containerIngredients = containerIngredientRepository.findAllByContainerId(containerId);
 
-        Map<String, List<ConatinerIngredient>> kindIngredientsMap = conatinerIngredients.stream()
+        Map<String, List<ContainerIngredient>> kindIngredientsMap = containerIngredients.stream()
                 .collect(Collectors.groupingBy(userHavingIngredient -> userHavingIngredient.getIngredient().getKind()));
 
         List<CategoryIngredientResponse> categoryIngredientResponseList = new ArrayList<>();

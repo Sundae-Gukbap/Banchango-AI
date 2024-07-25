@@ -1,56 +1,72 @@
 package com.sundaegukbap.banchango.ingredient.application;
 
+import com.sundaegukbap.banchango.container.domain.Container;
+import com.sundaegukbap.banchango.container.repository.ContainerRepository;
+import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
-import com.sundaegukbap.banchango.ingredient.domain.ConatinerIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.user.domain.User;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class IngredientMatcher {
+    private ContainerRepository containerRepository;
     private ContainerIngredientRepository containerIngredientRepository;
     private RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
 
-    public IngredientMatcher(ContainerIngredientRepository containerIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository) {
+    public IngredientMatcher(ContainerRepository containerRepository, ContainerIngredientRepository containerIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository) {
+        this.containerRepository = containerRepository;
         this.containerIngredientRepository = containerIngredientRepository;
         this.recipeRequiringIngredientRepository = recipeRequiringIngredientRepository;
     }
 
     public HashMap<String,List> checkIngredientRelation(User user, Recipe recipe){
-        return null;
+        List<Ingredient> havingIngredients = getAllIngredientsWithUser(user);
+        List<Ingredient> requiringIngredients = getIngredientsWithRecipe(recipe);
 
-//        List<ConatinerIngredient> havingIngredients = containerIngredientRepository.findAllByContainer(user);
-//        List<RecipeRequiringIngredient> requiringIngredients = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
-//
-//        List<String> need = getNeedIngredients(havingIngredients, requiringIngredients);
-//        List<String> have = getHaveIngredients(havingIngredients, requiringIngredients);
-//
-//        HashMap<String,List> result = new HashMap<>();
-//        result.put("need", need);
-//        result.put("have", have);
-//
-//        return result;
+        List<Ingredient> need = new ArrayList<>();
+        List<Ingredient> have = new ArrayList<>();
+
+        for(Ingredient ri : requiringIngredients){
+            boolean has = havingIngredients.contains(ri);
+            if(has)
+                have.add(ri);
+            else
+                need.add(ri);
+        }
+
+        HashMap<String,List> result = new HashMap<>();
+        result.put("need", need);
+        result.put("have", have);
+
+        return result;
     }
 
-    private List<String> getNeedIngredients(List<ConatinerIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
-        return requiringIngredients.stream()
-                .filter(ri -> havingIngredients.stream()
-                        .anyMatch(hi -> !ri.getIngredient().equals(hi.getIngredient())))
-                .map(i -> i.getIngredient().getName())
-                .collect(Collectors.toList());
+    private List<Ingredient> getAllIngredientsWithUser(User user){
+        List<Container> containers = containerRepository.findAllByUser(user);
+
+        Set<Ingredient> ingredients = new HashSet<>();
+        for(Container container : containers){
+            List<ContainerIngredient> containerIngredientList = containerIngredientRepository.findAllByContainer(container);
+            for(ContainerIngredient ci : containerIngredientList){
+                ingredients.add(ci.getIngredient());
+            }
+        }
+
+        return ingredients.stream().toList();
     }
 
-    private List<String> getHaveIngredients(List<ConatinerIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
-        return requiringIngredients.stream()
-                .filter(ri -> havingIngredients.stream()
-                        .anyMatch(hi -> ri.getIngredient().equals(hi.getIngredient())))
-                .map(i -> i.getIngredient().getName())
+    private List<Ingredient> getIngredientsWithRecipe(Recipe recipe) {
+        List<RecipeRequiringIngredient> recipeRequiringIngredientList = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
+
+        return recipeRequiringIngredientList.stream()
+                .map(i -> i.getIngredient())
                 .collect(Collectors.toList());
     }
 }
