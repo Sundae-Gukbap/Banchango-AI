@@ -1,5 +1,6 @@
 package com.sundaegukbap.banchango.ingredient.domain;
 
+import com.sundaegukbap.banchango.container.domain.Container;
 import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,27 +15,19 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="user_having_ingredients")
+@Table(name="container_ingredients")
 @EntityListeners(AuditingEntityListener.class)
-public class UserHavingIngredient {
+public class ConatinerIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private User user;
+    private Container container;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
     @CreatedDate
     private LocalDateTime createdAt;
     private LocalDateTime expriationDate;
-    @Builder
-    public UserHavingIngredient(Long id, User user, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
-        this.id = id;
-        this.user = user;
-        this.ingredient = ingredient;
-        this.createdAt = createdAt;
-        this.expriationDate = expriationDate;
-    }
 }

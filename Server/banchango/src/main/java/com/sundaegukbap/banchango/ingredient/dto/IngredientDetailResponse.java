@@ -1,6 +1,6 @@
 package com.sundaegukbap.banchango.ingredient.dto;
 
-import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ConatinerIngredient;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ public record IngredientDetailResponse (
         LocalDateTime createdAt,
         LocalDateTime expirationDate
 ){
-    public static IngredientDetailResponse of(UserHavingIngredient havingIngredient){
+    public static IngredientDetailResponse of(ConatinerIngredient havingIngredient){
         return new IngredientDetailResponse(
                 havingIngredient.getIngredient().getId(),
                 havingIngredient.getIngredient().getName(),

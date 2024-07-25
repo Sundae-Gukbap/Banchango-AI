@@ -1,7 +1,7 @@
 package com.sundaegukbap.banchango.ingredient.application;
 
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
-import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ConatinerIngredient;
 import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
@@ -23,7 +23,7 @@ public class IngredientMatcher {
     }
 
     public HashMap<String,List> checkIngredientRelation(User user, Recipe recipe){
-        List<UserHavingIngredient> havingIngredients = userHavingIngredientRepository.findAllByUser(user);
+        List<ConatinerIngredient> havingIngredients = userHavingIngredientRepository.findAllByUser(user);
         List<RecipeRequiringIngredient> requiringIngredients = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
 
         List<String> need = getNeedIngredients(havingIngredients, requiringIngredients);
@@ -36,7 +36,7 @@ public class IngredientMatcher {
         return result;
     }
 
-    private List<String> getNeedIngredients(List<UserHavingIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
+    private List<String> getNeedIngredients(List<ConatinerIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
         return requiringIngredients.stream()
                 .filter(ri -> havingIngredients.stream()
                         .anyMatch(hi -> !ri.getIngredient().equals(hi.getIngredient())))
@@ -44,7 +44,7 @@ public class IngredientMatcher {
                 .collect(Collectors.toList());
     }
 
-    private List<String> getHaveIngredients(List<UserHavingIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
+    private List<String> getHaveIngredients(List<ConatinerIngredient> havingIngredients, List<RecipeRequiringIngredient> requiringIngredients) {
         return requiringIngredients.stream()
                 .filter(ri -> havingIngredients.stream()
                         .anyMatch(hi -> ri.getIngredient().equals(hi.getIngredient())))

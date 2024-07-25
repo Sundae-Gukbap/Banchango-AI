@@ -1,7 +1,7 @@
 package com.sundaegukbap.banchango.ingredient.application;
 
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
-import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ConatinerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
@@ -29,8 +29,8 @@ public class IngredientService {
         Ingredient ingredient = ingredientRepository.findById(request.ingredientId())
                 .orElseThrow(() -> new NoSuchElementException("no ingredient"));
 
-        UserHavingIngredient userHavingIngredient = request.toEntity(user, ingredient);
-        userHavingIngredientRepository.save(userHavingIngredient);
+        ConatinerIngredient conatinerIngredient = request.toEntity(user, ingredient);
+        userHavingIngredientRepository.save(conatinerIngredient);
     }
 
     public void removeIngredient(Long userId, Long ingredientId) {
@@ -39,8 +39,8 @@ public class IngredientService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new NoSuchElementException("no ingredient"));
 
-        UserHavingIngredient userHavingIngredient = userHavingIngredientRepository.findByUserAndIngredient(user, ingredient)
+        ConatinerIngredient conatinerIngredient = userHavingIngredientRepository.findByUserAndIngredient(user, ingredient)
                 .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
-        userHavingIngredientRepository.delete(userHavingIngredient);
+        userHavingIngredientRepository.delete(conatinerIngredient);
     }
 }
