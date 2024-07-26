@@ -1,9 +1,13 @@
 package com.sundaegukbap.banchango.ingredient.application;
+import com.sundaegukbap.banchango.container.domain.Container;
+import com.sundaegukbap.banchango.container.repository.ContainerRepository;
 import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.CategoryIngredientResponse;
 import com.sundaegukbap.banchango.ingredient.dto.CategoryIngredientResponses;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponse;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientDetailResponses;
+import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDto;
+import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDtos;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,20 +16,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class IngredientQueryService {
+    private final ContainerRepository containerRepository;
     private final ContainerIngredientRepository containerIngredientRepository;
 
-    public IngredientQueryService(ContainerIngredientRepository containerIngredientRepository) {
+    public IngredientQueryService(ContainerRepository containerRepository, ContainerIngredientRepository containerIngredientRepository) {
+        this.containerRepository = containerRepository;
         this.containerIngredientRepository = containerIngredientRepository;
     }
 
-    public IngredientDetailResponses getIngredientDetailResponses(Long containerId) {
-        List<ContainerIngredient> havingIngredientList = containerIngredientRepository.findAllByContainerId(containerId);
+    public ContainerIngredientDtos getIngredientsMainList(Long userId) {
+        List<Container> containerList = containerRepository.findAllByUserId(userId);
 
-        List<IngredientDetailResponse> ingredientDetailResponseList = havingIngredientList.stream()
-                .map(IngredientDetailResponse::of)
+        List<ContainerIngredient> havingIngredientList = containerIngredientRepository.findByContainerIn(containerList);
+
+        List<ContainerIngredientDto> containerIngredientDtoList = havingIngredientList.stream()
+                .map(i -> ContainerIngredientDto.of(i.getIngredient(), i, i.getContainer()))
                 .collect(Collectors.toList());
 
-        return IngredientDetailResponses.of(ingredientDetailResponseList);
+        return ContainerIngredientDtos.of(containerIngredientDtoList);
     }
 
     public IngredientDetailResponse getIngredientDetailResponse(Long containerId, Long ingredientId) {

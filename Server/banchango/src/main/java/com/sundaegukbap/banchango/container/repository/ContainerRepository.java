@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ContainerRepository extends JpaRepository<Container, Long> {
     List<Container> findAllByUser(User user);
+    List<Container> findAllByUserId(Long userId);
 }

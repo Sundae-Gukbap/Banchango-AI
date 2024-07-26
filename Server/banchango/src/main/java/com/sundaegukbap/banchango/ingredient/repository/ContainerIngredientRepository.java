@@ -15,5 +15,6 @@ public interface ContainerIngredientRepository extends JpaRepository<ContainerIn
     Optional<ContainerIngredient> findByContainerIdAndIngredientId(Long containerId, Long ingredientId);
     List<ContainerIngredient> findAllByContainer(Container container);
     List<ContainerIngredient> findAllByContainerId(Long containerId);
+    List<ContainerIngredient> findByContainerIn(List<Container> containers);
 
 }
