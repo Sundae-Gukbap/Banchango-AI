@@ -14,11 +14,11 @@ public record ContainerIngredientDto(
         LocalDateTime createdAt,
         LocalDateTime expirationDate
 ) {
-    public static ContainerIngredientDto of(Ingredient ingredient, ContainerIngredient containerIngredient, Container container){
+    public static ContainerIngredientDto of(ContainerIngredient containerIngredient){
         return new ContainerIngredientDto(
                 containerIngredient.getId(),
-                ContainerDto.of(container),
-                IngredientDto.of(ingredient),
+                ContainerDto.of(containerIngredient.getContainer()),
+                IngredientDto.of(containerIngredient.getIngredient()),
                 containerIngredient.getCreatedAt(),
                 containerIngredient.getExpriationDate());
     }

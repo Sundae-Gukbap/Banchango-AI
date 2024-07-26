@@ -21,7 +21,7 @@ public class Container {
     @Column(length=20)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     User user;
 

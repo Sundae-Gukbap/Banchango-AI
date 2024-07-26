@@ -37,10 +37,10 @@ public class IngredientQueryService {
         return ContainerIngredientDtos.of(containerIngredientList);
     }
 
-    public IngredientDetailResponse getIngredientDetailResponse(Long containerId, Long ingredientId) {
-        ContainerIngredient containerIngredient = containerIngredientRepository.findByContainerIdAndIngredientId(containerId, ingredientId)
-                .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
-        return IngredientDetailResponse.of(containerIngredient);
+    public ContainerIngredientDto getIngredientInfo(Long containerIngredientId) {
+        ContainerIngredient containerIngredient = containerIngredientRepository.findById(containerIngredientId)
+                .orElseThrow(() -> new NoSuchElementException("no ingredient in container"));
+        return ContainerIngredientDto.of(containerIngredient);
     }
 
     public CategoryIngredientResponses getCategoryIngredientResponses(Long containerId) {

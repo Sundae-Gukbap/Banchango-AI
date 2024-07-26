@@ -3,6 +3,7 @@ package com.sundaegukbap.banchango.ingredient.presentation;
 import com.sundaegukbap.banchango.ingredient.application.IngredientQueryService;
 import com.sundaegukbap.banchango.ingredient.application.IngredientService;
 import com.sundaegukbap.banchango.ingredient.dto.*;
+import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDto;
 import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDtos;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,18 +31,17 @@ public class IngredientController {
         return new ResponseEntity<>("success add ingredient", HttpStatus.OK);
     }
 
-    @DeleteMapping ("/{containerId}/{ingredientId}")
+    @DeleteMapping ("/{containerIngredientId}")
     @Operation(description = "소유한 재료를 제거한다.")
-    public ResponseEntity<String> removeIngredient(@PathVariable("containerId") Long containerId,
-                                                   @PathVariable("ingredientId") Long ingredientId) {
-        ingredientService.removeIngredient(containerId, ingredientId);
+    public ResponseEntity<String> removeIngredient(@PathVariable("containerIngredientId") Long containerIngredientId) {
+        ingredientService.removeIngredient(containerIngredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
     }
 
-    @GetMapping ("/{containerId}/{ingredientId}")
-    @Operation(description = "소유한 재료의 상세 정보를 확인한다.") public ResponseEntity<IngredientDetailResponse> getIngredientDetailResponse(@PathVariable("containerId") Long containerId,
-                                                   @PathVariable("ingredientId") Long ingredientId) {
-        IngredientDetailResponse response = ingredientQueryService.getIngredientDetailResponse(containerId, ingredientId);
+    @GetMapping ("/{containerIngredientId}")
+    @Operation(description = "소유한 재료의 상세 정보를 확인한다.")
+    public ResponseEntity<ContainerIngredientDto> getIngredientInfo(@PathVariable("containerIngredientId") Long containerIngredientId) {
+        ContainerIngredientDto response = ingredientQueryService.getIngredientInfo(containerIngredientId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

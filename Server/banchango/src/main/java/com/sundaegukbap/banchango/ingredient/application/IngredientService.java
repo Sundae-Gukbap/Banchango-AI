@@ -36,14 +36,10 @@ public class IngredientService {
         containerIngredientRepository.save(containerIngredient);
     }
 
-    public void removeIngredient(Long containerId, Long ingredientId) {
-        Container container = containerRepository.findById(containerId)
-                .orElseThrow(() -> new NoSuchElementException("no container"));
-        Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new NoSuchElementException("no ingredient"));
+    public void removeIngredient(Long containerIngredientId) {
+        ContainerIngredient containerIngredient = containerIngredientRepository.findById(containerIngredientId)
+                .orElseThrow(() -> new NoSuchElementException("no ingredient in container"));
 
-        ContainerIngredient containerIngredient = containerIngredientRepository.findByContainerAndIngredient(container, ingredient)
-                .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
         containerIngredientRepository.delete(containerIngredient);
     }
 }

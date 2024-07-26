@@ -11,7 +11,7 @@ public record ContainerIngredientDtos(
 
     public static ContainerIngredientDtos of(List<ContainerIngredient> containerIngredientList){
         List<ContainerIngredientDto> containerIngredientDtoList = containerIngredientList.stream()
-                .map(i -> ContainerIngredientDto.of(i.getIngredient(), i, i.getContainer()))
+                .map(ContainerIngredientDto::of)
                 .collect(Collectors.toList());
         return new ContainerIngredientDtos(containerIngredientDtoList);
 
