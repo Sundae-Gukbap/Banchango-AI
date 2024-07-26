@@ -24,16 +24,17 @@ public class IngredientQueryService {
         this.containerIngredientRepository = containerIngredientRepository;
     }
 
-    public ContainerIngredientDtos getIngredientsMainList(Long userId) {
+    public ContainerIngredientDtos getUserIngredients(Long userId) {
         List<Container> containerList = containerRepository.findAllByUserId(userId);
+        List<ContainerIngredient> containerIngredientList = containerIngredientRepository.findByContainerIn(containerList);
 
-        List<ContainerIngredient> havingIngredientList = containerIngredientRepository.findByContainerIn(containerList);
+        return ContainerIngredientDtos.of(containerIngredientList);
+    }
 
-        List<ContainerIngredientDto> containerIngredientDtoList = havingIngredientList.stream()
-                .map(i -> ContainerIngredientDto.of(i.getIngredient(), i, i.getContainer()))
-                .collect(Collectors.toList());
+    public ContainerIngredientDtos getContainerIngredients(Long containerId) {
+        List<ContainerIngredient> containerIngredientList = containerIngredientRepository.findAllByContainerId(containerId);
 
-        return ContainerIngredientDtos.of(containerIngredientDtoList);
+        return ContainerIngredientDtos.of(containerIngredientList);
     }
 
     public IngredientDetailResponse getIngredientDetailResponse(Long containerId, Long ingredientId) {
@@ -61,4 +62,6 @@ public class IngredientQueryService {
 
         return CategoryIngredientResponses.of(categoryIngredientResponseList);
     }
+
+
 }

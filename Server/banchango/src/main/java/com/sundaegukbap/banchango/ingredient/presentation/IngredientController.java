@@ -46,16 +46,16 @@ public class IngredientController {
     }
 
     @GetMapping("/main/list/{userId}")
-    @Operation(description = "소유한 재료 목록을 조회한다.")
-    public ResponseEntity<ContainerIngredientDtos> getIngredientsMainList(@PathVariable("userId") Long userId) {
-        ContainerIngredientDtos response = ingredientQueryService.getIngredientsMainList(userId);
+    @Operation(description = "사용자가 소유한 전체 재료 목록을 조회한다.")
+    public ResponseEntity<ContainerIngredientDtos> getUserIngredients(@PathVariable("userId") Long userId) {
+        ContainerIngredientDtos response = ingredientQueryService.getUserIngredients(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/category/{userId}")
-    @Operation(description = "소유한 재료 목록을 카테고리별로 조회한다.")
-    public ResponseEntity<CategoryIngredientResponses> getCategoryIngredientResponses(@PathVariable("userId") Long userId) {
-        CategoryIngredientResponses response = ingredientQueryService.getCategoryIngredientResponses(userId);
+    @GetMapping("/container/list/{containerId}")
+    @Operation(description = "특정 창고에 속한 재료 목록을 조회한다.")
+    public ResponseEntity<ContainerIngredientDtos> getContainerIngredients(@PathVariable("containerId") Long containerId) {
+        ContainerIngredientDtos response = ingredientQueryService.getContainerIngredients(containerId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
