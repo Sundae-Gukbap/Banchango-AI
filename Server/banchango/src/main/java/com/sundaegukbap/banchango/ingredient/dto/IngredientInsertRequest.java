@@ -17,7 +17,7 @@ public record IngredientInsertRequest(
                 .container(container)
                 .ingredient(ingredient)
                 .createdAt(null)
-                .expriationDate(this.expirationDate)
+                .expriationDate(expirationDate)
                 .build();
     }
 }

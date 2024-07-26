@@ -4,6 +4,7 @@ import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class Container {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     User user;
+
+    @Builder
+    public Container(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
 }
