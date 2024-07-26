@@ -1,11 +1,12 @@
 package com.sundaegukbap.banchango.ingredient.application;
 
+import com.sundaegukbap.banchango.container.domain.Container;
+import com.sundaegukbap.banchango.container.repository.ContainerRepository;
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
-import com.sundaegukbap.banchango.ingredient.domain.UserHavingIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
-import com.sundaegukbap.banchango.ingredient.repository.UserHavingIngredientRepository;
-import com.sundaegukbap.banchango.user.domain.User;
+import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,34 +14,32 @@ import java.util.NoSuchElementException;
 
 @Service
 public class IngredientService {
-    private final UserHavingIngredientRepository userHavingIngredientRepository;
+    private final ContainerIngredientRepository containerIngredientRepository;
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
+    private final ContainerRepository containerRepository;
 
-    public IngredientService(UserHavingIngredientRepository userHavingIngredientRepository, UserRepository userRepository, IngredientRepository ingredientRepository) {
-        this.userHavingIngredientRepository = userHavingIngredientRepository;
+    public IngredientService(ContainerIngredientRepository containerIngredientRepository, UserRepository userRepository, IngredientRepository ingredientRepository, ContainerRepository containerRepository) {
+        this.containerIngredientRepository = containerIngredientRepository;
         this.userRepository = userRepository;
         this.ingredientRepository = ingredientRepository;
+        this.containerRepository = containerRepository;
     }
 
     public void insertIngredient(Long userId, IngredientInsertRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("no user"));
+        Container container = containerRepository.findById(request.containerId())
+                .orElseThrow(() -> new NoSuchElementException("no container"));
         Ingredient ingredient = ingredientRepository.findById(request.ingredientId())
                 .orElseThrow(() -> new NoSuchElementException("no ingredient"));
 
-        UserHavingIngredient userHavingIngredient = request.toEntity(user, ingredient);
-        userHavingIngredientRepository.save(userHavingIngredient);
+        ContainerIngredient containerIngredient = request.toEntity(container, ingredient);
+        containerIngredientRepository.save(containerIngredient);
     }
 
-    public void removeIngredient(Long userId, Long ingredientId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("no user"));
-        Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new NoSuchElementException("no ingredient"));
+    public void removeIngredient(Long containerIngredientId) {
+        ContainerIngredient containerIngredient = containerIngredientRepository.findById(containerIngredientId)
+                .orElseThrow(() -> new NoSuchElementException("no ingredient in container"));
 
-        UserHavingIngredient userHavingIngredient = userHavingIngredientRepository.findByUserAndIngredient(user, ingredient)
-                .orElseThrow(() -> new NoSuchElementException("user doesn't have ingredient"));
-        userHavingIngredientRepository.delete(userHavingIngredient);
+        containerIngredientRepository.delete(containerIngredient);
     }
 }

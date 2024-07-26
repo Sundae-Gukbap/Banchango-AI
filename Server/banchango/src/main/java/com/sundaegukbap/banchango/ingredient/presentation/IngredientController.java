@@ -3,6 +3,8 @@ package com.sundaegukbap.banchango.ingredient.presentation;
 import com.sundaegukbap.banchango.ingredient.application.IngredientQueryService;
 import com.sundaegukbap.banchango.ingredient.application.IngredientService;
 import com.sundaegukbap.banchango.ingredient.dto.*;
+import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDto;
+import com.sundaegukbap.banchango.ingredient.dto.dto.ContainerIngredientDtos;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -29,33 +31,31 @@ public class IngredientController {
         return new ResponseEntity<>("success add ingredient", HttpStatus.OK);
     }
 
-    @DeleteMapping ("/{userId}/{ingredientId}")
+    @DeleteMapping ("/{containerIngredientId}")
     @Operation(description = "소유한 재료를 제거한다.")
-    public ResponseEntity<String> removeIngredient(@PathVariable("userId") Long userId,
-                                                   @PathVariable("ingredientId") Long ingredientId) {
-        ingredientService.removeIngredient(userId, ingredientId);
+    public ResponseEntity<String> removeIngredient(@PathVariable("containerIngredientId") Long containerIngredientId) {
+        ingredientService.removeIngredient(containerIngredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
     }
 
-    @GetMapping ("/{userId}/{ingredientId}")
+    @GetMapping ("/{containerIngredientId}")
     @Operation(description = "소유한 재료의 상세 정보를 확인한다.")
-    public ResponseEntity<IngredientDetailResponse> getIngredientDetailResponse(@PathVariable("userId") Long userId,
-                                                   @PathVariable("ingredientId") Long ingredientId) {
-        IngredientDetailResponse response = ingredientQueryService.getIngredientDetailResponse(userId, ingredientId);
+    public ResponseEntity<ContainerIngredientDto> getIngredientInfo(@PathVariable("containerIngredientId") Long containerIngredientId) {
+        ContainerIngredientDto response = ingredientQueryService.getIngredientInfo(containerIngredientId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/list/{userId}")
-    @Operation(description = "소유한 재료 목록을 조회한다.")
-    public ResponseEntity<IngredientDetailResponses> getIngredientDetailResponses(@PathVariable("userId") Long userId) {
-        IngredientDetailResponses response = ingredientQueryService.getIngredientDetailResponses(userId);
+    @GetMapping("/main/list/{userId}")
+    @Operation(description = "사용자가 소유한 전체 재료 목록을 조회한다.")
+    public ResponseEntity<ContainerIngredientDtos> getUserIngredients(@PathVariable("userId") Long userId) {
+        ContainerIngredientDtos response = ingredientQueryService.getUserIngredients(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/category/{userId}")
-    @Operation(description = "소유한 재료 목록을 카테고리별로 조회한다.")
-    public ResponseEntity<CategoryIngredientResponses> getCategoryIngredientResponses(@PathVariable("userId") Long userId) {
-        CategoryIngredientResponses response = ingredientQueryService.getCategoryIngredientResponses(userId);
+    @GetMapping("/container/list/{containerId}")
+    @Operation(description = "특정 창고에 속한 재료 목록을 조회한다.")
+    public ResponseEntity<ContainerIngredientDtos> getContainerIngredients(@PathVariable("containerId") Long containerId) {
+        ContainerIngredientDtos response = ingredientQueryService.getContainerIngredients(containerId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

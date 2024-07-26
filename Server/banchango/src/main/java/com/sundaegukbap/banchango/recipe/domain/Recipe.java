@@ -24,21 +24,21 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    String name;
+    private String name;
     @NotNull
     @Column(length=2048)
-    String introduction;
+    private String introduction;
     @NotNull
-    String image;
+    private String image;
     @NotNull
-    String link;
+    private String link;
     @NotNull
-    int servings;
+    private int servings;
     @NotNull
-    int cookingTime;
+    private int cookingTime;
     @NotNull
     @Enumerated(EnumType.STRING)
-    Difficulty difficulty;
+    private Difficulty difficulty;
 
     @Builder
     public Recipe(Long id, String name, String introduction, String image, String link, int servings, int cookingTime, Difficulty difficulty) {

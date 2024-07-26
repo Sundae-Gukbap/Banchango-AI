@@ -1,6 +1,6 @@
 package com.sundaegukbap.banchango.ingredient.domain;
 
-import com.sundaegukbap.banchango.user.domain.User;
+import com.sundaegukbap.banchango.container.domain.Container;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,25 +14,26 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="user_having_ingredients")
+@Table(name="container_ingredients")
 @EntityListeners(AuditingEntityListener.class)
-public class UserHavingIngredient {
+public class ContainerIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="container_id")
+    private Container container;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
     @CreatedDate
     private LocalDateTime createdAt;
     private LocalDateTime expriationDate;
+
     @Builder
-    public UserHavingIngredient(Long id, User user, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
+    public ContainerIngredient(Long id, Container container, Ingredient ingredient, LocalDateTime createdAt, LocalDateTime expriationDate) {
         this.id = id;
-        this.user = user;
+        this.container = container;
         this.ingredient = ingredient;
         this.createdAt = createdAt;
         this.expriationDate = expriationDate;

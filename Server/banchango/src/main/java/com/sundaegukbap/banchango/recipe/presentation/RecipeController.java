@@ -1,7 +1,8 @@
 package com.sundaegukbap.banchango.recipe.presentation;
 
 import com.sundaegukbap.banchango.recipe.application.RecipeService;
-import com.sundaegukbap.banchango.recipe.dto.RecipeDetailResponse;
+import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -25,15 +26,15 @@ public class RecipeController {
 
     @GetMapping("/recommand/{userId}")
     @Operation(description = "추천 레시피를 조회한다.")
-    public ResponseEntity<List> getRecommandedRecipes(@PathVariable("userId") Long userId) {
-        List<RecipeDetailResponse> response = recipeService.getRecommandedRecipes(userId);
+    public ResponseEntity<RecommandedRecipeResponses> getRecommandedRecipes(@PathVariable("userId") Long userId) {
+        RecommandedRecipeResponses response = recipeService.getRecommandedRecipes(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/{recipeId}")
     @Operation(description = "레시피를 조회한다.")
-    public ResponseEntity<RecipeDetailResponse> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
-        RecipeDetailResponse response = recipeService.getRecipe(userId,recipeId);
+    public ResponseEntity<RecommandedRecipeResponse> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
+        RecommandedRecipeResponse response = recipeService.getRecipeDetail(userId,recipeId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
