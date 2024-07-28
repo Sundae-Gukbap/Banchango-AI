@@ -20,14 +20,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sundaegukbap.banchango.Ingredient
+import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.RecipeDifficulty
+import com.sundaegukbap.banchango.RecommendedRecipe
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 
 @Composable
 fun RecipeDetailCard(
-    recipe: Recipe,
+    recommendRecipe: RecommendedRecipe,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -35,9 +38,9 @@ fun RecipeDetailCard(
     ) {
         item {
             RecipeDetailInfo(
-                difficulty = recipe.difficulty,
-                serving = recipe.servings,
-                cookingTime = recipe.cookingTime,
+                difficulty = recommendRecipe.recipe.difficulty,
+                serving = recommendRecipe.recipe.servings,
+                cookingTime = recommendRecipe.recipe.cookingTime,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -48,7 +51,7 @@ fun RecipeDetailCard(
         item {
             Text(
                 modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 12.dp),
-                text = recipe.name,
+                text = recommendRecipe.recipe.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -56,17 +59,21 @@ fun RecipeDetailCard(
 
         item {
             Text(
-                text = recipe.introduction,
+                text = recommendRecipe.recipe.introduction,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp),
             )
         }
 
         item {
-            Ingredients(title = "핵심 재료", have = recipe.have, need = recipe.need)
+            Ingredients(
+                title = "핵심 재료",
+                have = recommendRecipe.hadIngredients,
+                need = recommendRecipe.neededIngredients,
+            )
         }
         item {
-            Ingredients("식자재", recipe.have, recipe.need)
+            Ingredients("식자재", recommendRecipe.hadIngredients, recommendRecipe.neededIngredients)
         }
     }
 }
@@ -74,8 +81,8 @@ fun RecipeDetailCard(
 @Composable
 private fun Ingredients(
     title: String,
-    have: List<String>,
-    need: List<String>,
+    have: List<Ingredient>,
+    need: List<Ingredient>,
 ) {
     Box(
         modifier =
@@ -111,7 +118,7 @@ private fun Ingredients(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         val ingredients =
-            have.map { ItemIngredient(it, true) } + need.map { ItemIngredient(it, false) }
+            have.map { ItemIngredient(it.name, true) } + need.map { ItemIngredient(it.name, false) }
         itemsIndexed(ingredients) { index, it ->
             if (index == 0) {
                 IngredientCard(it, modifier = Modifier.padding(start = 12.dp))
@@ -149,20 +156,27 @@ data class ItemIngredient(
 @Composable
 fun RecipeDetailCardPreview() {
     RecipeDetailCard(
-        recipe =
-            Recipe(
-                id = 1,
-                name = "간장계란볶음밥",
-                introduction =
-                    "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. \n " +
-                        "아이들이 더 좋아할거예요. \n",
-                image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                link = "https://www.10000recipe.com/recipe/6889616",
-                cookingTime = 10,
-                servings = 2,
-                difficulty = RecipeDifficulty.BEGINNER,
-                have = listOf("계란", "간장"),
-                need = listOf("식초", "당근", "감자", "깨소금", "밥"),
+        recommendRecipe =
+            RecommendedRecipe(
+                recipe =
+                    Recipe(
+                        id = 1,
+                        name = "간장계란볶음밥",
+                        introduction =
+                            "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. \n " +
+                                "아이들이 더 좋아할거예요. \n",
+                        image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                        link = "https://www.10000recipe.com/recipe/6889616",
+                        cookingTime = 10,
+                        servings = 2,
+                        difficulty = RecipeDifficulty.BEGINNER,
+                    ),
+                hadIngredients =
+                    listOf(
+                        Ingredient(1L, "계란", IngredientKind.ETC, ""),
+                        Ingredient(1L, "간장", IngredientKind.ETC, ""),
+                    ),
+                neededIngredients = listOf(Ingredient(1L, "참기름", IngredientKind.ETC, "")),
             ),
     )
 }

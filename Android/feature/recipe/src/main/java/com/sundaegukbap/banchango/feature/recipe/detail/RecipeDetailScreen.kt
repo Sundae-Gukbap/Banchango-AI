@@ -32,9 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sundaegukbap.banchango.Ingredient
+import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.LikableRecipe
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.RecipeDifficulty
+import com.sundaegukbap.banchango.RecommendedRecipe
 import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
 
 @Composable
@@ -55,7 +58,7 @@ fun RecipeDetailRoute(
         onChangeSystemBarsColor = onChangeSystemBarsColor,
         modifier = modifier,
     ) { likableRecipe ->
-        viewModel.likeRecipe(likableRecipe.recipe.id, !likableRecipe.isLiked)
+        viewModel.likeRecipe(likableRecipe.recommendedRecipe.recipe.id, !likableRecipe.isLiked)
     }
 }
 
@@ -92,7 +95,7 @@ fun RecipeDetailContent(
 private fun RecipeDetailLoading() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
@@ -134,23 +137,23 @@ private fun RecipeDetailScreen(
 
     Box(
         modifier =
-        modifier
-            .windowInsetsPadding(WindowInsets.navigationBars)
-            .fillMaxSize(),
+            modifier
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .fillMaxSize(),
     ) {
         RecipeImage(
-            imageUrl = likableRecipe.recipe.image,
+            imageUrl = likableRecipe.recommendedRecipe.recipe.image,
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(screenHeight * 0.5f)
-                .align(Alignment.TopCenter),
+                Modifier
+                    .fillMaxWidth()
+                    .height(screenHeight * 0.5f)
+                    .align(Alignment.TopCenter),
         )
         BottomSheetScaffold(
             scaffoldState = scaffoldState,
             sheetContent = {
                 RecipeDetailCard(
-                    likableRecipe.recipe,
+                    likableRecipe.recommendedRecipe,
                     Modifier.height(screenHeight * 0.98f),
                 )
             },
@@ -167,11 +170,11 @@ private fun RecipeDetailScreen(
         )
 
         BtnMoveToRecipe(
-            likableRecipe.recipe.link,
+            likableRecipe.recommendedRecipe.recipe.link,
             modifier =
-            Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 60.dp),
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 60.dp),
         )
     }
 }
@@ -191,15 +194,15 @@ private fun RecipeImage(
                 .fillMaxSize()
                 .background(
                     brush =
-                    Brush.verticalGradient(
-                        colors =
-                        listOf(
-                            Color.Black.copy(alpha = 0.3f),
-                            Color.Transparent,
+                        Brush.verticalGradient(
+                            colors =
+                                listOf(
+                                    Color.Black.copy(alpha = 0.3f),
+                                    Color.Transparent,
+                                ),
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY,
                         ),
-                        startY = 0f,
-                        endY = Float.POSITIVE_INFINITY,
-                    ),
                 ),
         )
     }
@@ -211,18 +214,30 @@ fun RecipeDetailScreenPreview() {
     RecipeDetailScreen(
         likableRecipe =
             LikableRecipe(
-                recipe =
-                    Recipe(
-                        id = 1,
-                        name = "간장계란볶음밥",
-                        introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                        image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                        link = "https://www.10000recipe.com/recipe/6889616",
-                        cookingTime = 10,
-                        servings = 2,
-                        difficulty = RecipeDifficulty.BEGINNER,
-                        have = listOf("계란", "간장"),
-                        need = listOf("식초", "당근", "감자"),
+                recommendedRecipe =
+                    RecommendedRecipe(
+                        recipe =
+                            Recipe(
+                                id = 1,
+                                name = "간장계란볶음밥",
+                                introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+                                image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                                link = "https://www.10000recipe.com/recipe/6889616",
+                                cookingTime = 10,
+                                servings = 2,
+                                difficulty = RecipeDifficulty.BEGINNER,
+                            ),
+                        hadIngredients =
+                            listOf(
+                                Ingredient(1L, "계란", IngredientKind.MEAT, ""),
+                                Ingredient(2L, "간장", IngredientKind.SAUCE, ""),
+                            ),
+                        neededIngredients =
+                            listOf(
+                                Ingredient(1L, "식초", IngredientKind.MEAT, ""),
+                                Ingredient(2L, "당근", IngredientKind.SAUCE, ""),
+                                Ingredient(2L, "감자", IngredientKind.SAUCE, ""),
+                            ),
                     ),
                 isLiked = false,
             ),
