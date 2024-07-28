@@ -1,7 +1,6 @@
 package com.sundaegukbap.banchango.core.data.repository
 
-import com.sundaegukbap.banchango.LikableRecipe
-import com.sundaegukbap.banchango.Recipe
+import com.sundaegukbap.banchango.RecommendedRecipe
 import com.sundaegukbap.banchango.core.data.api.RecipeApi
 import com.sundaegukbap.banchango.core.data.mapper.toData
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
@@ -12,7 +11,7 @@ internal class DefaultRecipeRepository
     constructor(
         private val recipeApi: RecipeApi,
     ) : RecipeRepository {
-        override suspend fun getRecipeRecommendation(): Result<List<Recipe>> =
+        override suspend fun getRecipeRecommendation(): Result<List<RecommendedRecipe>> =
             runCatching {
                 val response = recipeApi.getRecipeRecommendation(1)
                 if (response.isSuccessful) {
@@ -25,14 +24,14 @@ internal class DefaultRecipeRepository
                 }
             }
 
-        override suspend fun getRecipeDetail(id: Long): Result<LikableRecipe> =
+        override suspend fun getRecipeDetail(id: Long): Result<RecommendedRecipe> =
             runCatching {
                 val response = recipeApi.getRecipeDetail(1, id)
                 if (response.isSuccessful) {
                     if (response.body() == null) {
                         throw IllegalStateException("Response body is null")
                     }
-                    LikableRecipe(response.body()!!.toData(), false)
+                    response.body()!!.toData()
                 } else {
                     throw IllegalStateException("Response is not successful")
                 }
