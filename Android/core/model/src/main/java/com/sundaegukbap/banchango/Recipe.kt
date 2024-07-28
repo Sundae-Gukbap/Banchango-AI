@@ -9,6 +9,4 @@ data class Recipe(
     val cookingTime: Int,
     val servings: Int,
     val difficulty: RecipeDifficulty,
-    val have: List<String>,
-    val need: List<String>,
 )
