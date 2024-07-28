@@ -13,6 +13,5 @@ data class RecipeRecommendResponse(
     val need: List<String>,
     val servings: Int,
     val cookingTime: Int,
-    val isBookmarked: Boolean,
     val difficulty: String
 )

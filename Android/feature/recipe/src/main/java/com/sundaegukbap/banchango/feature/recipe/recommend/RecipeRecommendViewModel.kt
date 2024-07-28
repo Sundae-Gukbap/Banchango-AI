@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,25 +21,15 @@ class RecipeRecommendViewModel @Inject constructor(
         MutableStateFlow(RecipeRecommendUiState.Loading)
     val uiState: StateFlow<RecipeRecommendUiState> = _uiState.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            recipeRepository.getRecipeRecommendation()
-                .onSuccess { recipes ->
-                    _uiState.value = RecipeRecommendUiState.Success(recipes.toUiState())
-                }.onFailure { throwable ->
-                    throwable.printStackTrace()
-                }
-        }
-    }
 
     fun getRecipeRecommendation() {
-        val successUiState = _uiState.value as? RecipeRecommendUiState.Success ?: return
+        val remainRecipes = (_uiState.value as? RecipeRecommendUiState.Success)?.recipes ?: listOf()
 
         viewModelScope.launch {
             recipeRepository.getRecipeRecommendation()
                 .onSuccess { recipes ->
                     _uiState.value = RecipeRecommendUiState.Success(
-                        successUiState.recipes + recipes.toUiState()
+                        remainRecipes + recipes.toUiState()
                     )
                 }.onFailure { throwable ->
                     throwable.printStackTrace()
@@ -59,11 +50,8 @@ class RecipeRecommendViewModel @Inject constructor(
     }
 
     private fun List<Recipe>.toUiState(): List<RecipeRecommendItemUiState> {
-        return mapIndexed { index, recipe ->
-            RecipeRecommendItemUiState(
-                recipe = recipe.copy(name = recipe.name + index.toString()),
-                isLiked = false,
-            )
+        return map { recipe ->
+            RecipeRecommendItemUiState(recipe = recipe, isLiked = false)
         }
     }
 }
