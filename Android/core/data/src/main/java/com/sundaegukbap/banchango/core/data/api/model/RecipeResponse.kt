@@ -1,5 +1,8 @@
 package com.sundaegukbap.banchango.core.data.api.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RecipeResponse(
     val id: Long,
     val name: String,
