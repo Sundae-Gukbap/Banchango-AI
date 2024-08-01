@@ -43,9 +43,10 @@ fun RecipeItem(
     recipeRecommendItemUiState: RecipeRecommendItemUiState,
     onRecipeClick: (Recipe) -> Unit,
     onRecipeLikeClick: (Recipe) -> Unit,
+    modifier: Modifier =Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable {
                 onRecipeClick(recipeRecommendItemUiState.recommendedRecipe.recipe)

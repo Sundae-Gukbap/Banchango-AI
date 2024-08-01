@@ -14,46 +14,44 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeRecommendViewModel
-    @Inject
-    constructor(
-        private val recipeRepository: RecipeRepository,
-    ) : ViewModel() {
-        private val _uiState: MutableStateFlow<RecipeRecommendUiState> =
-            MutableStateFlow(RecipeRecommendUiState.Loading)
-        val uiState: StateFlow<RecipeRecommendUiState> = _uiState.asStateFlow()
+@Inject
+constructor(
+    private val recipeRepository: RecipeRepository,
+) : ViewModel() {
+    private val _uiState: MutableStateFlow<RecipeRecommendUiState> =
+        MutableStateFlow(RecipeRecommendUiState.Loading)
+    val uiState: StateFlow<RecipeRecommendUiState> = _uiState.asStateFlow()
 
-        fun getRecipeRecommendation() {
-            val remainRecipes = (_uiState.value as? RecipeRecommendUiState.Success)?.recipes ?: listOf()
+    fun getRecipeRecommendation() {
+        _uiState.value = RecipeRecommendUiState.Loading
 
-            viewModelScope.launch {
-                recipeRepository
-                    .getRecipeRecommendation()
-                    .onSuccess { recipes ->
-                        _uiState.value =
-                            RecipeRecommendUiState.Success(
-                                remainRecipes + recipes.toUiState(),
-                            )
-                    }.onFailure { throwable ->
-                        throwable.printStackTrace()
-                    }
-            }
-        }
-
-        fun likeRecipe(recipe: Recipe) {
-            val successUiState = _uiState.value as? RecipeRecommendUiState.Success ?: return
-            val likedRecipeUiStates =
-                successUiState.recipes.map { recipeUiState ->
-                    if (recipeUiState.recommendedRecipe.recipe.id == recipe.id) {
-                        recipeUiState.copy(isLiked = !recipeUiState.isLiked)
-                    } else {
-                        recipeUiState
-                    }
+        viewModelScope.launch {
+            recipeRepository
+                .getRecipeRecommendation()
+                .onSuccess { recipes ->
+                    _uiState.value =
+                        RecipeRecommendUiState.Success(recipes.toUiState())
+                }.onFailure { throwable ->
+                    throwable.printStackTrace()
                 }
-            _uiState.value = RecipeRecommendUiState.Success(likedRecipeUiStates)
         }
-
-        private fun List<RecommendedRecipe>.toUiState(): List<RecipeRecommendItemUiState> =
-            map { recipe ->
-                RecipeRecommendItemUiState(recommendedRecipe = recipe, isLiked = false)
-            }
     }
+
+    fun likeRecipe(recipe: Recipe) {
+        val successUiState = _uiState.value as? RecipeRecommendUiState.Success ?: return
+        val likedRecipeUiStates =
+            successUiState.recipes.map { recipeUiState ->
+                if (recipeUiState.recommendedRecipe.recipe.id == recipe.id) {
+                    recipeUiState.copy(isLiked = !recipeUiState.isLiked)
+                } else {
+                    recipeUiState
+                }
+            }
+        _uiState.value = RecipeRecommendUiState.Success(likedRecipeUiStates)
+    }
+
+    private fun List<RecommendedRecipe>.toUiState(): List<RecipeRecommendItemUiState> =
+        map { recipe ->
+            RecipeRecommendItemUiState(recommendedRecipe = recipe, isLiked = false)
+        }
+}

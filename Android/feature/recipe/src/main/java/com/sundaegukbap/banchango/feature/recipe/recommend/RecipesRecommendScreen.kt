@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.feature.recipe.recommend
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -49,6 +50,7 @@ fun RecipeRecommendRoute(
     RecipeRecommendContent(
         padding = padding,
         uiState = uiState,
+        onRefreshClick = { viewModel.getRecipeRecommendation() },
         onLikeClick = { viewModel.likeRecipe(it) },
         onRecipeClick = onRecipeClick,
         onChangeSystemBarsColor = onChangeStatusBarColor,
@@ -59,6 +61,7 @@ fun RecipeRecommendRoute(
 fun RecipeRecommendContent(
     padding: PaddingValues,
     uiState: RecipeRecommendUiState,
+    onRefreshClick: () -> Unit,
     onLikeClick: (Recipe) -> Unit,
     onRecipeClick: (Recipe) -> Unit,
     onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
@@ -67,8 +70,9 @@ fun RecipeRecommendContent(
     when (uiState) {
         is RecipeRecommendUiState.Loading -> {
             RecipeRecommendLoading(
-                modifier = Modifier.fillMaxSize(),
+                padding = padding,
                 contentAlignment = Alignment.Center,
+                onRefreshClick = {},
             )
         }
 
@@ -78,6 +82,7 @@ fun RecipeRecommendContent(
                 padding = padding,
                 onLikeClick = onLikeClick,
                 onRecipeClick = onRecipeClick,
+                onRefreshClick = onRefreshClick,
             )
         }
     }
@@ -85,11 +90,22 @@ fun RecipeRecommendContent(
 
 @Composable
 fun RecipeRecommendLoading(
-    modifier: Modifier,
+    padding: PaddingValues,
     contentAlignment: Alignment,
+    onRefreshClick: () -> Unit,
 ) {
-    Box(modifier = modifier, contentAlignment = contentAlignment) {
-        CircularProgressIndicator()
+    Box(
+        modifier = Modifier
+            .padding(padding)
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        contentAlignment = contentAlignment
+    ) {
+        RecipeRecommendTopBar(onRefreshClick, Modifier.align(Alignment.TopCenter))
+        CircularProgressIndicator(
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
     }
 }
 
@@ -97,6 +113,7 @@ fun RecipeRecommendLoading(
 private fun RecipeRecommendScreen(
     padding: PaddingValues,
     recipeRecommends: List<RecipeRecommendItemUiState>,
+    onRefreshClick: () -> Unit,
     onLikeClick: (Recipe) -> Unit,
     onRecipeClick: (Recipe) -> Unit,
 ) {
@@ -107,23 +124,33 @@ private fun RecipeRecommendScreen(
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         item {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(text = "AI 레시피 추천", fontWeight = FontWeight.Bold)
-                Image(
-                    painterResource(id = R.drawable.ic_refresh),
-                    contentDescription = "refresh",
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                )
-            }
+            RecipeRecommendTopBar(onRefreshClick = onRefreshClick)
         }
-        items(recipeRecommends) { item ->
+        items(
+            items = recipeRecommends,
+            key = { it.recommendedRecipe.recipe.id }
+        ) { item ->
             RecipeItem(item, onRecipeClick, onLikeClick)
             Spacer(modifier = Modifier.height(20.dp))
         }
+    }
+}
+
+@Composable
+private fun RecipeRecommendTopBar(onRefreshClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .padding(vertical = 20.dp)
+            .fillMaxWidth()
+    ) {
+        Text(text = "AI 레시피 추천", fontWeight = FontWeight.Bold)
+        Image(
+            painterResource(id = R.drawable.ic_refresh),
+            contentDescription = "refresh",
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .clickable { onRefreshClick() }
+        )
     }
 }
 
@@ -135,6 +162,7 @@ fun RecipePagePreview() {
             padding = PaddingValues(16.dp),
             onLikeClick = {},
             onRecipeClick = {},
+            onRefreshClick = {},
             onChangeSystemBarsColor = { _, _ -> },
             uiState =
             RecipeRecommendUiState.Success(
