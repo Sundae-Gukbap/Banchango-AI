@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +34,8 @@ import com.sundaegukbap.banchango.core.designsystem.component.NetworkImage
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.lightGray
-import com.sundaegukbap.banchango.feature.recipe.extrainfo.RecipeExtraInfo
+import com.sundaegukbap.banchango.feature.recipe.component.LikableHeart
+import com.sundaegukbap.banchango.feature.recipe.component.RecipeExtraInfo
 import com.sundaegukbap.banchango.feature.reciperecommend.R
 
 @Composable
@@ -42,20 +46,41 @@ fun RecipeItem(
 ) {
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {
                 onRecipeClick(recipeRecommendItemUiState.recommendedRecipe.recipe)
             }
             .shadow(4.dp, RoundedCornerShape(20.dp))
             .background(Color.White, shape = RoundedCornerShape(20.dp))
     ) {
-        NetworkImage(
-            url = recipeRecommendItemUiState.recommendedRecipe.recipe.image,
-            modifier =
-            Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .height(128.dp)
-                .fillMaxWidth(),
-        )
+        Box {
+            NetworkImage(
+                url = recipeRecommendItemUiState.recommendedRecipe.recipe.image,
+                modifier =
+                Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .height(128.dp)
+                    .fillMaxWidth(),
+            )
+            Box(
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 12.dp, end = 12.dp)
+                    .background(Color.White, shape = CircleShape)
+            ) {
+                LikableHeart(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(24.dp),
+                    isLike = recipeRecommendItemUiState.isLiked,
+                    onLikeClick = {
+                        onRecipeLikeClick(recipeRecommendItemUiState.recommendedRecipe.recipe)
+                    }
+                )
+
+            }
+
+        }
         Text(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
@@ -94,8 +119,9 @@ fun RecipeItem(
                 modifier =
                 Modifier
                     .weight(2f)
-                    .clip(RoundedCornerShape(32.dp))
-                    .background(lightGray),
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(lightGray)
+                    .padding(vertical = 10.dp, horizontal = 6.dp),
             )
         }
     }
@@ -115,9 +141,9 @@ private fun RecipeExtraInfoContainer(
             difficulty = difficulty,
             serving = serving,
             cookingTime = cookingTime,
-            paddingHorizontal = 12,
             fontSize = 10,
-            starSize = 8,
+            starSize = 10,
+            barHeight = 32
         )
     }
 }
