@@ -13,7 +13,7 @@ class FakeRecipeRepository
     constructor() : RecipeRepository {
         override suspend fun getRecipeRecommendation(): Result<List<RecommendedRecipe>> =
             Result.success(
-                List(3) {
+                List(10) {
                     RecommendedRecipe(
                         Recipe(
                             id = (it + 1).toLong(),
