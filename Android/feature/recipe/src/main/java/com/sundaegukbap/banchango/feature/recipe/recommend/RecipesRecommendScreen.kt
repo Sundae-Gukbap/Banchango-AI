@@ -101,7 +101,11 @@ private fun RecipeRecommendScreen(
     onRecipeClick: (Recipe) -> Unit,
 ) {
     val listState = rememberLazyListState()
-    LazyColumn(state = listState, contentPadding = PaddingValues(20.dp)) {
+    LazyColumn(
+        state = listState,
+        contentPadding = padding,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
         item {
             Box(
                 modifier = Modifier

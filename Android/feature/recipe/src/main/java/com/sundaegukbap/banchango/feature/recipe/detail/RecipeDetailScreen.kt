@@ -153,8 +153,8 @@ private fun RecipeDetailScreen(
             scaffoldState = scaffoldState,
             sheetContent = {
                 RecipeDetailCard(
-                    likableRecipe.recommendedRecipe,
-                    Modifier.height(screenHeight * 0.98f),
+                    recommendRecipe = likableRecipe.recommendedRecipe,
+                    modifier = Modifier.height(screenHeight * 0.98f),
                 )
             },
             sheetContainerColor = Color.White,
@@ -172,9 +172,9 @@ private fun RecipeDetailScreen(
         BtnMoveToRecipe(
             likableRecipe.recommendedRecipe.recipe.link,
             modifier =
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 60.dp),
+            Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp),
         )
     }
 }
