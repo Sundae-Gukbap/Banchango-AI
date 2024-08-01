@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.feature.recipe.difficulty
+package com.sundaegukbap.banchango.feature.recipe.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

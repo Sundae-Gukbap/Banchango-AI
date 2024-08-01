@@ -1,12 +1,11 @@
-package com.sundaegukbap.banchango.feature.recipe.extrainfo
+package com.sundaegukbap.banchango.feature.recipe.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -21,49 +20,48 @@ import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
-import com.sundaegukbap.banchango.feature.recipe.difficulty.Stars
 
 @Composable
 fun RecipeExtraInfo(
     difficulty: RecipeDifficulty,
     serving: Int,
     cookingTime: Int,
-    paddingHorizontal: Int,
+    barHeight: Int,
     fontSize: Int,
     starSize: Int,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.fillMaxWidth()) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
         RecipeDetailDifficulty(
             modifier =
-                Modifier
-                    .wrapContentSize()
-                    .weight(1f)
-                    .align(Alignment.CenterVertically)
-                    .padding(horizontal = paddingHorizontal.dp),
+            Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
             difficulty = difficulty,
             textSize = fontSize,
             starSize = starSize,
         )
 
-        RecipeLine(alignment = Alignment.CenterVertically)
+        RecipeLine(height = barHeight, alignment = Alignment.CenterVertically)
 
         DetailText(
             modifier =
-                Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
+            Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
             text = "${serving}인분",
-            paddingHorizontal = paddingHorizontal,
             fontSize = fontSize,
         )
 
-        RecipeLine(alignment = Alignment.CenterVertically)
+        RecipeLine(height = barHeight, alignment = Alignment.CenterVertically)
 
         DetailText(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = "${cookingTime}m",
-            paddingHorizontal = paddingHorizontal,
             fontSize = fontSize,
         )
     }
@@ -80,7 +78,8 @@ private fun RecipeDetailDifficulty(
         Stars(
             starSize = starSize,
             filledCount = difficulty.level,
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally),
         )
         Text(
             text = difficulty.explain,
@@ -88,20 +87,19 @@ private fun RecipeDetailDifficulty(
             fontWeight = Bold,
             color = Orange,
             modifier =
-                Modifier
-                    .wrapContentSize()
-                    .align(Alignment.CenterHorizontally),
+            Modifier
+                .align(Alignment.CenterHorizontally),
         )
     }
 }
 
 @Composable
-private fun RowScope.RecipeLine(alignment: Alignment.Vertical) {
+private fun RowScope.RecipeLine(height: Int, alignment: Alignment.Vertical) {
     VerticalDivider(
         modifier =
-            Modifier
-                .height(52.dp)
-                .align(alignment),
+        Modifier
+            .height(height.dp)
+            .align(alignment),
         color = LightOrange,
         thickness = 2.dp,
     )
@@ -109,7 +107,6 @@ private fun RowScope.RecipeLine(alignment: Alignment.Vertical) {
 
 @Composable
 private fun RowScope.DetailText(
-    paddingHorizontal: Int,
     text: String,
     fontSize: Int,
     modifier: Modifier = Modifier,
@@ -121,10 +118,9 @@ private fun RowScope.DetailText(
         color = Orange,
         textAlign = TextAlign.Center,
         modifier =
-            modifier
-                .wrapContentSize()
-                .padding(horizontal = paddingHorizontal.dp)
-                .weight(1f),
+        modifier
+            .weight(1f)
+            .fillMaxWidth(),
     )
 }
 
@@ -136,9 +132,9 @@ fun RecipeDetailInfoPreview() {
             difficulty = RecipeDifficulty.ADVANCED,
             serving = 2,
             cookingTime = 30,
-            20,
             fontSize = 12,
             starSize = 20,
+            barHeight = 56,
         )
     }
 }

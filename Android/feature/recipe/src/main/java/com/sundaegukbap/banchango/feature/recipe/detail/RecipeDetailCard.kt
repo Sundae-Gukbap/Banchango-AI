@@ -27,7 +27,7 @@ import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.RecommendedRecipe
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
-import com.sundaegukbap.banchango.feature.recipe.extrainfo.RecipeExtraInfo
+import com.sundaegukbap.banchango.feature.recipe.component.RecipeExtraInfo
 
 @Composable
 fun RecipeDetailCard(
@@ -46,9 +46,9 @@ fun RecipeDetailCard(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
-                paddingHorizontal = 32,
                 fontSize = 12,
-                starSize = 12,
+                starSize = 14,
+                barHeight = 56,
             )
         }
         item {
