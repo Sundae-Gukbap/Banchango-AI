@@ -15,16 +15,16 @@ internal fun List<IngredientResponse>.toData() =
         Ingredient(
             id = it.id,
             name = it.name,
-            image = it.image,
+            image = it.image ?: "",
             kind =
-                when (it.kind) {
-                    "육류" -> IngredientKind.MEAT
-                    "해산물" -> IngredientKind.SEAFOOD
-                    "채소" -> IngredientKind.VEGETABLE
-                    "과일" -> IngredientKind.FRUIT
-                    "기타" -> IngredientKind.ETC
-                    else -> IngredientKind.ETC
-                },
+            when (it.kind) {
+                "육류" -> IngredientKind.MEAT
+                "해산물" -> IngredientKind.SEAFOOD
+                "채소" -> IngredientKind.VEGETABLE
+                "과일" -> IngredientKind.FRUIT
+                "기타" -> IngredientKind.ETC
+                else -> IngredientKind.ETC
+            },
         )
     }
 
@@ -47,12 +47,12 @@ internal fun RecipeResponse.toData() =
         servings = servings,
         cookingTime = cookingTime,
         difficulty =
-            when (difficulty) {
-                "아무나" -> RecipeDifficulty.ANYONE
-                "초보" -> RecipeDifficulty.BEGINNER
-                "중급" -> RecipeDifficulty.INTERMEDIATE
-                "고급" -> RecipeDifficulty.ADVANCED
-                "신의경지" -> RecipeDifficulty.GODLIKE
-                else -> RecipeDifficulty.ANYONE
-            },
+        when (difficulty) {
+            "아무나" -> RecipeDifficulty.ANYONE
+            "초보" -> RecipeDifficulty.BEGINNER
+            "중급" -> RecipeDifficulty.INTERMEDIATE
+            "고급" -> RecipeDifficulty.ADVANCED
+            "신의경지" -> RecipeDifficulty.GODLIKE
+            else -> RecipeDifficulty.ANYONE
+        },
     )

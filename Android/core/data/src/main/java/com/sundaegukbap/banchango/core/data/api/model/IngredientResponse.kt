@@ -7,5 +7,5 @@ data class IngredientResponse(
     val id: Long,
     val name: String,
     val kind: String,
-    val image: String,
+    val image: String?,
 )
