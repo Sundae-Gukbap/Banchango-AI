@@ -20,18 +20,21 @@ fun Stars(
 ) {
     Row(modifier = modifier) {
         repeat(filledCount) {
-            Star(modifier = Modifier.size(starSize.dp), isFilled = true)
+            Star(starSize, isFilled = true)
         }
         repeat(5 - filledCount) {
-            Star(modifier = Modifier.size(starSize.dp), isFilled = false)
+            Star(starSize, isFilled = false)
         }
     }
 }
 
 @Composable
-fun Star(modifier: Modifier, isFilled: Boolean) {
+fun Star(
+    size: Int,
+    isFilled: Boolean,
+) {
     Image(
-        modifier = modifier,
+        modifier = Modifier.size(size.dp),
         painter = painterResource(id = if (isFilled) R.drawable.ic_star_filled else R.drawable.ic_star_outline),
         contentDescription = null,
     )
@@ -42,8 +45,8 @@ fun Star(modifier: Modifier, isFilled: Boolean) {
 fun StarPreview() {
     BanchangoTheme {
         Row {
-            Star(modifier = Modifier.size(40.dp), isFilled = true)
-            Star(modifier = Modifier.size(40.dp), isFilled = false)
+            Star(size = 40, isFilled = true)
+            Star(size = 40, isFilled = false)
         }
     }
 }
