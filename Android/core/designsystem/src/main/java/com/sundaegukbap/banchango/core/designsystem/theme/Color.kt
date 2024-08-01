@@ -14,6 +14,7 @@ val Orange = Color(0xFFFF7A00)
 val LightOrange = Color(0xFFFFC085)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
+val lightGray = Color(0xFFF5F1EE)
 
 // 투명도 50%
 val SemiTransparentOrange = Color(0x80FF7A00)
