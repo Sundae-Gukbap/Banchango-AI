@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.feature.recipe.detail
+package com.sundaegukbap.banchango.feature.recipe.extrainfo
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,28 +24,38 @@ import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.feature.recipe.difficulty.Stars
 
 @Composable
-fun RecipeDetailInfo(
+fun RecipeExtraInfo(
     difficulty: RecipeDifficulty,
     serving: Int,
     cookingTime: Int,
     paddingHorizontal: Int,
-    modifier: Modifier = Modifier
+    fontSize: Int,
+    starSize: Int,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         RecipeDetailDifficulty(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterVertically)
-                .padding(horizontal = paddingHorizontal.dp),
-            difficulty = difficulty
+            modifier =
+                Modifier
+                    .wrapContentSize()
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = paddingHorizontal.dp),
+            difficulty = difficulty,
+            textSize = fontSize,
+            starSize = starSize,
         )
 
         RecipeLine(alignment = Alignment.CenterVertically)
 
         DetailText(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically),
             text = "${serving}인분",
-            paddingHorizontal = paddingHorizontal
+            paddingHorizontal = paddingHorizontal,
+            fontSize = fontSize,
         )
 
         RecipeLine(alignment = Alignment.CenterVertically)
@@ -53,30 +63,34 @@ fun RecipeDetailInfo(
         DetailText(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = "${cookingTime}m",
-            paddingHorizontal = paddingHorizontal
+            paddingHorizontal = paddingHorizontal,
+            fontSize = fontSize,
         )
     }
 }
 
 @Composable
 private fun RecipeDetailDifficulty(
+    difficulty: RecipeDifficulty,
+    textSize: Int,
+    starSize: Int,
     modifier: Modifier = Modifier,
-    difficulty: RecipeDifficulty
 ) {
     Column(modifier = modifier) {
         Stars(
+            starSize = starSize,
+            filledCount = difficulty.level,
             modifier = Modifier.wrapContentSize(),
-            starSize = 14,
-            filledCount = difficulty.level
         )
         Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally),
             text = difficulty.explain,
-            fontSize = 12.sp,
+            fontSize = textSize.sp,
             fontWeight = Bold,
             color = Orange,
+            modifier =
+                Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
         )
     }
 }
@@ -84,30 +98,33 @@ private fun RecipeDetailDifficulty(
 @Composable
 private fun RowScope.RecipeLine(alignment: Alignment.Vertical) {
     VerticalDivider(
-        modifier = Modifier
-            .height(52.dp)
-            .align(alignment),
+        modifier =
+            Modifier
+                .height(52.dp)
+                .align(alignment),
         color = LightOrange,
-        thickness = 2.dp
+        thickness = 2.dp,
     )
 }
 
 @Composable
 private fun RowScope.DetailText(
-    modifier: Modifier = Modifier,
     paddingHorizontal: Int,
-    text: String
+    text: String,
+    fontSize: Int,
+    modifier: Modifier = Modifier,
 ) {
     Text(
-        modifier = modifier
-            .wrapContentSize()
-            .padding(horizontal = paddingHorizontal.dp)
-            .align(Alignment.CenterVertically),
         text = text,
-        fontSize = 12.sp,
+        fontSize = fontSize.sp,
         fontWeight = Bold,
         color = Orange,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        modifier =
+            modifier
+                .wrapContentSize()
+                .padding(horizontal = paddingHorizontal.dp)
+                .weight(1f),
     )
 }
 
@@ -115,12 +132,13 @@ private fun RowScope.DetailText(
 @Composable
 fun RecipeDetailInfoPreview() {
     BanchangoTheme {
-        RecipeDetailInfo(
+        RecipeExtraInfo(
             difficulty = RecipeDifficulty.ADVANCED,
             serving = 2,
             cookingTime = 30,
             20,
+            fontSize = 12,
+            starSize = 20,
         )
     }
 }
-

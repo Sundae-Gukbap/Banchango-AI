@@ -1,18 +1,26 @@
 package com.sundaegukbap.banchango.feature.recipe.recommend
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.VerticalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +29,7 @@ import com.sundaegukbap.banchango.Recipe
 import com.sundaegukbap.banchango.RecipeDifficulty
 import com.sundaegukbap.banchango.RecommendedRecipe
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
-import kotlin.math.absoluteValue
+import com.sundaegukbap.banchango.feature.reciperecommend.R
 
 @Composable
 fun RecipeRecommendRoute(
@@ -42,7 +50,6 @@ fun RecipeRecommendRoute(
         padding = padding,
         uiState = uiState,
         onLikeClick = { viewModel.likeRecipe(it) },
-        onLastPageVisible = { viewModel.getRecipeRecommendation() },
         onRecipeClick = onRecipeClick,
         onChangeSystemBarsColor = onChangeStatusBarColor,
     )
@@ -53,10 +60,10 @@ fun RecipeRecommendContent(
     padding: PaddingValues,
     uiState: RecipeRecommendUiState,
     onLikeClick: (Recipe) -> Unit,
-    onLastPageVisible: () -> Unit,
     onRecipeClick: (Recipe) -> Unit,
     onChangeSystemBarsColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
+    onChangeSystemBarsColor(Color.White, true)
     when (uiState) {
         is RecipeRecommendUiState.Loading -> {
             RecipeRecommendLoading(
@@ -70,7 +77,6 @@ fun RecipeRecommendContent(
                 recipeRecommends = uiState.recipes,
                 padding = padding,
                 onLikeClick = onLikeClick,
-                onLastPageVisible = onLastPageVisible,
                 onRecipeClick = onRecipeClick,
             )
         }
@@ -93,112 +99,101 @@ private fun RecipeRecommendScreen(
     recipeRecommends: List<RecipeRecommendItemUiState>,
     onLikeClick: (Recipe) -> Unit,
     onRecipeClick: (Recipe) -> Unit,
-    onLastPageVisible: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = { recipeRecommends.size + 1 })
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        VerticalPager(
-            modifier = Modifier.padding(padding),
-            state = pagerState,
-            contentPadding = PaddingValues(vertical = 136.dp, horizontal = 32.dp),
-            pageSpacing = 24.dp,
-        ) { page ->
-            if (page >= recipeRecommends.size - 2) {
-                onLastPageVisible()
-            }
-            val pageOffset =
-                (pagerState.currentPage - page + pagerState.currentPageOffsetFraction).absoluteValue
-
-            if (page == pagerState.pageCount - 1) {
-                RecipeRecommendLoading(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                )
-            } else {
-                RecipeItem(
-                    recipeItemUiState = recipeRecommends[page],
-                    onRecipeClick = onRecipeClick,
-                    onRecipeLikeClick = onLikeClick,
-                    pageOffset = pageOffset,
+    val listState = rememberLazyListState()
+    LazyColumn(state = listState, contentPadding = PaddingValues(20.dp)) {
+        item {
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(text = "AI 레시피 추천", fontWeight = FontWeight.Bold)
+                Image(
+                    painterResource(id = R.drawable.ic_refresh),
+                    contentDescription = "refresh",
+                    modifier = Modifier.align(Alignment.CenterEnd)
                 )
             }
+        }
+        items(recipeRecommends) { item ->
+            RecipeItem(item, onRecipeClick, onLikeClick)
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun RecipePagePreview() {
     BanchangoTheme {
         RecipeRecommendContent(
             padding = PaddingValues(16.dp),
             onLikeClick = {},
-            onLastPageVisible = {},
             onRecipeClick = {},
             onChangeSystemBarsColor = { _, _ -> },
             uiState =
-                RecipeRecommendUiState.Success(
-                    listOf(
-                        RecipeRecommendItemUiState(
-                            recommendedRecipe =
-                                RecommendedRecipe(
-                                    recipe =
-                                        Recipe(
-                                            id = 1,
-                                            name = "간장계란볶음밥",
-                                            introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                                            image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                                            link = "https://www.10000recipe.com/recipe/6889616",
-                                            cookingTime = 10,
-                                            servings = 2,
-                                            difficulty = RecipeDifficulty.BEGINNER,
-                                        ),
-                                    hadIngredients = listOf(),
-                                    neededIngredients = listOf(),
-                                ),
-                            isLiked = false,
+            RecipeRecommendUiState.Success(
+                listOf(
+                    RecipeRecommendItemUiState(
+                        recommendedRecipe =
+                        RecommendedRecipe(
+                            recipe =
+                            Recipe(
+                                id = 1,
+                                name = "간장계란볶음밥",
+                                introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+                                image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                                link = "https://www.10000recipe.com/recipe/6889616",
+                                cookingTime = 10,
+                                servings = 2,
+                                difficulty = RecipeDifficulty.BEGINNER,
+                            ),
+                            hadIngredients = listOf(),
+                            neededIngredients = listOf(),
                         ),
-                        RecipeRecommendItemUiState(
-                            recommendedRecipe =
-                                RecommendedRecipe(
-                                    recipe =
-                                        Recipe(
-                                            id = 1,
-                                            name = "간장계란볶음밥",
-                                            introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                                            image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                                            link = "https://www.10000recipe.com/recipe/6889616",
-                                            cookingTime = 10,
-                                            servings = 2,
-                                            difficulty = RecipeDifficulty.BEGINNER,
-                                        ),
-                                    hadIngredients = listOf(),
-                                    neededIngredients = listOf(),
-                                ),
-                            isLiked = false,
+                        isLiked = false,
+                    ),
+                    RecipeRecommendItemUiState(
+                        recommendedRecipe =
+                        RecommendedRecipe(
+                            recipe =
+                            Recipe(
+                                id = 1,
+                                name = "간장계란볶음밥",
+                                introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+                                image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                                link = "https://www.10000recipe.com/recipe/6889616",
+                                cookingTime = 10,
+                                servings = 2,
+                                difficulty = RecipeDifficulty.BEGINNER,
+                            ),
+                            hadIngredients = listOf(),
+                            neededIngredients = listOf(),
                         ),
-                        RecipeRecommendItemUiState(
-                            recommendedRecipe =
-                                RecommendedRecipe(
-                                    recipe =
-                                        Recipe(
-                                            id = 1,
-                                            name = "간장계란볶음밥",
-                                            introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
-                                            image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
-                                            link = "https://www.10000recipe.com/recipe/6889616",
-                                            cookingTime = 10,
-                                            servings = 2,
-                                            difficulty = RecipeDifficulty.BEGINNER,
-                                        ),
-                                    hadIngredients = listOf(),
-                                    neededIngredients = listOf(),
-                                ),
-                            isLiked = false,
+                        isLiked = false,
+                    ),
+                    RecipeRecommendItemUiState(
+                        recommendedRecipe =
+                        RecommendedRecipe(
+                            recipe =
+                            Recipe(
+                                id = 1,
+                                name = "간장계란볶음밥",
+                                introduction = "아주 간단하면서 맛있는 계란간장볶음밥으로 한끼식사 만들어보세요. 아이들이 더 좋아할거예요.",
+                                image = "https://recipe1.ezmember.co.kr/cache/recipe/2018/05/26/d0c6701bc673ac5c18183b47212a58571.jpg",
+                                link = "https://www.10000recipe.com/recipe/6889616",
+                                cookingTime = 10,
+                                servings = 2,
+                                difficulty = RecipeDifficulty.BEGINNER,
+                            ),
+                            hadIngredients = listOf(),
+                            neededIngredients = listOf(),
                         ),
+                        isLiked = false,
                     ),
                 ),
+            ),
         )
     }
 }
