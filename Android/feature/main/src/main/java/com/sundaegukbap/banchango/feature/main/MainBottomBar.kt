@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
@@ -40,6 +39,7 @@ internal fun MainBottomBar(
     tabs: PersistentList<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -47,8 +47,7 @@ internal fun MainBottomBar(
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
         Row(
-            modifier = Modifier
-                .navigationBarsPadding()
+            modifier = modifier
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(

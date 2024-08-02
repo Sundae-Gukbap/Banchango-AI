@@ -2,6 +2,7 @@ package com.sundaegukbap.banchango.feature.recipe.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sundaegukbap.banchango.LikableRecipe
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +25,9 @@ class RecipeDetailViewModel
             viewModelScope.launch {
                 recipeRepository
                     .getRecipeDetail(recipeId)
-                    .onSuccess { likableRecipe ->
+                    .onSuccess { recommendedRecipe ->
                         _uiState.value =
-                            RecipeDetailUiState.Success(likableRecipe)
+                            RecipeDetailUiState.Success(LikableRecipe(recommendedRecipe, false))
                     }.onFailure { throwable ->
                         _uiState.value = RecipeDetailUiState.Error(throwable)
                     }
