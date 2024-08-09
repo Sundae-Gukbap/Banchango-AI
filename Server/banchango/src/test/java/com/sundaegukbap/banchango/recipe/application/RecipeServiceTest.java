@@ -55,7 +55,7 @@ public class RecipeServiceTest {
                 .id(1L)
                 .name("간장계란밥")
                 .introduction("맛있습니다.")
-                .image("image.png")
+                .image1("image.png")
                 .link("link")
                 .servings(4)
                 .cookingTime(30)
