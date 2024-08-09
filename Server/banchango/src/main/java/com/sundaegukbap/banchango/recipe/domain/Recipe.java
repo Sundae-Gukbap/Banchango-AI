@@ -29,7 +29,8 @@ public class Recipe {
     @Column(length=2048)
     private String introduction;
     @NotNull
-    private String image;
+    private String image1;
+    private String image2;
     @NotNull
     private String link;
     @NotNull
@@ -41,11 +42,11 @@ public class Recipe {
     private Difficulty difficulty;
 
     @Builder
-    public Recipe(Long id, String name, String introduction, String image, String link, int servings, int cookingTime, Difficulty difficulty) {
+    public Recipe(Long id, String name, String introduction, String image1, String link, int servings, int cookingTime, Difficulty difficulty) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
-        this.image = image;
+        this.image1 = image1;
         this.link = link;
         this.servings = servings;
         this.cookingTime = cookingTime;
