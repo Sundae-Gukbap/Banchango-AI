@@ -23,13 +23,20 @@ struct RecipeDetailView: View {
     
     
     var body: some View {
-        Text(String(recipeDetailVM.recipes!.id))
-        Text(String(recipeDetailVM.recipes!.name))
-        Text(String(recipeDetailVM.recipes!.introduction))
-        Text(String(recipeId))
+        AsyncImage(url: URL(string: recipeDetailVM.recipes?.image ?? "")) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .frame(width: .infinity, height: .infinity)
+        } placeholder: {
+            Color.gray.opacity(0.3)
+        }
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+        Text(String(recipeDetailVM.recipes?.name ?? ""))
+        Text(String(recipeDetailVM.recipes?.introduction ?? ""))
     }
 }
 
 #Preview {
-    RecipeDetailView(userId: 1, recipeId:6952728)
+    RecipeDetailView(userId: 1, recipeId:6988019)
 }

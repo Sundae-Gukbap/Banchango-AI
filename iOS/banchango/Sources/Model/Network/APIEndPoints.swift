@@ -30,7 +30,6 @@ struct HTTPClient {
     }
     
     static func getDetailRecipe(userId: Int, recipeId:Int, completion: @escaping (Result<DetailRecipe, NetworkError>) -> Void) {
-        print("hello")
         guard let url = URL.recipeDetailURL(userId: userId, recipeId: recipeId) else {
             return completion(.failure(.badURL))
         }
