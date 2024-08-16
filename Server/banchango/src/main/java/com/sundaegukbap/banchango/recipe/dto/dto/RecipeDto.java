@@ -7,7 +7,7 @@ public record RecipeDto(
         Long id,
         String name,
         String introduction,
-        String image,
+        String image1,
         String link,
         int servings,
         int cookingTime,
