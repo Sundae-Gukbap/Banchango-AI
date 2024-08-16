@@ -6,7 +6,7 @@ public record IngredientDto(
         Long id,
         String name,
         String kind,
-        String image1
+        String image
 ) {
     public static IngredientDto of(Ingredient ingredient){
         return new IngredientDto(
