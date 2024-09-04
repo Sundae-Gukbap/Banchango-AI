@@ -1,6 +1,8 @@
 package com.sundaegukbap.banchango.core.data.di
 
+import com.sundaegukbap.banchango.core.data.repository.DefaultIngredientRepository
 import com.sundaegukbap.banchango.core.data.repository.DefaultRecipeRepository
+import com.sundaegukbap.banchango.core.data.repository.api.IngredientRepository
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
 import dagger.Binds
 import dagger.Module
@@ -12,4 +14,7 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class RepositoryModule {
     @Binds
     abstract fun bindsRecipeRepository(recipeRepository: DefaultRecipeRepository): RecipeRepository
+
+    @Binds
+    abstract fun bindsIngredientRepository(ingredientRepository: DefaultIngredientRepository): IngredientRepository
 }

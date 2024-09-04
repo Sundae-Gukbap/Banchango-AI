@@ -2,6 +2,7 @@ package com.sundaegukbap.banchango.core.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sundaegukbap.banchango.core.data.BuildConfig
+import com.sundaegukbap.banchango.core.data.api.IngredientApi
 import com.sundaegukbap.banchango.core.data.api.RecipeApi
 import dagger.Module
 import dagger.Provides
@@ -55,4 +56,10 @@ internal object ApiModule {
     fun providesRecipeRecommendApi(
         @DefaultRetrofitQualifier retrofit: Retrofit
     ): RecipeApi = retrofit.create(RecipeApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesIngredientApi(
+        @DefaultRetrofitQualifier retrofit: Retrofit
+    ): IngredientApi = retrofit.create(IngredientApi::class.java)
 }
