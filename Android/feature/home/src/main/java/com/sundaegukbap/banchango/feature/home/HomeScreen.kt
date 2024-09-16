@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,6 +92,7 @@ private fun HomeScreen(
             val containerColor = if (isEven) LightOrange else Gray
             val itemColor = if (isEven) Gray else White
             val buttonColor = if (isEven) White else Gray
+            val ingredientContainerNameColor = if (isEven) White else LightOrange
 
             ElevatedCard(
                 colors = CardDefaults.elevatedCardColors().copy(containerColor = containerColor),
@@ -106,11 +108,14 @@ private fun HomeScreen(
                     Text(
                         modifier = Modifier.weight(0.4f),
                         fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = ingredientContainerNameColor,
                         text = ingredientContainer.container.name
                     )
                     Spacer(modifier = Modifier.weight(0.5f))
                     Icon(
                         modifier = Modifier.weight(0.1f),
+                        tint = ingredientContainerNameColor,
                         painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = null
                     )
@@ -124,7 +129,6 @@ private fun HomeScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentSize()
                             .padding(horizontal = 16.dp, vertical = 16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween // Distributes items evenly
                     ) {
@@ -133,21 +137,20 @@ private fun HomeScreen(
                             containerColor = itemColor,
                             kindIngredientContainer = kindIngredients[index],
                             buttonColor = buttonColor,
-                            modifier = Modifier.width(150.dp) // Fixed width for consistent size
+                            modifier = Modifier.weight(0.4f) // Fixed width for consistent size
                         )
-
+                        Spacer(modifier = Modifier.width(20.dp))
                         // Check for the second item
                         if (index + 1 < totalIngredients) {
-                            Spacer(modifier = Modifier.width(20.dp)) // Spacer between items
                             IngredientItem(
                                 kindIngredientContainer = kindIngredients[index + 1],
-                                modifier = Modifier.width(150.dp), // Fixed width for consistent size
+                                modifier = Modifier.weight(0.4f), // Fixed width for consistent size
                                 containerColor = itemColor,
                                 buttonColor = buttonColor,
                             )
                         } else {
                             // If the second item does not exist, add a spacer for alignment
-                            Spacer(modifier = Modifier.weight(1f)) // Takes remaining space
+                            Spacer(modifier = Modifier.weight(0.4f)) // Takes remaining space
                         }
                     }
                 }
@@ -180,7 +183,6 @@ private fun AddContainerButton(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IngredientItem(
     containerColor: Color,
@@ -203,10 +205,12 @@ private fun IngredientItem(
                 )
                 Spacer(modifier = Modifier.weight(0.3f))
                 Text(
-                    modifier = Modifier.background(
-                        color = buttonColor,
-                        shape = RoundedCornerShape(20.dp)
-                    ).padding(horizontal = 16.dp, vertical = 4.dp),
+                    modifier = Modifier
+                        .background(
+                            color = buttonColor,
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                     text = ingredients.size.toString() + "개",
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
