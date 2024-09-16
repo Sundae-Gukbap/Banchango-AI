@@ -2,19 +2,24 @@ package com.sundaegukbap.banchango.core.data.di
 
 import com.sundaegukbap.banchango.core.data.repository.DefaultIngredientRepository
 import com.sundaegukbap.banchango.core.data.repository.DefaultRecipeRepository
+import com.sundaegukbap.banchango.core.data.repository.FakeIngredientRepository
+import com.sundaegukbap.banchango.core.data.repository.FakeRecipeRepository
 import com.sundaegukbap.banchango.core.data.repository.api.IngredientRepository
 import com.sundaegukbap.banchango.core.data.repository.api.RecipeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal abstract class RepositoryModule {
+internal interface RepositoryModule {
+    @Singleton
     @Binds
-    abstract fun bindsRecipeRepository(recipeRepository: DefaultRecipeRepository): RecipeRepository
+    fun bindsRecipeRepository(recipeRepository: FakeRecipeRepository): RecipeRepository
 
+    @Singleton
     @Binds
-    abstract fun bindsIngredientRepository(ingredientRepository: DefaultIngredientRepository): IngredientRepository
+    fun bindsIngredientRepository(ingredientRepository: FakeIngredientRepository): IngredientRepository
 }

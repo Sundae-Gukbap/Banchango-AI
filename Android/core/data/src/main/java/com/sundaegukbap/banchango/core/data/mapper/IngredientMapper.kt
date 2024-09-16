@@ -2,18 +2,19 @@ package com.sundaegukbap.banchango.core.data.mapper
 
 import com.sundaegukbap.banchango.Container
 import com.sundaegukbap.banchango.Ingredient
-import com.sundaegukbap.banchango.IngredientContainer
+import com.sundaegukbap.banchango.ContainerIngredient
 import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.core.data.api.model.ContainerDto
 import com.sundaegukbap.banchango.core.data.api.model.ContainerIngredientDto
 import com.sundaegukbap.banchango.core.data.api.model.IngredientDto
+import java.time.LocalDateTime
 
-internal fun ContainerIngredientDto.toData() = IngredientContainer(
+internal fun ContainerIngredientDto.toData() = ContainerIngredient(
     id = containerIngredientId,
     container = containerDto.toData(),
     ingredient = ingredientDto.toData(),
-    createdAt = createdAt,
-    expirationDate = expirationDate
+    createdAt = LocalDateTime.parse(createdAt),
+    expirationDate = LocalDateTime.parse(expirationDate)
 )
 
 internal fun ContainerDto.toData() = Container(
@@ -22,7 +23,7 @@ internal fun ContainerDto.toData() = Container(
 )
 
 internal fun IngredientDto.toData() = Ingredient(
-    id = ingredientId,
+    id = id,
     name = name,
     kind = when (kind) {
         "육류" -> IngredientKind.MEAT
@@ -32,5 +33,5 @@ internal fun IngredientDto.toData() = Ingredient(
         "기타" -> IngredientKind.ETC
         else -> IngredientKind.ETC
     },
-    image = image
+    image = image ?: ""
 )

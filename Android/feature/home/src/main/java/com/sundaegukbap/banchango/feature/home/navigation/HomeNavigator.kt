@@ -6,8 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.sundaegukbap.banchango.feature.home.HomeScreen
+import com.sundaegukbap.banchango.feature.home.HomeRoute
 import com.sundaegukbap.banchango.navigation.MainTabRoute
+import com.sundaegukbap.banchango.navigation.Route
 
 fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(MainTabRoute.Home, navOptions)
@@ -18,6 +19,6 @@ fun NavGraphBuilder.homeNavGraph(
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
 ) {
     composable<MainTabRoute.Home> {
-        HomeScreen(padding, onChangeStatusBarColor)
+        HomeRoute(padding, onChangeStatusBarColor)
     }
 }

@@ -55,6 +55,7 @@ dependencies {
 
     // modules
     implementation(project(":feature:main"))
+    implementation(project(":core:data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
