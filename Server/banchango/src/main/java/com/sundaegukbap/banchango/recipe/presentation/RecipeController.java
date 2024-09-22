@@ -25,14 +25,14 @@ public class RecipeController {
     }
 
     @GetMapping("/recommand/{userId}")
-    @Operation(description = "추천 레시피를 조회한다.")
+    @Operation(summary = "추천 레시피 목록 조회", description = "추천 레시피 목록을 조회한다.")
     public ResponseEntity<RecommandedRecipeResponses> getRecommandedRecipes(@PathVariable("userId") Long userId) {
         RecommandedRecipeResponses response = recipeService.getRecommandedRecipes(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/{recipeId}")
-    @Operation(description = "레시피를 조회한다.")
+    @Operation(summary = "특정 레시피 상세 조회", description = "레시피를 조회한다.")
     public ResponseEntity<RecommandedRecipeResponse> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
         RecommandedRecipeResponse response = recipeService.getRecipeDetail(userId,recipeId);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -23,37 +23,37 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-    @PostMapping ("/{userId}")
-    @Operation(description = "소유한 재료를 추가한다.")
+    @PostMapping("/{userId}")
+    @Operation(summary = "소유 재료 추가", description = "소유한 재료를 추가한다.")
     public ResponseEntity<String> insertIngredient(@PathVariable("userId") Long userId,
                                                    @RequestBody IngredientInsertRequest request) {
         ingredientService.insertIngredient(userId, request);
         return new ResponseEntity<>("success add ingredient", HttpStatus.OK);
     }
 
-    @DeleteMapping ("/{containerIngredientId}")
-    @Operation(description = "소유한 재료를 제거한다.")
+    @DeleteMapping("/{containerIngredientId}")
+    @Operation(summary = "소유 재료 제거", description = "소유한 재료를 제거한다.")
     public ResponseEntity<String> removeIngredient(@PathVariable("containerIngredientId") Long containerIngredientId) {
         ingredientService.removeIngredient(containerIngredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
     }
 
-    @GetMapping ("/{containerIngredientId}")
-    @Operation(description = "소유한 재료의 상세 정보를 확인한다.")
+    @GetMapping("/{containerIngredientId}")
+    @Operation(summary = "재료 상세 정보 조회", description = "소유한 재료의 상세 정보를 확인한다.")
     public ResponseEntity<ContainerIngredientDto> getIngredientInfo(@PathVariable("containerIngredientId") Long containerIngredientId) {
         ContainerIngredientDto response = ingredientQueryService.getIngredientInfo(containerIngredientId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/main/list/{userId}")
-    @Operation(description = "사용자가 소유한 전체 재료 목록을 조회한다.")
+    @Operation(summary = "소유한 재료 전체 조회", description = "사용자가 소유한 전체 재료 목록을 조회한다.")
     public ResponseEntity<ContainerIngredientDtos> getUserIngredients(@PathVariable("userId") Long userId) {
         ContainerIngredientDtos response = ingredientQueryService.getUserIngredients(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/container/list/{containerId}")
-    @Operation(description = "특정 창고에 속한 재료 목록을 조회한다.")
+    @Operation(summary = "특정 창고 재료 목록 조회", description = "특정 창고에 속한 재료 목록을 조회한다.")
     public ResponseEntity<ContainerIngredientDtos> getContainerIngredients(@PathVariable("containerId") Long containerId) {
         ContainerIngredientDtos response = ingredientQueryService.getContainerIngredients(containerId);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -20,8 +20,8 @@ public class ContainerController {
     }
 
     @PostMapping("/{userId}")
-    @Operation(description = "식자재 창고를 추가한다.")
-    public ResponseEntity<String> insertIngredient(@PathVariable("userId") Long userId,
+    @Operation(summary = "식자재 창고 추가", description = "식자재 창고를 추가한다.")
+    public ResponseEntity<String> createContainer(@PathVariable("userId") Long userId,
                                                    @RequestBody ContainerInsertRequest request) {
         containerService.createContainer(userId, request);
         return new ResponseEntity<>("success add container", HttpStatus.OK);
