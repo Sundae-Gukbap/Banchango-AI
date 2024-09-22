@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
@@ -42,9 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.sundaegukbap.banchango.Container
 import com.sundaegukbap.banchango.ContainerIngredient
 import com.sundaegukbap.banchango.Ingredient
@@ -56,6 +53,7 @@ import com.sundaegukbap.banchango.core.designsystem.theme.Gray
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.White
+import com.sundaegukbap.banchango.feature.home.component.IngredientItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
@@ -132,19 +130,11 @@ private fun KindIngredientContainerDetailScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(kindIngredientContainer.ingredients) { ingredient ->
-                val dDay = ChronoUnit.DAYS.between(
-                    LocalDateTime.now(),
-                    ingredient.expirationDate,
+                IngredientItem(
+                    ingredient = ingredient.ingredient,
+                    expirationDate = ingredient.expirationDate,
+                    createdAt = ingredient.createdAt
                 )
-                Card(modifier = Modifier.height(200.dp)) {
-                    Text(
-                        text = ingredient.ingredient.name,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = "D - $dDay", style = MaterialTheme.typography.bodyMedium)
-                }
             }
         }
     }
@@ -239,7 +229,7 @@ private fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween // Distributes items evenly
                     ) {
                         // First IngredientItem
-                        IngredientItem(
+                        KindIngredientContainerItem(
                             containerColor = itemColor,
                             kindIngredientContainer = kindIngredients[index],
                             buttonColor = buttonColor,
@@ -249,7 +239,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.width(20.dp))
                         // Check for the second item
                         if (index + 1 < totalIngredients) {
-                            IngredientItem(
+                            KindIngredientContainerItem(
                                 kindIngredientContainer = kindIngredients[index + 1],
                                 modifier = Modifier.weight(0.4f), // Fixed width for consistent size
                                 containerColor = itemColor,
@@ -298,7 +288,7 @@ private fun AddContainerButton(
 }
 
 @Composable
-private fun IngredientItem(
+private fun KindIngredientContainerItem(
     containerColor: Color,
     buttonColor: Color,
     kindIngredientContainer: KindIngredientContainer,
@@ -364,7 +354,7 @@ private fun IngredientItem(
 @Composable
 private fun PreviewIngredientItem() {
     BanchangoTheme {
-        IngredientItem(
+        KindIngredientContainerItem(
             containerColor = White,
             buttonColor = Gray,
             onIngredientItemClicked = { _ -> },

@@ -14,7 +14,7 @@ import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NetworkImage(modifier: Modifier, url: String) {
+fun NetworkImage(url: String, modifier: Modifier = Modifier) {
     GlideImage(
         model = url,
         contentScale = ContentScale.Crop,
