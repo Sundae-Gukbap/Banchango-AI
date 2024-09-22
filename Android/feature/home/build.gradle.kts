@@ -70,6 +70,11 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
 
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.viewmodel)
+    implementation(libs.orbit.compose)
+    testImplementation(libs.orbit.test)
+
     // status bar
     implementation(libs.accompanist.systemuicontroller)
 
