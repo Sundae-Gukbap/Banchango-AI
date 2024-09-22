@@ -58,6 +58,6 @@ jobs:
         script: |
           docker pull ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
           docker stop $(docker ps -a -q)
-          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.SERVER_DOCKER_USERNAME }}/bnchango:latest
+          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
           docker rm $(docker ps --filter 'status=exited' -a -q)
           docker image prune -a -f
