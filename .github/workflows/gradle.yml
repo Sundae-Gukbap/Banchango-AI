@@ -43,22 +43,22 @@ jobs:
 
     - name: Docker build
       run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker login -u ${{ secrets.SERVER_DOCKER_USERNAME }} -p ${{ secrets.SERVER_DOCKER_PASSWORD }}
         docker build -t app .
-        docker tag app ${{ secrets.DOCKER_USERNAME }}/banchango:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/banchango:latest
+        docker tag app ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
+        docker push ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
         
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }} # EC2 인스턴스 퍼블릭 DNS
+        host: ${{ secrets.SERVER_HOST }} # EC2 인스턴스 퍼블릭 DNS
         username: ec2-user
-        key: ${{ secrets.PRIVATE_KEY }} # pem 키
+        key: ${{ secrets.SERVER_PEM_KEY }} # pem 키
         # 도커 작업
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/banchango:latest
+          docker pull ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
           docker stop $(docker ps -a -q)
-          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/bnchango:latest
+          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.SERVER_DOCKER_USERNAME }}/bnchango:latest
           docker rm $(docker ps --filter 'status=exited' -a -q)
           docker image prune -a -f
 
