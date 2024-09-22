@@ -20,14 +20,14 @@ public class RecipeBookmarkController {
     }
 
     @GetMapping("/{userId}")
-    @Operation(description = "레시피 북마크 리스트를 조회한다.")
+    @Operation(summary = "북마크한 레시피 목록 조회", description = "레시피 북마크 리스트를 조회한다.")
     public ResponseEntity<List> getRecommandRecipes(@PathVariable("userId") Long userId) {
         List<Long> response = recipeBookmarkService.getBookmarkedRecipes(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{userId}/{recipeId}")
-    @Operation(description = "레시피 북마크를 할당/해제 한다.")
+    @Operation(summary = "레시피 북마크 할당/해제", description = "레시피 북마크를 할당/해제 한다.")
     public ResponseEntity<String> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
         String response = recipeBookmarkService.clickBookmark(userId,recipeId);
         return new ResponseEntity<>(response, HttpStatus.OK);
