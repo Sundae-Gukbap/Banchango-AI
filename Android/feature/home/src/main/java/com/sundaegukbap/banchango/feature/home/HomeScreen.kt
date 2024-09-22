@@ -1,7 +1,11 @@
 package com.sundaegukbap.banchango.feature.home
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,40 +15,36 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Label
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.sundaegukbap.banchango.Container
 import com.sundaegukbap.banchango.ContainerIngredient
 import com.sundaegukbap.banchango.Ingredient
@@ -56,7 +56,8 @@ import com.sundaegukbap.banchango.core.designsystem.theme.Gray
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.White
-import com.sundaegukbap.banchango.core.designsystem.theme.lightGray
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -66,12 +67,114 @@ fun HomeRoute(
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val ingredientContainers by viewModel.ingredientContainers.collectAsStateWithLifecycle()
+    val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val localContext = LocalContext.current
+
+    LaunchedEffect(true) {
+        viewModel.container.sideEffectFlow.onEach {
+            Toast.makeText(localContext, it, Toast.LENGTH_SHORT).show()
+        }.launchIn(this)
+    }
 
     HomeScreen(
         padding = padding,
-        ingredientContainers = ingredientContainers,
-        onChangeStatusBarColor = onChangeStatusBarColor
+        ingredientContainers = state.ingredientContainers,
+        onChangeStatusBarColor = onChangeStatusBarColor,
+        onContainerAddClicked = viewModel::addContainer,
+        onKindContainerClicked = viewModel::getKindIngredientContainerDetail,
+    )
+
+    if (state.isDetailShowing && state.kindIngredientContainerDetail != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            KindIngredientContainerDetailScreen(
+                padding = padding,
+                kindIngredientContainer = state.kindIngredientContainerDetail!!,
+                onBackClicked = viewModel::closeDetail,
+            )
+        }
+    }
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+@Composable
+private fun KindIngredientContainerDetailScreen(
+    padding: PaddingValues,
+    kindIngredientContainer: KindIngredientContainer,
+    onBackClicked: () -> Unit
+) {
+    BackHandler(onBack = onBackClicked)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White)
+            .padding(padding)
+            .padding(16.dp),
+    ) {
+        Text(
+            text = kindIngredientContainer.kind.label,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(kindIngredientContainer.ingredients) { ingredient ->
+                val dDay = ChronoUnit.DAYS.between(
+                    LocalDateTime.now(),
+                    ingredient.expirationDate,
+                )
+                Card(modifier = Modifier.height(200.dp)) {
+                    Text(
+                        text = ingredient.ingredient.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = "D - $dDay", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewKindIngredientContainerDetailScreen() {
+    KindIngredientContainerDetailScreen(
+        PaddingValues(16.dp),
+        KindIngredientContainer(
+            IngredientKind.VEGETABLE,
+            listOf(
+                ContainerIngredient(
+                    1,
+                    Container(1, "냉장 1"),
+                    Ingredient(2, "상추", IngredientKind.VEGETABLE, ""),
+                    LocalDateTime.now(),
+                    LocalDateTime.now()
+                ),
+                ContainerIngredient(
+                    1,
+                    Container(1, "냉장 1"),
+                    Ingredient(3, "배추", IngredientKind.VEGETABLE, ""),
+                    LocalDateTime.now(),
+                    LocalDateTime.now()
+                )
+            )
+        ),
+        onBackClicked = {}
     )
 }
 
@@ -79,6 +182,8 @@ fun HomeRoute(
 private fun HomeScreen(
     padding: PaddingValues,
     ingredientContainers: List<IngredientContainer>,
+    onContainerAddClicked: (name: String) -> Unit,
+    onKindContainerClicked: (container: Container, kind: IngredientKind) -> Unit,
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
     LazyColumn(
@@ -122,9 +227,10 @@ private fun HomeScreen(
                 }
                 val kindIngredients = ingredientContainer.kindIngredientContainers
                 val totalIngredients = kindIngredients.size
+                val onItemClicked: (kind: IngredientKind) -> Unit = { kind ->
+                    onKindContainerClicked(ingredientContainer.container, kind)
+                }
 
-
-                // Creating rows of two IngredientItems
                 for (index in 0 until totalIngredients step 2) {
                     Row(
                         modifier = Modifier
@@ -137,6 +243,7 @@ private fun HomeScreen(
                             containerColor = itemColor,
                             kindIngredientContainer = kindIngredients[index],
                             buttonColor = buttonColor,
+                            onIngredientItemClicked = onItemClicked,
                             modifier = Modifier.weight(0.4f) // Fixed width for consistent size
                         )
                         Spacer(modifier = Modifier.width(20.dp))
@@ -146,6 +253,7 @@ private fun HomeScreen(
                                 kindIngredientContainer = kindIngredients[index + 1],
                                 modifier = Modifier.weight(0.4f), // Fixed width for consistent size
                                 containerColor = itemColor,
+                                onIngredientItemClicked = onItemClicked,
                                 buttonColor = buttonColor,
                             )
                         } else {
@@ -157,17 +265,23 @@ private fun HomeScreen(
             }
             Spacer(modifier = Modifier.height(20.dp))
         }
-        item { AddContainerButton(if (ingredientContainers.size % 2 == 0) LightOrange else Gray) }
+        item {
+            AddContainerButton(
+                if (ingredientContainers.size % 2 == 0) LightOrange else Gray,
+                onAddClick = onContainerAddClicked
+            )
+        }
     }
 }
 
 @Composable
 private fun AddContainerButton(
     containerColor: Color,
+    onAddClick: (name: String) -> Unit,
 ) {
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
-        modifier = Modifier
+        modifier = Modifier.clickable(onClick = { onAddClick("냉장고") })
     ) {
         Column(
             modifier = Modifier
@@ -188,12 +302,14 @@ private fun IngredientItem(
     containerColor: Color,
     buttonColor: Color,
     kindIngredientContainer: KindIngredientContainer,
+    onIngredientItemClicked: (kind: IngredientKind) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = containerColor),
         modifier = modifier
             .height(106.dp)
+            .clickable(onClick = { onIngredientItemClicked(kindIngredientContainer.kind) })
     ) {
         Column(Modifier.padding(8.dp)) {
             val ingredients = kindIngredientContainer.ingredients
@@ -217,8 +333,6 @@ private fun IngredientItem(
                     color = Orange
                 )
             }
-
-            // 2개까지만 표시하고, 2개 이상일 경우 ... 표시
             ingredients.subList(0, minOf(ingredients.size, 2)).forEach { ingredient ->
                 val dDay = ChronoUnit.DAYS.between(
                     LocalDateTime.now(),
@@ -253,6 +367,7 @@ private fun PreviewIngredientItem() {
         IngredientItem(
             containerColor = White,
             buttonColor = Gray,
+            onIngredientItemClicked = { _ -> },
             kindIngredientContainer = KindIngredientContainer(
                 IngredientKind.VEGETABLE,
                 listOf(
@@ -323,7 +438,9 @@ private fun PreviewHomeScreen() {
                         )
                     )
                 )
-            )
+            ),
+            onContainerAddClicked = {},
+            onKindContainerClicked = { _, _ -> }
         )
     }
 }

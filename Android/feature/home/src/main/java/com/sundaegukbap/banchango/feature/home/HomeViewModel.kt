@@ -1,45 +1,96 @@
 package com.sundaegukbap.banchango.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sundaegukbap.banchango.Container
 import com.sundaegukbap.banchango.ContainerIngredients
-import com.sundaegukbap.banchango.IngredientContainer
+import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.core.data.repository.api.IngredientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val ingredientRepository: IngredientRepository
-) : ViewModel() {
+) : ViewModel(), ContainerHost<HomeState, String> {
 
     private var containerIngredients: ContainerIngredients = ContainerIngredients(emptyList())
-
-    private val _ingredientContainers: MutableStateFlow<List<IngredientContainer>> =
-        MutableStateFlow(emptyList())
-    val ingredientContainers: StateFlow<List<IngredientContainer>> =
-        _ingredientContainers.asStateFlow()
+    override val container = container<HomeState, String>(HomeState())
 
     init {
-        viewModelScope.launch {
-            ingredientRepository.getIngredientContainers()
-                .onSuccess {
-                    containerIngredients = ContainerIngredients(it)
-                    _ingredientContainers.value = containerIngredients.getIngredientContainers()
-                    Log.d(
-                        "asdf",
-                        "containerIngredients: ${containerIngredients.getIngredientContainers()}"
-                    )
-                }.onFailure {
-                    Log.e("asdf", "Failed to get ingredient containers", it)
-                }
+        intent {
+            viewModelScope.launch {
+                reduce { state.copy(isLoading = true) }
+                ingredientRepository.getIngredientContainers()
+                    .onSuccess {
+                        containerIngredients = ContainerIngredients(it)
+                        reduce {
+                            state.copy(
+                                ingredientContainers = containerIngredients.getIngredientContainers(),
+                                isLoading = false
+                            )
+                        }
+                    }.onFailure {
+                        postSideEffect("Failed to get ingredient containers")
+                        reduce { state.copy(isLoading = false) }
+                    }
+            }
+        }
+    }
+
+    fun addContainer(containerName: String) {
+        intent {
+            viewModelScope.launch {
+                reduce { state.copy(isLoading = true) }
+                ingredientRepository.addIngredientContainer(containerName)
+                    .onSuccess {
+                        ingredientRepository.getIngredientContainers()
+                            .onSuccess {
+                                containerIngredients = ContainerIngredients(it)
+                                reduce {
+                                    state.copy(
+                                        ingredientContainers = containerIngredients.getIngredientContainers(),
+                                        isLoading = false
+                                    )
+                                }
+                            }.onFailure {
+                                reduce { state.copy(isLoading = false) }
+                                postSideEffect("Failed to get ingredient containers")
+                            }
+                    }.onFailure {
+                        reduce { state.copy(isLoading = false) }
+                        postSideEffect("Failed to add ingredient container")
+                    }
+            }
+        }
+    }
+
+    fun getKindIngredientContainerDetail(container: Container, kind: IngredientKind) {
+        intent {
+            reduce {
+                state.copy(
+                    kindIngredientContainerDetail = containerIngredients.getKindIngredientContainerDetail(
+                        container,
+                        kind
+                    ),
+                    isDetailShowing = true
+                )
+            }
+        }
+        containerIngredients.getKindIngredientContainerDetail(container, kind)
+    }
+
+    fun closeDetail() {
+        intent {
+            reduce {
+                state.copy(kindIngredientContainerDetail = null, isDetailShowing = false)
+            }
         }
     }
 }
-
