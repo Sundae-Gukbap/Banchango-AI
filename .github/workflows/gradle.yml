@@ -45,6 +45,7 @@ jobs:
 
     - name: Docker build
       run: |
+        cd Server/banchango
         docker login -u ${{ secrets.SERVER_DOCKER_USERNAME }} -p ${{ secrets.SERVER_DOCKER_PASSWORD }}
         docker build -t app .
         docker tag app ${{ secrets.SERVER_DOCKER_USERNAME }}/banchango:latest
