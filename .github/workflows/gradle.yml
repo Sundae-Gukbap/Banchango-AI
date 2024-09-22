@@ -39,7 +39,9 @@ jobs:
       run: chmod +x ./Server/banchango/gradlew
 
     - name: Build with Gradle
-      run: ./Server/banchango/gradlew clean build -x test
+      run: |
+        cd Server/banchango
+        ./gradlew clean build -x test
 
     - name: Docker build
       run: |
