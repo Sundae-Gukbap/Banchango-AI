@@ -51,4 +51,7 @@ internal class FakeIngredientRepository @Inject constructor() : IngredientReposi
         )
     }
 
+    override suspend fun addIngredientContainer(containerName: String): Result<Unit> {
+        return Result.success(Unit)
+    }
 }
