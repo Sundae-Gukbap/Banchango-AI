@@ -1,19 +1,18 @@
 package com.sundaegukbap.banchango.recipe.domain;
 
-import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
-import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
-import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
-import com.sundaegukbap.banchango.user.domain.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -25,6 +24,7 @@ public class Recipe {
     private Long id;
     @NotNull
     private String name;
+    private String bestName;
     @NotNull
     @Column(length=2048)
     private String introduction;
@@ -40,16 +40,24 @@ public class Recipe {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+    private String bySort;
+    private String byIngredient;
+    private String bySituation;
 
     @Builder
-    public Recipe(Long id, String name, String introduction, String image1, String link, int servings, int cookingTime, Difficulty difficulty) {
+    public Recipe(Long id, String name, String bestName, String introduction, String image1, String image2, String link, int servings, int cookingTime, Difficulty difficulty, String bySort, String byIngredient, String bySituation) {
         this.id = id;
         this.name = name;
+        this.bestName = bestName;
         this.introduction = introduction;
         this.image1 = image1;
+        this.image2 = image2;
         this.link = link;
         this.servings = servings;
         this.cookingTime = cookingTime;
         this.difficulty = difficulty;
+        this.bySort = bySort;
+        this.byIngredient = byIngredient;
+        this.bySituation = bySituation;
     }
 }
