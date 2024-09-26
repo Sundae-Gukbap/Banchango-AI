@@ -32,8 +32,6 @@ public class Recipe {
     private String image1;
     private String image2;
     @NotNull
-    private String link;
-    @NotNull
     private int servings;
     @NotNull
     private int cookingTime;
@@ -52,12 +50,15 @@ public class Recipe {
         this.introduction = introduction;
         this.image1 = image1;
         this.image2 = image2;
-        this.link = link;
         this.servings = servings;
         this.cookingTime = cookingTime;
         this.difficulty = difficulty;
         this.bySort = bySort;
         this.byIngredient = byIngredient;
         this.bySituation = bySituation;
+    }
+
+    public String getLink(){
+        return "https://m.10000recipe.com/recipe/"+this.id;
     }
 }
