@@ -1,4 +1,8 @@
 package com.sundaegukbap.banchango.ai.dto;
 
-public record AiRecipeRecommendResponse() {
+import java.util.List;
+
+public record AiRecipeRecommendResponse(
+        List<Long> recommended_recipes
+) {
 }
