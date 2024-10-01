@@ -1,10 +1,13 @@
 package com.sundaegukbap.banchango.recipe.presentation;
 
+import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
+import com.sundaegukbap.banchango.ai.application.AiRecipeRecommendService;
 import com.sundaegukbap.banchango.recipe.application.RecipeService;
-import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponse;
-import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponses;
+import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/recipe")
+@AllArgsConstructor
 @Tag(name = "레시피 관련 컨트롤러")
 public class RecipeController {
     private final RecipeService recipeService;
-
-    public RecipeController(RecipeService recipeService) {
-        this.recipeService = recipeService;
-    }
+    private final AiRecipeRecommendService aiRecipeRecommendService;
 
     @GetMapping("/recommend/{userId}")
     @Operation(summary = "추천 레시피 목록 조회", description = "추천 레시피 목록을 조회한다.")
@@ -33,6 +36,13 @@ public class RecipeController {
     @Operation(summary = "특정 레시피 상세 조회", description = "레시피를 조회한다.")
     public ResponseEntity<RecommendedRecipeResponse> getRecipeDetail(@PathVariable("userId") Long userId, @PathVariable("recipeId") Long recipeId) {
         RecommendedRecipeResponse response = recipeService.getRecipeDetail(userId,recipeId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "테스트")
+    public ResponseEntity<?> test() {
+        String response = aiRecipeRecommendService.getRecommendedRecipesFromAI("전체", List.of(new Ingredient(1L)));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sundaegukbap.banchango.recipe.application.RecipeService;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
-import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.support.CustomWebMvcTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

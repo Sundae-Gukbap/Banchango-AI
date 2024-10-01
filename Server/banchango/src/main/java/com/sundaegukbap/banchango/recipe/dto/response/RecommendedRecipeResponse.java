@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.recipe.dto;
+package com.sundaegukbap.banchango.recipe.dto.response;
 
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.dto.dto.IngredientDtos;

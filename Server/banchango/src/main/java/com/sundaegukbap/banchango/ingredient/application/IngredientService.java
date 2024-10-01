@@ -7,7 +7,7 @@ import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
-import com.sundaegukbap.banchango.recipe.application.RecipeRecommendAIService;
+import com.sundaegukbap.banchango.ai.application.AiRecipeRecommendService;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class IngredientService {
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
     private final ContainerRepository containerRepository;
-    private final RecipeRecommendAIService recipeRecommendAIService;
+    private final AiRecipeRecommendService aiRecipeRecommendService;
 
     public void insertIngredient(Long userId, IngredientInsertRequest request) {
         Container container = containerRepository.findById(request.containerId())

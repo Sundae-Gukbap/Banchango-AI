@@ -5,7 +5,7 @@ import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
-import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
 import com.sundaegukbap.banchango.user.domain.User;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
