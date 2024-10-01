@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sundaegukbap.banchango.recipe.application.RecipeService;
 import com.sundaegukbap.banchango.recipe.domain.Difficulty;
-import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.support.CustomWebMvcTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +36,11 @@ public class RecipeControllerTest {
     @MockBean
     RecipeService recipeService;
 
-    RecommandedRecipeResponse recommandedRecipeResponse;
+    RecommendedRecipeResponse recommendedRecipeResponse;
     @BeforeEach
     void setUp() {
-        recommandedRecipeResponse =
-                new RecommandedRecipeResponse(
+        recommendedRecipeResponse =
+                new RecommendedRecipeResponse(
                         1L,
                         "간장계란볶음밥",
                         "달짝지근함",
@@ -61,25 +61,25 @@ public class RecipeControllerTest {
     @DisplayName("/api/recipe/")
     class 레시피_조회 {
         @Test
-        @DisplayName("/recommand/{userId}")
+        @DisplayName("/recommend/{userId}")
         void 추천_레시피_조회() throws Exception {
             //given
-            List<RecommandedRecipeResponse> expected = new ArrayList<>(
-                    List.of(recommandedRecipeResponse)
+            List<RecommendedRecipeResponse> expected = new ArrayList<>(
+                    List.of(recommendedRecipeResponse)
             );
 
-            given(recipeService.getRecommandedRecipes(anyLong()))
+            given(recipeService.getRecommendedRecipes(anyLong()))
                     .willReturn(expected);
 
             // when
-            String content = mockMvc.perform(get("/api/recipe/recommand/{userId}", 1L)
+            String content = mockMvc.perform(get("/api/recipe/recommend/{userId}", 1L)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andDo(print())
                     .andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
-            List<RecommandedRecipeResponse> actual = objectMapper.readValue(content, new TypeReference<List<RecommandedRecipeResponse>>() {
+            List<RecommendedRecipeResponse> actual = objectMapper.readValue(content, new TypeReference<List<RecommendedRecipeResponse>>() {
             });
 
             //then
@@ -90,7 +90,7 @@ public class RecipeControllerTest {
         @DisplayName("/{userId}/{recipeId}")
         void 상세_레시피_조회() throws Exception {
             //given
-            RecommandedRecipeResponse expected = recommandedRecipeResponse;
+            RecommendedRecipeResponse expected = recommendedRecipeResponse;
 
             given(recipeService.getRecipe(anyLong(), anyLong()))
                     .willReturn(expected);
@@ -103,7 +103,7 @@ public class RecipeControllerTest {
                     .andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8);
-            RecommandedRecipeResponse actual = objectMapper.readValue(content, new TypeReference<RecommandedRecipeResponse>() {});
+            RecommendedRecipeResponse actual = objectMapper.readValue(content, new TypeReference<RecommendedRecipeResponse>() {});
 
             //then
             assertThat(actual).isEqualTo(expected);

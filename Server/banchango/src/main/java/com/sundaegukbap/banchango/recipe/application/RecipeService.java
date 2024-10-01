@@ -4,16 +4,15 @@ import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
-import com.sundaegukbap.banchango.recipe.domain.UserRecommandedRecipe;
-import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponse;
-import com.sundaegukbap.banchango.recipe.dto.RecommandedRecipeResponses;
+import com.sundaegukbap.banchango.recipe.domain.UserRecommendedRecipe;
+import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponse;
+import com.sundaegukbap.banchango.recipe.dto.RecommendedRecipeResponses;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
-import com.sundaegukbap.banchango.recipe.repository.RecommandedRecipeRepository;
+import com.sundaegukbap.banchango.recipe.repository.RecommendedRecipeRepository;
 import com.sundaegukbap.banchango.user.domain.User;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,18 +24,18 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
     private final RecipeBookmarkRepository recipeBookmarkRepository;
-    private final RecommandedRecipeRepository recommandedRecipeRepository;
+    private final RecommendedRecipeRepository recommendedRecipeRepository;
     private final IngredientMatcher ingredientMatcher;
 
-    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository, RecipeBookmarkRepository recipeBookmarkRepository, RecommandedRecipeRepository recommandedRecipeRepository, IngredientMatcher ingredientMatcher) {
+    public RecipeService(RecipeRepository recipeRepository, UserRepository userRepository, RecipeBookmarkRepository recipeBookmarkRepository, RecommendedRecipeRepository recommendedRecipeRepository, IngredientMatcher ingredientMatcher) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
         this.recipeBookmarkRepository = recipeBookmarkRepository;
-        this.recommandedRecipeRepository = recommandedRecipeRepository;
+        this.recommendedRecipeRepository = recommendedRecipeRepository;
         this.ingredientMatcher = ingredientMatcher;
     }
 
-    public RecommandedRecipeResponse getRecipeDetail(Long userId, Long recipeId){
+    public RecommendedRecipeResponse getRecipeDetail(Long userId, Long recipeId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
         Recipe recipe = recipeRepository.findById(recipeId)
@@ -45,28 +44,28 @@ public class RecipeService {
         return resolveRecipeWithUser(user, recipe);
     }
 
-    public RecommandedRecipeResponses getRecommandedRecipes(Long userId) {
+    public RecommendedRecipeResponses getRecommendedRecipes(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
 
-        List<UserRecommandedRecipe> userRecommandedRecipeList = recommandedRecipeRepository.findAllByUser(user);
-        List<Recipe> recipes = userRecommandedRecipeList.stream()
+        List<UserRecommendedRecipe> userRecommendedRecipeList = recommendedRecipeRepository.findAllByUser(user);
+        List<Recipe> recipes = userRecommendedRecipeList.stream()
                 .map(r -> r.getRecipe())
                 .collect(Collectors.toList());
 
-        //레시피를 순회하면서 사용자와의 관계 파악해서 RecommandedRecipeResponse추가
-        List<RecommandedRecipeResponse> recommandedRecipeResponseList = recipes.stream()
+        //레시피를 순회하면서 사용자와의 관계 파악해서 RecommendedRecipeResponse추가
+        List<RecommendedRecipeResponse> recommendedRecipeResponseList = recipes.stream()
                 .map(recipe -> resolveRecipeWithUser(user, recipe))
                 .collect(Collectors.toList());
 
-        return RecommandedRecipeResponses.of(recommandedRecipeResponseList);
+        return RecommendedRecipeResponses.of(recommendedRecipeResponseList);
     }
 
-    public RecommandedRecipeResponse resolveRecipeWithUser(User user, Recipe recipe) {
+    public RecommendedRecipeResponse resolveRecipeWithUser(User user, Recipe recipe) {
         HashMap<String, List> ingredientRelation = ingredientMatcher.checkIngredientRelation(user, recipe);
         List<Ingredient> have = ingredientRelation.get("have");
         List<Ingredient> need = ingredientRelation.get("need");
 
-        return RecommandedRecipeResponse.of(recipe, have, need);
+        return RecommendedRecipeResponse.of(recipe, have, need);
     }
 }

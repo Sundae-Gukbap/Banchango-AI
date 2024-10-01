@@ -7,12 +7,12 @@ import com.sundaegukbap.banchango.recipe.dto.dto.RecipeDto;
 
 import java.util.List;
 
-public record RecommandedRecipeResponse(
+public record RecommendedRecipeResponse(
         RecipeDto recipe,
         IngredientDtos have,
         IngredientDtos need) {
-    public static RecommandedRecipeResponse of(Recipe recipe, List<Ingredient> have, List<Ingredient> need){
-        return new RecommandedRecipeResponse(
+    public static RecommendedRecipeResponse of(Recipe recipe, List<Ingredient> have, List<Ingredient> need){
+        return new RecommendedRecipeResponse(
                 RecipeDto.of(recipe),
                 IngredientDtos.of(have),
                 IngredientDtos.of(need)

@@ -2,7 +2,6 @@ package com.sundaegukbap.banchango.recipe.domain;
 
 import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="user_recommanded_recipes")
-public class UserRecommandedRecipe {
+@Table(name="user_recommended_recipes")
+public class UserRecommendedRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

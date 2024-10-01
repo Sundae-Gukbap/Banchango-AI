@@ -21,7 +21,7 @@ public class RecipeBookmarkController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "북마크한 레시피 목록 조회", description = "레시피 북마크 리스트를 조회한다.")
-    public ResponseEntity<List> getRecommandRecipes(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List> getRecommendRecipes(@PathVariable("userId") Long userId) {
         List<Long> response = recipeBookmarkService.getBookmarkedRecipes(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

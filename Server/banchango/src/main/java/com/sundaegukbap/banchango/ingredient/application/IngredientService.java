@@ -7,24 +7,21 @@ import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
+import com.sundaegukbap.banchango.recipe.application.RecipeRecommendAIService;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class IngredientService {
     private final ContainerIngredientRepository containerIngredientRepository;
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
     private final ContainerRepository containerRepository;
-
-    public IngredientService(ContainerIngredientRepository containerIngredientRepository, UserRepository userRepository, IngredientRepository ingredientRepository, ContainerRepository containerRepository) {
-        this.containerIngredientRepository = containerIngredientRepository;
-        this.userRepository = userRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.containerRepository = containerRepository;
-    }
+    private final RecipeRecommendAIService recipeRecommendAIService;
 
     public void insertIngredient(Long userId, IngredientInsertRequest request) {
         Container container = containerRepository.findById(request.containerId())
