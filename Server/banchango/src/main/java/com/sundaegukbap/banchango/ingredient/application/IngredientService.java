@@ -7,7 +7,7 @@ import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
-import com.sundaegukbap.banchango.recipe.dto.event.IngredientChangedEvent;
+import com.sundaegukbap.banchango.ingredient.dto.event.IngredientChangedEvent;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
