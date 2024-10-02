@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "develop", "main", "Server/CD" ]
     paths: ["Server/banchango/**"]
-  pull_request:
-    branches: [ "develop", "main", "Server/CD" ]
-    paths: ["Server/banchango/**"]
     
 jobs:
   build:
