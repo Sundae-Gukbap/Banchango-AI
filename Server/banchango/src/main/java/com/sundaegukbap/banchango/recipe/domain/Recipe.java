@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Table(name="recipes")
 public class Recipe {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
     private String name;
@@ -37,13 +34,13 @@ public class Recipe {
     private int cookingTime;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Difficulty difficulty;
+    private RecipeDifficulty recipeDifficulty;
     private String bySort;
     private String byIngredient;
-    private String bySituation;
+    private RecipeCategory recipeCategory;
 
     @Builder
-    public Recipe(Long id, String name, String bestName, String introduction, String image1, String image2, String link, int servings, int cookingTime, Difficulty difficulty, String bySort, String byIngredient, String bySituation) {
+    public Recipe(Long id, String name, String bestName, String introduction, String image1, String image2, String link, int servings, int cookingTime, RecipeDifficulty recipeDifficulty, String bySort, String byIngredient, RecipeCategory recipeCategory) {
         this.id = id;
         this.name = name;
         this.bestName = bestName;
@@ -52,10 +49,10 @@ public class Recipe {
         this.image2 = image2;
         this.servings = servings;
         this.cookingTime = cookingTime;
-        this.difficulty = difficulty;
+        this.recipeDifficulty = recipeDifficulty;
         this.bySort = bySort;
         this.byIngredient = byIngredient;
-        this.bySituation = bySituation;
+        this.recipeCategory = recipeCategory;
     }
 
     public String getLink(){

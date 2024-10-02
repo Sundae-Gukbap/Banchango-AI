@@ -1,6 +1,6 @@
 package com.sundaegukbap.banchango.recipe.domain;
 
-public enum Difficulty {
+public enum RecipeDifficulty {
     아무나,
     초급,
     중급,
