@@ -2,32 +2,27 @@ package com.sundaegukbap.banchango.ingredient.application;
 
 import com.sundaegukbap.banchango.container.domain.Container;
 import com.sundaegukbap.banchango.container.repository.ContainerRepository;
+import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
-import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
-import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
-import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
+import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.user.domain.User;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class IngredientMatcher {
-    private final IngredientRepository ingredientRepository;
     private ContainerRepository containerRepository;
     private ContainerIngredientRepository containerIngredientRepository;
     private RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
-
-    public IngredientMatcher(ContainerRepository containerRepository, ContainerIngredientRepository containerIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository, IngredientRepository ingredientRepository) {
-        this.containerRepository = containerRepository;
-        this.containerIngredientRepository = containerIngredientRepository;
-        this.recipeRequiringIngredientRepository = recipeRequiringIngredientRepository;
-        this.ingredientRepository = ingredientRepository;
-    }
 
     public HashMap<String,List> checkIngredientRelation(User user, Recipe recipe){
         List<Ingredient> havingIngredients = getAllIngredientsWithUser(user);
