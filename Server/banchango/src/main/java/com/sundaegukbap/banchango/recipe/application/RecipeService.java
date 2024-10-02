@@ -19,8 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,28 +36,26 @@ public class RecipeService {
     private final AiRecipeRecommendClient aiRecipeRecommendClient;
 
     @EventListener
+    @Transactional
     public void refreshRecommendedRecipes(IngredientChangedEvent event) {
         refreshRecommendedRecipes(event.userId(), RecipeCategory.전체);
     }
 
+    @Transactional
     public void changeRecipeCategory(Long userId, RecipeCategory recipeCategory) {
         refreshRecommendedRecipes(userId, recipeCategory);
     }
 
     @Transactional
     public void refreshRecommendedRecipes(Long userId, RecipeCategory recipeCategory) {
-        List<Container> containers = containerRepository.findAllByUserId(userId);
-        List<ContainerIngredient> containerIngredients = containerIngredientRepository.findByContainerIn(containers);
-        List<Ingredient> ingredients = containerIngredients.stream()
-                .map(ContainerIngredient::getIngredient)
-                .collect(Collectors.toList());
+        List<Ingredient> ingredients = getIngredientsWithUser(userId);
 
         recommendedRecipeRepository.deleteAllByUserId(userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
-        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
-        List<Recipe> recipes = recipeRepository.findAllById(recommendedRecipeIds);
+        List<Recipe> recipes = recommendedRecipesFromAI(recipeCategory, ingredients);
+
         List<UserRecommendedRecipe> recommendedRecipes = recipes.stream()
                 .map(recipe -> UserRecommendedRecipe.builder()
                         .user(user)
@@ -63,5 +63,25 @@ public class RecipeService {
                         .build())
                 .collect(Collectors.toList());
         recommendedRecipeRepository.saveAll(recommendedRecipes);
+    }
+
+    private List<Ingredient> getIngredientsWithUser(Long userId) {
+        List<Container> containers = containerRepository.findAllByUserId(userId);
+        List<ContainerIngredient> containerIngredients = containerIngredientRepository.findByContainerIn(containers);
+        List<Ingredient> ingredients = containerIngredients.stream()
+                .map(ContainerIngredient::getIngredient)
+                .collect(Collectors.toList());
+        return ingredients;
+    }
+
+    private List<Recipe> recommendedRecipesFromAI(RecipeCategory recipeCategory, List<Ingredient> ingredients) {
+        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
+        List<Recipe> recipes = new ArrayList<>();
+        recommendedRecipeIds.forEach(recommendedRecipeId -> {
+            Optional<Recipe> recipe = recipeRepository.findById(recommendedRecipeId);
+
+            if (recipe.isPresent()) recipes.add(recipe.get());
+        });
+        return recipes;
     }
 }

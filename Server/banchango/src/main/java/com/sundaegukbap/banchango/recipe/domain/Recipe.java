@@ -37,6 +37,7 @@ public class Recipe {
     private RecipeDifficulty recipeDifficulty;
     private String bySort;
     private String byIngredient;
+    @Enumerated(EnumType.STRING)
     private RecipeCategory recipeCategory;
 
     @Builder
