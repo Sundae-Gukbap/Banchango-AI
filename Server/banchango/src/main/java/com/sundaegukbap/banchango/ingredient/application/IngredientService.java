@@ -8,7 +8,6 @@ import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.recipe.dto.event.IngredientChangedEvent;
-import com.sundaegukbap.banchango.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,7 +19,6 @@ import java.util.NoSuchElementException;
 @AllArgsConstructor
 public class IngredientService {
     private final ContainerIngredientRepository containerIngredientRepository;
-    private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
     private final ContainerRepository containerRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
