@@ -19,8 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,14 +57,17 @@ public class RecipeService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
         List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
-        List<Recipe> recipes = recipeRepository.findAllById(recommendedRecipeIds);
-
-        recipes.forEach(recipe -> {
-            UserRecommendedRecipe recommendedRecipe = UserRecommendedRecipe.builder()
-                    .user(user)
-                    .recipe(recipe)
-                    .build();
-            recommendedRecipeRepository.save(recommendedRecipe);
+        List<Recipe> recipes = new ArrayList<>();
+        recommendedRecipeIds.forEach(recommendedRecipeId -> {
+            Optional<Recipe> recipe = recipeRepository.findById(recommendedRecipeId);
+            if(recipe.isPresent()) recipes.add(recipe.get());
         });
+        List<UserRecommendedRecipe> recommendedRecipes = recipes.stream()
+                .map(recipe -> UserRecommendedRecipe.builder()
+                        .user(user)
+                        .recipe(recipe)
+                        .build())
+                .collect(Collectors.toList());
+        recommendedRecipeRepository.saveAll(recommendedRecipes);
     }
 }
