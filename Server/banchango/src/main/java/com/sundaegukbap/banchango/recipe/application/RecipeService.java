@@ -56,12 +56,13 @@ public class RecipeService {
                 .orElseThrow(() -> new NoSuchElementException("no user"));
         List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
         List<Recipe> recipes = recipeRepository.findAllById(recommendedRecipeIds);
-        List<UserRecommendedRecipe> recommendedRecipes = recipes.stream()
-                .map(recipe -> UserRecommendedRecipe.builder()
-                        .user(user)
-                        .recipe(recipe)
-                        .build())
-                .collect(Collectors.toList());
-        recommendedRecipeRepository.saveAll(recommendedRecipes);
+
+        recipes.forEach(recipe -> {
+            UserRecommendedRecipe recommendedRecipe = UserRecommendedRecipe.builder()
+                    .user(user)
+                    .recipe(recipe)
+                    .build();
+            recommendedRecipeRepository.save(recommendedRecipe);
+        });
     }
 }
