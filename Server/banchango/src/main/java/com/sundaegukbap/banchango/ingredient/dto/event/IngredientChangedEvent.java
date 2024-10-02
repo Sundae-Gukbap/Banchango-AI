@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.recipe.dto.event;
+package com.sundaegukbap.banchango.ingredient.dto.event;
 
 public record IngredientChangedEvent(
         Long userId
