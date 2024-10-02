@@ -12,6 +12,8 @@ import com.sundaegukbap.banchango.user.domain.User;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,6 +28,7 @@ public class RecipeQueryService {
     private final UserRepository userRepository;
     private final RecommendedRecipeRepository recommendedRecipeRepository;
     private final IngredientMatcher ingredientMatcher;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public RecommendedRecipeResponse getRecipeDetail(Long userId, Long recipeId) {
@@ -38,16 +41,22 @@ public class RecipeQueryService {
     }
 
     @Transactional
-    public RecommendedRecipeResponses getRecommendedRecipes(Long userId) {
+    public RecommendedRecipeResponses getRecommendedRecipes(int pageIndex, int pageSize, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
 
-        List<UserRecommendedRecipe> userRecommendedRecipeList = recommendedRecipeRepository.findAllByUser(user);
-        List<Recipe> recipes = userRecommendedRecipeList.stream()
-                .map(r -> r.getRecipe())
-                .collect(Collectors.toList());
+        int firstDataIndex = pageIndex * pageSize;
+        List<Recipe> recipes;
+        if(firstDataIndex >= 50){
+            recipes = recipeRepository.findRecipesByRandom(pageSize);
+        } else {
+            PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
+            List<UserRecommendedRecipe> userRecommendedRecipeList = recommendedRecipeRepository.findAllByUser(pageRequest, user).getContent();
+            recipes = userRecommendedRecipeList.stream()
+                    .map(r -> r.getRecipe())
+                    .collect(Collectors.toList());
+        }
 
-        //레시피를 순회하면서 사용자와의 관계 파악해서 RecommendedRecipeResponse추가
         List<RecommendedRecipeResponse> recommendedRecipeResponseList = recipes.stream()
                 .map(recipe -> resolveRecipeWithUser(user, recipe))
                 .collect(Collectors.toList());

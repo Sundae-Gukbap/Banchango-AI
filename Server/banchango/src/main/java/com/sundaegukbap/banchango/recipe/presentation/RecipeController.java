@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.recipe.presentation;
 
 import com.sundaegukbap.banchango.recipe.application.RecipeQueryService;
+import com.sundaegukbap.banchango.recipe.domain.RecipeCategory;
 import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,9 +23,16 @@ public class RecipeController {
     private final RecipeQueryService recipeQueryService;
 
     @GetMapping("/recommend/{userId}")
-    @Operation(summary = "추천 레시피 목록 조회", description = "추천 레시피 목록을 조회한다.")
-    public ResponseEntity<RecommendedRecipeResponses> getRecommendedRecipes(@PathVariable("userId") Long userId) {
-        RecommendedRecipeResponses response = recipeQueryService.getRecommendedRecipes(userId);
+    @Operation(summary = "추천 레시피 목록 조회",
+            description = "추천 레시피 목록을 조회합니다.\n" +
+                    "카테고리 종류(전체)\n" +
+                    "* 현재 카테고리는 개발중에 있습니다.")
+    public ResponseEntity<RecommendedRecipeResponses> getRecommendedRecipes(@PathVariable("userId") Long userId,
+                                                                            @RequestParam(defaultValue = "0") int pageIndex,
+                                                                            @RequestParam(defaultValue = "10") int pageSize,
+                                                                            @RequestParam(defaultValue = "전체") RecipeCategory category
+                                                                            ) {
+        RecommendedRecipeResponses response = recipeQueryService.getRecommendedRecipes(pageIndex, pageSize, userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
