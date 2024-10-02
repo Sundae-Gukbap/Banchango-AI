@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    @Query(value = "SELECT * FROM recipe ORDER BY RAND() LIMIT :size", nativeQuery = true)
+    @Query(value = "SELECT * FROM recipes ORDER BY RAND() LIMIT :size", nativeQuery = true)
     List<Recipe> findRecipesByRandom(@Param("size") int size);
 }
