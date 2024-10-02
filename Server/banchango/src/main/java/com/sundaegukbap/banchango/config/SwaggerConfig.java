@@ -25,5 +25,4 @@ public class SwaggerConfig {
                 .info(info)
                 .servers(List.of(server));
     }
-
 }
