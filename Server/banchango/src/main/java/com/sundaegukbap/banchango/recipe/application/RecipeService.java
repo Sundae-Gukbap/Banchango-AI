@@ -10,7 +10,6 @@ import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepos
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.recipe.domain.RecipeCategory;
 import com.sundaegukbap.banchango.recipe.domain.UserRecommendedRecipe;
-import com.sundaegukbap.banchango.recipe.dto.event.RecommendedRecipeCategoryChangedEvent;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
 import com.sundaegukbap.banchango.recipe.repository.RecommendedRecipeRepository;
 import com.sundaegukbap.banchango.user.domain.User;
@@ -36,16 +35,15 @@ public class RecipeService {
 
     @EventListener
     public void refreshRecommendedRecipes(IngredientChangedEvent event) {
-        refreshRecommendedRecipes(event.userId());
+        refreshRecommendedRecipes(event.userId(), RecipeCategory.전체);
     }
 
-    @EventListener
-    public void refreshRecommendedRecipes(RecommendedRecipeCategoryChangedEvent event) {
-        refreshRecommendedRecipes(event.userId());
+    public void changeRecipeCategory(Long userId, RecipeCategory recipeCategory) {
+        refreshRecommendedRecipes(userId, recipeCategory);
     }
 
     @Transactional
-    public void refreshRecommendedRecipes(Long userId) {
+    public void refreshRecommendedRecipes(Long userId, RecipeCategory recipeCategory) {
         List<Container> containers = containerRepository.findAllByUserId(userId);
         List<ContainerIngredient> containerIngredients = containerIngredientRepository.findByContainerIn(containers);
         List<Ingredient> ingredients = containerIngredients.stream()
@@ -56,7 +54,7 @@ public class RecipeService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
-        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(RecipeCategory.전체, ingredients);
+        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
         List<Recipe> recipes = recipeRepository.findAllById(recommendedRecipeIds);
         List<UserRecommendedRecipe> recommendedRecipes = recipes.stream()
                 .map(recipe -> UserRecommendedRecipe.builder()
