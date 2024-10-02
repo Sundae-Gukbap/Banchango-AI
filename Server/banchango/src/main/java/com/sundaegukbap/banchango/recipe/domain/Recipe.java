@@ -37,10 +37,10 @@ public class Recipe {
     private RecipeDifficulty recipeDifficulty;
     private String bySort;
     private String byIngredient;
-    private String bySituation;
+    private RecipeCategory recipeCategory;
 
     @Builder
-    public Recipe(Long id, String name, String bestName, String introduction, String image1, String image2, String link, int servings, int cookingTime, RecipeDifficulty recipeDifficulty, String bySort, String byIngredient, String bySituation) {
+    public Recipe(Long id, String name, String bestName, String introduction, String image1, String image2, String link, int servings, int cookingTime, RecipeDifficulty recipeDifficulty, String bySort, String byIngredient, RecipeCategory recipeCategory) {
         this.id = id;
         this.name = name;
         this.bestName = bestName;
@@ -52,7 +52,7 @@ public class Recipe {
         this.recipeDifficulty = recipeDifficulty;
         this.bySort = bySort;
         this.byIngredient = byIngredient;
-        this.bySituation = bySituation;
+        this.recipeCategory = recipeCategory;
     }
 
     public String getLink(){
