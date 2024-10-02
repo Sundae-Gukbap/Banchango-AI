@@ -36,10 +36,12 @@ public class RecipeService {
     private final AiRecipeRecommendClient aiRecipeRecommendClient;
 
     @EventListener
+    @Transactional
     public void refreshRecommendedRecipes(IngredientChangedEvent event) {
         refreshRecommendedRecipes(event.userId(), RecipeCategory.전체);
     }
 
+    @Transactional
     public void changeRecipeCategory(Long userId, RecipeCategory recipeCategory) {
         refreshRecommendedRecipes(userId, recipeCategory);
     }
