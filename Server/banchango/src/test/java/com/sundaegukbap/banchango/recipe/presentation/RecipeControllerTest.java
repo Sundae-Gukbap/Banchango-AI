@@ -3,7 +3,7 @@ package com.sundaegukbap.banchango.recipe.presentation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sundaegukbap.banchango.recipe.application.RecipeService;
-import com.sundaegukbap.banchango.recipe.domain.Difficulty;
+import com.sundaegukbap.banchango.recipe.domain.RecipeDifficulty;
 import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.support.CustomWebMvcTest;
 import org.junit.jupiter.api.*;
@@ -54,7 +54,7 @@ public class RecipeControllerTest {
                         ),
                         1,
                         30,
-                        Difficulty.아무나
+                        RecipeDifficulty.아무나
                 );
     }
     @Nested

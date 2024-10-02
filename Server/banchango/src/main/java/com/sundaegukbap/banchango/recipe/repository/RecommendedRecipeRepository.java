@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface RecommendedRecipeRepository extends JpaRepository<UserRecommendedRecipe, Long> {
     List<UserRecommendedRecipe> findAllByUser(User user);
+    void deleteAllByUserId(Long userId);
 }

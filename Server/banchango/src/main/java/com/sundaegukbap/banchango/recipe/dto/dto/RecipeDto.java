@@ -1,6 +1,6 @@
 package com.sundaegukbap.banchango.recipe.dto.dto;
 
-import com.sundaegukbap.banchango.recipe.domain.Difficulty;
+import com.sundaegukbap.banchango.recipe.domain.RecipeDifficulty;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 
 public record RecipeDto(
@@ -11,7 +11,7 @@ public record RecipeDto(
         String link,
         int servings,
         int cookingTime,
-        Difficulty difficulty
+        RecipeDifficulty recipeDifficulty
 ) {
     public static RecipeDto of(Recipe recipe){
         return new RecipeDto(
@@ -22,7 +22,7 @@ public record RecipeDto(
                 recipe.getLink(),
                 recipe.getServings(),
                 recipe.getCookingTime(),
-                recipe.getDifficulty()
+                recipe.getRecipeDifficulty()
         );
     }
 }

@@ -5,6 +5,7 @@ import com.sundaegukbap.banchango.container.repository.ContainerRepository;
 import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.RecipeRequiringIngredient;
 import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
+import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
@@ -16,14 +17,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class IngredientMatcher {
+    private final IngredientRepository ingredientRepository;
     private ContainerRepository containerRepository;
     private ContainerIngredientRepository containerIngredientRepository;
     private RecipeRequiringIngredientRepository recipeRequiringIngredientRepository;
 
-    public IngredientMatcher(ContainerRepository containerRepository, ContainerIngredientRepository containerIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository) {
+    public IngredientMatcher(ContainerRepository containerRepository, ContainerIngredientRepository containerIngredientRepository, RecipeRequiringIngredientRepository recipeRequiringIngredientRepository, IngredientRepository ingredientRepository) {
         this.containerRepository = containerRepository;
         this.containerIngredientRepository = containerIngredientRepository;
         this.recipeRequiringIngredientRepository = recipeRequiringIngredientRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     public HashMap<String,List> checkIngredientRelation(User user, Recipe recipe){
@@ -50,16 +53,12 @@ public class IngredientMatcher {
 
     private List<Ingredient> getAllIngredientsWithUser(User user){
         List<Container> containers = containerRepository.findAllByUser(user);
+        List<ContainerIngredient> containerIngredientList = containerIngredientRepository.findByContainerIn(containers);
+        List<Ingredient> ingredients = containerIngredientList.stream()
+                .map(ContainerIngredient::getIngredient)
+                .collect(Collectors.toList());
 
-        Set<Ingredient> ingredients = new HashSet<>();
-        for(Container container : containers){
-            List<ContainerIngredient> containerIngredientList = containerIngredientRepository.findAllByContainer(container);
-            for(ContainerIngredient ci : containerIngredientList){
-                ingredients.add(ci.getIngredient());
-            }
-        }
-
-        return ingredients.stream().toList();
+        return ingredients;
     }
 
     private List<Ingredient> getIngredientsWithRecipe(Recipe recipe) {

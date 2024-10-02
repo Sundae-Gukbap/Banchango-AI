@@ -3,7 +3,7 @@ package com.sundaegukbap.banchango.recipe.application;
 import com.sundaegukbap.banchango.bookmark.domain.RecipeBookmark;
 import com.sundaegukbap.banchango.bookmark.repository.RecipeBookmarkRepository;
 import com.sundaegukbap.banchango.ingredient.application.IngredientMatcher;
-import com.sundaegukbap.banchango.recipe.domain.Difficulty;
+import com.sundaegukbap.banchango.recipe.domain.RecipeDifficulty;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.recipe.dto.response.RecommendedRecipeResponse;
 import com.sundaegukbap.banchango.recipe.repository.RecipeRepository;
@@ -59,7 +59,7 @@ public class RecipeServiceTest {
                 .link("link")
                 .servings(4)
                 .cookingTime(30)
-                .difficulty(Difficulty.초급)
+                .difficulty(RecipeDifficulty.초급)
                 .build();
 
         recipeBookmark = RecipeBookmark.builder()

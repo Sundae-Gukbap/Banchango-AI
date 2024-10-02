@@ -3,6 +3,7 @@ package com.sundaegukbap.banchango.recipe.domain;
 import com.sundaegukbap.banchango.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,10 @@ public class UserRecommendedRecipe {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="recipe_id")
     private Recipe recipe;
+
+    @Builder
+    public UserRecommendedRecipe(User user, Recipe recipe) {
+        this.user = user;
+        this.recipe = recipe;
+    }
 }
