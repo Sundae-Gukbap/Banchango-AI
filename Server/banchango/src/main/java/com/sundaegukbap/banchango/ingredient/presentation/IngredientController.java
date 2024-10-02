@@ -34,7 +34,7 @@ public class IngredientController {
     @DeleteMapping("/{containerIngredientId}")
     @Operation(summary = "소유 재료 제거", description = "소유한 재료를 제거한다.")
     public ResponseEntity<String> removeIngredient(@PathVariable("containerIngredientId") Long containerIngredientId) {
-        ingredientService.removeIngredient(containerIngredientId);
+        ingredientService.removeIngredient(1L,containerIngredientId);
         return new ResponseEntity<>("success remove ingredient", HttpStatus.OK);
     }
 

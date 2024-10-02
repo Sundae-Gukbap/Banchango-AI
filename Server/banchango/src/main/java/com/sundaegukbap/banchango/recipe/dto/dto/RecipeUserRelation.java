@@ -1,4 +1,4 @@
-package com.sundaegukbap.banchango.recipe.dto;
+package com.sundaegukbap.banchango.recipe.dto.dto;
 
 import java.util.List;
 

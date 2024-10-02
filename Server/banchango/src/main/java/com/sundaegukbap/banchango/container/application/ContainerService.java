@@ -6,21 +6,20 @@ import com.sundaegukbap.banchango.container.dto.dto.ContainerDto;
 import com.sundaegukbap.banchango.container.repository.ContainerRepository;
 import com.sundaegukbap.banchango.user.domain.User;
 import com.sundaegukbap.banchango.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class ContainerService {
     private final ContainerRepository containerRepository;
     private final UserRepository userRepository;
 
-    public ContainerService(ContainerRepository containerRepository, UserRepository userRepository) {
-        this.containerRepository = containerRepository;
-        this.userRepository = userRepository;
-    }
-
+    @Transactional
     public void createContainer(Long userId, ContainerInsertRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
@@ -30,6 +29,7 @@ public class ContainerService {
         containerRepository.save(container);
     }
 
+    @Transactional
     public List<ContainerDto> getAllContainers(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));

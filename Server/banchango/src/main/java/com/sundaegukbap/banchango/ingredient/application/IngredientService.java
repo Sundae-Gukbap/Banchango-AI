@@ -2,30 +2,28 @@ package com.sundaegukbap.banchango.ingredient.application;
 
 import com.sundaegukbap.banchango.container.domain.Container;
 import com.sundaegukbap.banchango.container.repository.ContainerRepository;
-import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.domain.ContainerIngredient;
+import com.sundaegukbap.banchango.ingredient.domain.Ingredient;
 import com.sundaegukbap.banchango.ingredient.dto.IngredientInsertRequest;
-import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
 import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepository;
-import com.sundaegukbap.banchango.user.repository.UserRepository;
+import com.sundaegukbap.banchango.ingredient.repository.IngredientRepository;
+import com.sundaegukbap.banchango.ingredient.dto.event.IngredientChangedEvent;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class IngredientService {
     private final ContainerIngredientRepository containerIngredientRepository;
-    private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
     private final ContainerRepository containerRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public IngredientService(ContainerIngredientRepository containerIngredientRepository, UserRepository userRepository, IngredientRepository ingredientRepository, ContainerRepository containerRepository) {
-        this.containerIngredientRepository = containerIngredientRepository;
-        this.userRepository = userRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.containerRepository = containerRepository;
-    }
-
+    @Transactional
     public void insertIngredient(Long userId, IngredientInsertRequest request) {
         Container container = containerRepository.findById(request.containerId())
                 .orElseThrow(() -> new NoSuchElementException("no container"));
@@ -34,12 +32,17 @@ public class IngredientService {
 
         ContainerIngredient containerIngredient = request.toEntity(container, ingredient);
         containerIngredientRepository.save(containerIngredient);
+
+        applicationEventPublisher.publishEvent(new IngredientChangedEvent(userId));
     }
 
-    public void removeIngredient(Long containerIngredientId) {
+    @Transactional
+    public void removeIngredient(Long userId, Long containerIngredientId) {
         ContainerIngredient containerIngredient = containerIngredientRepository.findById(containerIngredientId)
                 .orElseThrow(() -> new NoSuchElementException("no ingredient in container"));
 
         containerIngredientRepository.delete(containerIngredient);
+
+        applicationEventPublisher.publishEvent(new IngredientChangedEvent(userId));
     }
 }
