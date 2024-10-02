@@ -44,7 +44,7 @@ public class RecipeController {
     @PostMapping("/{userId}")
     @Operation(summary = "추천 레시피 카테고리 변경", description = "추천 레시피 카테고리를 변경하고 새로운 추천 레시피를 받아옵니다.")
     public ResponseEntity<String> changeRecipeCategory(@PathVariable("userId") Long userId,
-                                                                          @RequestParam(defaultValue = "전체") RecipeCategory recipeCategory) {
+                                                       @RequestParam(defaultValue = "전체") RecipeCategory recipeCategory) {
         recipeService.changeRecipeCategory(userId, recipeCategory);
         return new ResponseEntity<>("카테고리에 맞게 추천 레시피목록이 변경되었습니다.", HttpStatus.OK);
     }
