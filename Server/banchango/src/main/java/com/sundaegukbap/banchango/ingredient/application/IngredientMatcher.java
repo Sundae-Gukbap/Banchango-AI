@@ -9,7 +9,6 @@ import com.sundaegukbap.banchango.ingredient.repository.ContainerIngredientRepos
 import com.sundaegukbap.banchango.ingredient.repository.RecipeRequiringIngredientRepository;
 import com.sundaegukbap.banchango.recipe.domain.Recipe;
 import com.sundaegukbap.banchango.user.domain.User;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +56,6 @@ public class IngredientMatcher {
         return ingredients;
     }
 
-    @Transactional
     private List<Ingredient> getIngredientsWithRecipe(Recipe recipe) {
         List<RecipeRequiringIngredient> recipeRequiringIngredientList = recipeRequiringIngredientRepository.findAllByRecipe(recipe);
 
