@@ -48,22 +48,14 @@ public class RecipeService {
 
     @Transactional
     public void refreshRecommendedRecipes(Long userId, RecipeCategory recipeCategory) {
-        List<Container> containers = containerRepository.findAllByUserId(userId);
-        List<ContainerIngredient> containerIngredients = containerIngredientRepository.findByContainerIn(containers);
-        List<Ingredient> ingredients = containerIngredients.stream()
-                .map(ContainerIngredient::getIngredient)
-                .collect(Collectors.toList());
+        List<Ingredient> ingredients = getIngredientsWithUser(userId);
 
         recommendedRecipeRepository.deleteAllByUserId(userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("no user"));
-        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
-        List<Recipe> recipes = new ArrayList<>();
-        recommendedRecipeIds.forEach(recommendedRecipeId -> {
-            Optional<Recipe> recipe = recipeRepository.findById(recommendedRecipeId);
-            if(recipe.isPresent()) recipes.add(recipe.get());
-        });
+        List<Recipe> recipes = recommendedRecipesFromAI(recipeCategory, ingredients);
+
         List<UserRecommendedRecipe> recommendedRecipes = recipes.stream()
                 .map(recipe -> UserRecommendedRecipe.builder()
                         .user(user)
@@ -71,5 +63,25 @@ public class RecipeService {
                         .build())
                 .collect(Collectors.toList());
         recommendedRecipeRepository.saveAll(recommendedRecipes);
+    }
+
+    private List<Ingredient> getIngredientsWithUser(Long userId) {
+        List<Container> containers = containerRepository.findAllByUserId(userId);
+        List<ContainerIngredient> containerIngredients = containerIngredientRepository.findByContainerIn(containers);
+        List<Ingredient> ingredients = containerIngredients.stream()
+                .map(ContainerIngredient::getIngredient)
+                .collect(Collectors.toList());
+        return ingredients;
+    }
+
+    private List<Recipe> recommendedRecipesFromAI(RecipeCategory recipeCategory, List<Ingredient> ingredients) {
+        List<Long> recommendedRecipeIds = aiRecipeRecommendClient.getRecommendedRecipesFromAI(recipeCategory, ingredients);
+        List<Recipe> recipes = new ArrayList<>();
+        recommendedRecipeIds.forEach(recommendedRecipeId -> {
+            Optional<Recipe> recipe = recipeRepository.findById(recommendedRecipeId);
+
+            if (recipe.isPresent()) recipes.add(recipe.get());
+        });
+        return recipes;
     }
 }
