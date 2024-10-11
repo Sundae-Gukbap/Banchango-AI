@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.okhttp3.okhttp)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.adapters.result)
 }
 
 fun getSecretKey(propertyKey: String): String {

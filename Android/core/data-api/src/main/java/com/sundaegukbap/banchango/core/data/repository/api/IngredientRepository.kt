@@ -4,4 +4,5 @@ import com.sundaegukbap.banchango.ContainerIngredient
 
 interface IngredientRepository {
     suspend fun getIngredientContainers(): Result<List<ContainerIngredient>>
+    suspend fun addIngredientContainer(containerName: String): Result<Unit>
 }

@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.core.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import com.sundaegukbap.banchango.core.data.BuildConfig
 import com.sundaegukbap.banchango.core.data.api.IngredientApi
 import com.sundaegukbap.banchango.core.data.api.RecipeApi
@@ -44,6 +45,7 @@ internal object ApiModule {
     ): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(converterFactory)
+        .addCallAdapterFactory(ResultCallAdapterFactory.create())
         .build()
 
     @Provides
