@@ -72,7 +72,7 @@ fun RecipeRecommendContent(
             RecipeRecommendLoading(
                 padding = padding,
                 contentAlignment = Alignment.Center,
-                onRefreshClick = {},
+                onRefreshClick = onRefreshClick,
             )
         }
 

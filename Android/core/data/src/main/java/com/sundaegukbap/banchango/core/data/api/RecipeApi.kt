@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 internal interface RecipeApi {
-    @GET("api/recipe/recommand/{userId}")
+    @GET("api/recipe/recommend/{userId}")
     suspend fun getRecipeRecommendation(
         @Path("userId") userId: Long,
     ): Response<RecommendedRecipesResponse>

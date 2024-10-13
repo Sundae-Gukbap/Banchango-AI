@@ -1,8 +1,9 @@
 package com.sundaegukbap.banchango.feature.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,15 +15,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomStart
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +38,7 @@ import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.White
 import com.sundaegukbap.banchango.core.designsystem.theme.lightGray
+import com.sundaegukbap.banchango.feature.home.R
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -71,7 +76,11 @@ fun IngredientItem(
                 .padding(8.dp)
                 .background(Color.White, RoundedCornerShape(20.dp))
         ) {
-            Box(Modifier.fillMaxSize().padding(vertical = 4.dp, horizontal = 12.dp)) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 4.dp, horizontal = 12.dp)
+            ) {
                 Text(
                     text = ingredient.name,
                     fontSize = 14.sp,
@@ -99,7 +108,7 @@ fun IngredientItem(
 
 @Preview
 @Composable
-fun IngredientItemPreview() {
+private fun IngredientItemPreview() {
     BanchangoTheme {
         IngredientItem(
             modifier = Modifier.width(200.dp),

@@ -29,8 +29,7 @@ constructor(
             recipeRepository
                 .getRecipeRecommendation()
                 .onSuccess { recipes ->
-                    _uiState.value =
-                        RecipeRecommendUiState.Success(recipes.toUiState())
+                    _uiState.value = RecipeRecommendUiState.Success(recipes.toUiState())
                 }.onFailure { throwable ->
                     throwable.printStackTrace()
                 }

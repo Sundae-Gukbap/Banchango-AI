@@ -49,10 +49,13 @@ import com.sundaegukbap.banchango.IngredientContainer
 import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.KindIngredientContainer
 import com.sundaegukbap.banchango.core.designsystem.theme.BanchangoTheme
+import com.sundaegukbap.banchango.core.designsystem.theme.Black
 import com.sundaegukbap.banchango.core.designsystem.theme.Gray
 import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
+import com.sundaegukbap.banchango.core.designsystem.theme.LightestOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.White
+import com.sundaegukbap.banchango.feature.home.component.AddButton
 import com.sundaegukbap.banchango.feature.home.component.IngredientItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -91,6 +94,7 @@ fun HomeRoute(
                 padding = padding,
                 kindIngredientContainer = state.kindIngredientContainerDetail!!,
                 onBackClicked = viewModel::closeDetail,
+                onAddIngredientClicked = {} ,
             )
         }
     }
@@ -109,7 +113,8 @@ fun HomeRoute(
 private fun KindIngredientContainerDetailScreen(
     padding: PaddingValues,
     kindIngredientContainer: KindIngredientContainer,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onAddIngredientClicked: () -> Unit,
 ) {
     BackHandler(onBack = onBackClicked)
     Column(
@@ -119,11 +124,30 @@ private fun KindIngredientContainerDetailScreen(
             .padding(padding)
             .padding(16.dp),
     ) {
-        Text(
-            text = kindIngredientContainer.kind.label,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
+        ElevatedCard(
+            colors = CardDefaults.elevatedCardColors().copy(containerColor = LightestOrange),
+        ) {
+            Row(Modifier.padding(horizontal = 8.dp)) {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = kindIngredientContainer.ingredients.first().container.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Orange
+                )
+                Text(
+                    modifier = Modifier
+                        .background(color = White, shape = RoundedCornerShape(8.dp))
+                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                        .align(Alignment.CenterVertically),
+                    text = kindIngredientContainer.kind.label,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Black,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -136,9 +160,19 @@ private fun KindIngredientContainerDetailScreen(
                     createdAt = ingredient.createdAt
                 )
             }
+            item {
+                AddButton(
+                    containerColor = LightOrange,
+                    onAddClick = onAddIngredientClicked,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                )
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -164,7 +198,8 @@ private fun PreviewKindIngredientContainerDetailScreen() {
                 )
             )
         ),
-        onBackClicked = {}
+        onBackClicked = {},
+        onAddIngredientClicked = {}
     )
 }
 
@@ -256,36 +291,15 @@ private fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
         }
         item {
-            AddContainerButton(
-                if (ingredientContainers.size % 2 == 0) LightOrange else Gray,
-                onAddClick = onContainerAddClicked
+            AddButton(
+                containerColor = if (ingredientContainers.size % 2 == 0) LightOrange else Gray,
+                onAddClick = { onContainerAddClicked("냉장 1") },
+                modifier = Modifier.height(50.dp),
             )
         }
     }
 }
 
-@Composable
-private fun AddContainerButton(
-    containerColor: Color,
-    onAddClick: (name: String) -> Unit,
-) {
-    ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
-        modifier = Modifier.clickable(onClick = { onAddClick("냉장고") })
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_add),
-                contentDescription = null
-            )
-        }
-    }
-}
 
 @Composable
 private fun KindIngredientContainerItem(
