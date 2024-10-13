@@ -1,5 +1,6 @@
 package com.sundaegukbap.banchango.core.data.api.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,5 +12,5 @@ data class RecipeResponse(
     val link: String,
     val servings: Int,
     val cookingTime: Int,
-    val difficulty: String,
+    @SerialName("recipeDifficulty") val difficulty: String,
 )
