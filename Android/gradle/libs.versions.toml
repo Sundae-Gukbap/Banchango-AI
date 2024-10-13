@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.1"
+agp = "8.7.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -26,6 +26,7 @@ serialization = "1.6.3"
 kotlinxImmutable = "0.3.7"
 squareupOkhttp = "4.11.0"
 retrofitAdaptersResult = "1.0.12"
+opencsv = "5.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +63,7 @@ orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbit" }
 orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "serializationConverter" }
 retrofit-adapters-result = { module = "com.github.skydoves:retrofit-adapters-result", version.ref = "retrofitAdaptersResult" }
+open-csv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
 
 
 [plugins]

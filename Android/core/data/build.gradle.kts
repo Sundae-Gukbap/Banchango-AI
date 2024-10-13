@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.adapters.result)
+
+    // opencsv
+    implementation(libs.open.csv)
 }
 
 fun getSecretKey(propertyKey: String): String {
