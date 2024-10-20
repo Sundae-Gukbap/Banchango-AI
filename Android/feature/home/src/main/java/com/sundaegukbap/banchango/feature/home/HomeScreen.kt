@@ -109,7 +109,10 @@ fun HomeRoute(
             selectedContainer = container
             viewModel.getKindIngredientContainerDetail(container, ingredientKind)
         },
-        onAddIngredientClicked = { showBottomSheet = true }
+        onAddIngredientClicked = { container ->
+            selectedContainer = container
+            showBottomSheet = true
+        }
     )
 
     if (state.isDetailShowing && state.kindIngredientContainerDetail != null) {
@@ -277,7 +280,9 @@ private fun KindIngredientContainerDetailScreen(
             .padding(16.dp),
     ) {
         ElevatedCard(
-            colors = CardDefaults.elevatedCardColors().copy(containerColor = LightestOrange),
+            colors = CardDefaults.elevatedCardColors().copy(
+                containerColor = LightestOrange,
+            ),
         ) {
             Row(Modifier.padding(horizontal = 8.dp)) {
                 Text(
@@ -361,7 +366,7 @@ private fun HomeScreen(
     ingredientContainers: List<IngredientContainer>,
     onContainerAddClicked: (name: String) -> Unit,
     onKindContainerClicked: (container: Container, kind: IngredientKind) -> Unit,
-    onAddIngredientClicked: () -> Unit,
+    onAddIngredientClicked: (container: Container) -> Unit,
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
     LazyColumn(
@@ -399,7 +404,7 @@ private fun HomeScreen(
                     Icon(
                         modifier = Modifier
                             .weight(0.1f)
-                            .clickable(onClick = onAddIngredientClicked),
+                            .clickable(onClick = { onAddIngredientClicked(ingredientContainer.container) }),
                         tint = ingredientContainerNameColor,
                         painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = null
@@ -426,7 +431,7 @@ private fun HomeScreen(
                             onIngredientItemClicked = onItemClicked,
                             modifier = Modifier.weight(0.4f) // Fixed width for consistent size
                         )
-                        Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(16.dp))
                         // Check for the second item
                         if (index + 1 < totalIngredients) {
                             KindIngredientContainerItem(
@@ -443,7 +448,7 @@ private fun HomeScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
         item {
             AddButton(
@@ -467,36 +472,42 @@ private fun KindIngredientContainerItem(
     Card(
         colors = CardDefaults.cardColors(containerColor = containerColor),
         modifier = modifier
-            .height(106.dp)
+            .height(132.dp)
             .clickable(onClick = { onIngredientItemClicked(kindIngredientContainer.kind) })
     ) {
         Column(Modifier.padding(8.dp)) {
             val ingredients = kindIngredientContainer.ingredients
-            Row {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
+                    minLines = 2,
+                    maxLines = 2,
                     text = kindIngredientContainer.kind.label,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.weight(0.3f))
                 Text(
                     modifier = Modifier
                         .background(
                             color = buttonColor,
                             shape = RoundedCornerShape(20.dp)
                         )
+                        .width(60.dp)
                         .padding(horizontal = 16.dp, vertical = 4.dp),
                     text = ingredients.size.toString() + "개",
+                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = Orange
                 )
             }
+            Spacer(modifier = Modifier.height(8.dp))
             ingredients.subList(0, minOf(ingredients.size, 2)).forEach { ingredient ->
                 val dDay = ChronoUnit.DAYS.between(
-                    LocalDateTime.now(),
                     ingredient.expirationDate,
-                )
+                    LocalDateTime.now(),
+
+                    )
                 Row {
                     Text(
                         text = ingredient.ingredient.name,
@@ -504,11 +515,16 @@ private fun KindIngredientContainerItem(
                         fontSize = 12.sp
                     )
                     Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = "D - $dDay", style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        text = when {
+                            dDay < 0 -> "D${dDay}"
+                            dDay == 0L -> "D-day"
+                            else -> "D+${dDay}"
+                        }, style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
             if (ingredients.size > 2) {
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "...",
                     style = MaterialTheme.typography.bodySmall,
