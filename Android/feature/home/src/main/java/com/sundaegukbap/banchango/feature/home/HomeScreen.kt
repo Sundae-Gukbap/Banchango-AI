@@ -25,9 +25,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,6 +64,7 @@ import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeRoute(
     padding: PaddingValues,
@@ -70,6 +73,7 @@ fun HomeRoute(
 ) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val localContext = LocalContext.current
+    val rememberBottomSheetState = rememberStandardBottomSheetState()
 
     LaunchedEffect(true) {
         viewModel.container.sideEffectFlow.onEach {
@@ -94,7 +98,7 @@ fun HomeRoute(
                 padding = padding,
                 kindIngredientContainer = state.kindIngredientContainerDetail!!,
                 onBackClicked = viewModel::closeDetail,
-                onAddIngredientClicked = {} ,
+                onAddIngredientClicked = {},
             )
         }
     }
@@ -107,6 +111,7 @@ fun HomeRoute(
             CircularProgressIndicator()
         }
     }
+
 }
 
 @Composable

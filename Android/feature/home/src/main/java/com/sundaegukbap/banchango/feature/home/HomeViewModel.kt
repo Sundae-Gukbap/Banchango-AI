@@ -9,9 +9,6 @@ import com.sundaegukbap.banchango.core.data.repository.api.IngredientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -84,6 +81,22 @@ class HomeViewModel @Inject constructor(
             }
         }
         containerIngredients.getKindIngredientContainerDetail(container, kind)
+    }
+
+    fun getAllIngredients(name: String) = intent {
+        reduce { state.copy(isLoading = true) }
+        viewModelScope.launch {
+            if (name.isBlank()) {
+                ingredientRepository.getAllIngredients()
+            } else {
+                ingredientRepository.getIngredientsByNameLike(name)
+            }.onSuccess {
+                reduce { state.copy(ingredients = it, isLoading = false) }
+            }.onFailure {
+                reduce { state.copy(isLoading = false) }
+                postSideEffect("Failed to get all ingredients")
+            }
+        }
     }
 
     fun closeDetail() {
