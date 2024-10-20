@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,11 +29,21 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,6 +72,9 @@ import com.sundaegukbap.banchango.feature.home.component.AddButton
 import com.sundaegukbap.banchango.feature.home.component.IngredientItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -69,18 +83,17 @@ import java.time.temporal.ChronoUnit
 fun HomeRoute(
     padding: PaddingValues,
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit,
+    showError: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-    val localContext = LocalContext.current
-    val rememberBottomSheetState = rememberStandardBottomSheetState()
+    val state by viewModel.collectAsState()
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(true) {
-        viewModel.container.sideEffectFlow.onEach {
-            Toast.makeText(localContext, it, Toast.LENGTH_SHORT).show()
-        }.launchIn(this)
+    viewModel.collectSideEffect {
+        showError(it)
     }
-
     HomeScreen(
         padding = padding,
         ingredientContainers = state.ingredientContainers,
@@ -98,7 +111,10 @@ fun HomeRoute(
                 padding = padding,
                 kindIngredientContainer = state.kindIngredientContainerDetail!!,
                 onBackClicked = viewModel::closeDetail,
-                onAddIngredientClicked = {},
+                onAddIngredientClicked = {
+                    viewModel.getAllIngredients("")
+                    showBottomSheet = true
+                },
             )
         }
     }
@@ -112,7 +128,34 @@ fun HomeRoute(
         }
     }
 
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState,
+        ) {
+            LazyColumn {
+                items(state.ingredients) {
+                    Text(
+                        text = it.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+            }
+            Button(onClick = {
+                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                    if (!sheetState.isVisible) {
+                        showBottomSheet = false
+                    }
+                }
+            }) {
+                Text("Hide bottom sheet")
+            }
+        }
+    }
 }
+
 
 @Composable
 private fun KindIngredientContainerDetailScreen(

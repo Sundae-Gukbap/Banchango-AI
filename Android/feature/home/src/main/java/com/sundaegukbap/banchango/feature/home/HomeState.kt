@@ -9,5 +9,5 @@ data class HomeState(
     val kindIngredientContainerDetail: KindIngredientContainer? = null,
     val ingredients: List<Ingredient> = emptyList(),
     val isLoading: Boolean = false,
-    val isDetailShowing: Boolean = false
+    val isDetailShowing: Boolean = false,
 )

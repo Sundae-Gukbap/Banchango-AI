@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -26,9 +29,11 @@ fun AddButton(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
-        modifier = modifier.clickable(onClick = onAddClick)
+    ElevatedButton(
+        colors = ButtonDefaults.elevatedButtonColors(containerColor = containerColor),
+        onClick = onAddClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
             Icon(

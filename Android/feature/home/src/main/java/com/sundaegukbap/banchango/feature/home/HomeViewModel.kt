@@ -1,5 +1,6 @@
 package com.sundaegukbap.banchango.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sundaegukbap.banchango.Container
@@ -7,6 +8,7 @@ import com.sundaegukbap.banchango.ContainerIngredients
 import com.sundaegukbap.banchango.IngredientKind
 import com.sundaegukbap.banchango.core.data.repository.api.IngredientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -85,14 +87,16 @@ class HomeViewModel @Inject constructor(
 
     fun getAllIngredients(name: String) = intent {
         reduce { state.copy(isLoading = true) }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (name.isBlank()) {
                 ingredientRepository.getAllIngredients()
             } else {
                 ingredientRepository.getIngredientsByNameLike(name)
             }.onSuccess {
+                Log.d("asdf", it.toString())
                 reduce { state.copy(ingredients = it, isLoading = false) }
             }.onFailure {
+                Log.d("asdf", it.stackTraceToString())
                 reduce { state.copy(isLoading = false) }
                 postSideEffect("Failed to get all ingredients")
             }

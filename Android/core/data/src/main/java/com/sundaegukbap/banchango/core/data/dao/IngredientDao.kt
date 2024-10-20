@@ -10,7 +10,7 @@ import com.sundaegukbap.banchango.core.data.entity.IngredientEntity
 @Dao
 interface IngredientDao {
 
-    @Insert
+    @Upsert
     fun insertAll(ingredients: List<IngredientEntity>)
 
     @Upsert

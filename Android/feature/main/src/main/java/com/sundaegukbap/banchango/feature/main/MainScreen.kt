@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -15,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import com.sundaegukbap.banchango.feature.home.navigation.homeNavGraph
 import com.sundaegukbap.banchango.feature.recipe.navigation.recipeNavGraph
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun MainScreen(
@@ -22,7 +28,12 @@ internal fun MainScreen(
     onChangeDarkTheme: (Boolean) -> Unit,
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { padding ->
             Box(
                 modifier = Modifier
@@ -35,7 +46,16 @@ internal fun MainScreen(
                 ) {
                     homeNavGraph(
                         padding = padding,
-                        onChangeStatusBarColor = onChangeStatusBarColor
+                        onChangeStatusBarColor = onChangeStatusBarColor,
+                        showError = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = it,
+                                    actionLabel = "Action",
+                                    duration = SnackbarDuration.Indefinite
+                                )
+                            }
+                        },
                     )
                     recipeNavGraph(
                         padding = padding,
