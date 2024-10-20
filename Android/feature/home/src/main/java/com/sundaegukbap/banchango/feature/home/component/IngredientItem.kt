@@ -51,8 +51,8 @@ fun IngredientItem(
     modifier: Modifier = Modifier,
 ) {
     val dDay = ChronoUnit.DAYS.between(
-        LocalDateTime.now(),
         expirationDate,
+        LocalDateTime.now()
     )
     Card(
         modifier = modifier
@@ -87,7 +87,11 @@ fun IngredientItem(
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "D - $dDay",
+                    text = when {
+                        dDay < 0 -> "D${dDay}"
+                        dDay == 0L -> "D-day"
+                        else -> "D+${dDay}"
+                    },
                     fontSize = 12.sp,
                     color = Orange,
                     fontWeight = FontWeight.Bold,

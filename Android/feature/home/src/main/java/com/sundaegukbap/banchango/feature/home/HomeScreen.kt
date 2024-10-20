@@ -1,7 +1,7 @@
 package com.sundaegukbap.banchango.feature.home
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,36 +10,43 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Snackbar
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,14 +54,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sundaegukbap.banchango.Container
 import com.sundaegukbap.banchango.ContainerIngredient
 import com.sundaegukbap.banchango.Ingredient
@@ -68,10 +74,9 @@ import com.sundaegukbap.banchango.core.designsystem.theme.LightOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.LightestOrange
 import com.sundaegukbap.banchango.core.designsystem.theme.Orange
 import com.sundaegukbap.banchango.core.designsystem.theme.White
+import com.sundaegukbap.banchango.core.designsystem.theme.lightGray
 import com.sundaegukbap.banchango.feature.home.component.AddButton
 import com.sundaegukbap.banchango.feature.home.component.IngredientItem
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -87,9 +92,10 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedContainer by remember { mutableStateOf(Container(-1L, "")) }
 
     viewModel.collectSideEffect {
         showError(it)
@@ -99,7 +105,11 @@ fun HomeRoute(
         ingredientContainers = state.ingredientContainers,
         onChangeStatusBarColor = onChangeStatusBarColor,
         onContainerAddClicked = viewModel::addContainer,
-        onKindContainerClicked = viewModel::getKindIngredientContainerDetail,
+        onKindContainerClicked = { container, ingredientKind ->
+            selectedContainer = container
+            viewModel.getKindIngredientContainerDetail(container, ingredientKind)
+        },
+        onAddIngredientClicked = { showBottomSheet = true }
     )
 
     if (state.isDetailShowing && state.kindIngredientContainerDetail != null) {
@@ -111,10 +121,7 @@ fun HomeRoute(
                 padding = padding,
                 kindIngredientContainer = state.kindIngredientContainerDetail!!,
                 onBackClicked = viewModel::closeDetail,
-                onAddIngredientClicked = {
-                    viewModel.getAllIngredients("")
-                    showBottomSheet = true
-                },
+                onAddIngredientClicked = { showBottomSheet = true },
             )
         }
     }
@@ -130,27 +137,124 @@ fun HomeRoute(
 
     if (showBottomSheet) {
         ModalBottomSheet(
+            containerColor = White,
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
+            modifier = Modifier.fillMaxHeight(0.7f)
         ) {
-            LazyColumn {
-                items(state.ingredients) {
-                    Text(
-                        text = it.name,
+            Box(Modifier.fillMaxSize()) {
+                Column {
+                    OutlinedTextField(
+                        value = state.ingredientQuery,
+                        onValueChange = { query -> viewModel.getAllIngredients(query) },
+                        label = { Text("이름으로 재료 검색") },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors().copy(
+                            focusedLabelColor = Orange,
+                            focusedIndicatorColor = Orange,
+                        )
                     )
-                }
-            }
-            Button(onClick = {
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) {
-                        showBottomSheet = false
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (state.selectedIngredients.isEmpty()) {
+                        Text(
+                            "추가할 재료를 선택해주세요",
+                            Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .padding(horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            color = Orange,
+                        )
+                    } else {
+                        LazyRow(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                        ) {
+                            item { Spacer(Modifier.width(16.dp)) }
+                            items(state.selectedIngredients) {
+                                InputChip(
+                                    label = { Text(text = it.name) },
+                                    onClick = { viewModel.unSelectIngredient(it) },
+                                    modifier = Modifier.padding(8.dp),
+                                    selected = true,
+                                    colors = InputChipDefaults.inputChipColors().copy(
+                                        selectedContainerColor = Orange,
+                                        selectedLabelColor = White,
+                                        selectedTrailingIconColor = White,
+                                    ),
+                                    trailingIcon = {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_close),
+                                            contentDescription = null
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    HorizontalDivider()
+                    LazyColumn(Modifier.fillMaxHeight()) {
+                        items(state.ingredients) {
+                            val isSelected = it in state.selectedIngredients
+                            val onClick =
+                                if (isSelected) viewModel::unSelectIngredient else viewModel::selectIngredient
+                            OutlinedButton(
+                                onClick = { onClick(it) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp),
+                                colors = ButtonDefaults.outlinedButtonColors().copy(
+                                    containerColor = if (isSelected) {
+                                        LightOrange
+                                    } else {
+                                        White
+                                    },
+                                    contentColor = if (isSelected) {
+                                        White
+                                    } else {
+                                        Black
+                                    }
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text(
+                                    text = it.name,
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
                 }
-            }) {
-                Text("Hide bottom sheet")
+                val isNotEmpty = state.selectedIngredients.isNotEmpty()
+                OutlinedButton(
+                    colors = ButtonDefaults.outlinedButtonColors().copy(
+                        containerColor = White,
+                        contentColor = Orange,
+                        disabledContainerColor = lightGray,
+                    ),
+                    enabled = isNotEmpty,
+                    border = if (isNotEmpty) BorderStroke(1.dp, Orange) else
+                        BorderStroke(1.dp, lightGray),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    onClick = {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet = false
+                            }
+                        }
+                        viewModel.addIngredientsToContainer(selectedContainer)
+                    }) {
+                    Text("총 ${state.selectedIngredients.size}개의 재료 추가하기", Modifier.padding(8.dp))
+                }
             }
         }
     }
@@ -257,6 +361,7 @@ private fun HomeScreen(
     ingredientContainers: List<IngredientContainer>,
     onContainerAddClicked: (name: String) -> Unit,
     onKindContainerClicked: (container: Container, kind: IngredientKind) -> Unit,
+    onAddIngredientClicked: () -> Unit,
     onChangeStatusBarColor: (color: Color, darkIcons: Boolean) -> Unit
 ) {
     LazyColumn(
@@ -292,7 +397,9 @@ private fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.weight(0.5f))
                     Icon(
-                        modifier = Modifier.weight(0.1f),
+                        modifier = Modifier
+                            .weight(0.1f)
+                            .clickable(onClick = onAddIngredientClicked),
                         tint = ingredientContainerNameColor,
                         painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = null
@@ -492,7 +599,8 @@ private fun PreviewHomeScreen() {
                 )
             ),
             onContainerAddClicked = {},
-            onKindContainerClicked = { _, _ -> }
+            onKindContainerClicked = { _, _ -> },
+            onAddIngredientClicked = {}
         )
     }
 }

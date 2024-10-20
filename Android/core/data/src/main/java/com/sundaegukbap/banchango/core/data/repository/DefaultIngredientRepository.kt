@@ -7,6 +7,7 @@ import com.sundaegukbap.banchango.ContainerIngredient
 import com.sundaegukbap.banchango.Ingredient
 import com.sundaegukbap.banchango.core.data.api.IngredientApi
 import com.sundaegukbap.banchango.core.data.api.model.AddIngredientContainerRequest
+import com.sundaegukbap.banchango.core.data.api.model.AddIngredientToContainerRequest
 import com.sundaegukbap.banchango.core.data.dao.IngredientDao
 import com.sundaegukbap.banchango.core.data.entity.IngredientEntity
 import com.sundaegukbap.banchango.core.data.mapper.toData
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.internal.toLongOrDefault
 import java.io.InputStreamReader
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 internal class DefaultIngredientRepository @Inject constructor(
@@ -54,6 +56,25 @@ internal class DefaultIngredientRepository @Inject constructor(
 
     override suspend fun addIngredientContainer(containerName: String): Result<Unit> {
         return ingredientApi.addIngredientContainer(1, AddIngredientContainerRequest(containerName))
+    }
+
+    override suspend fun addIngredientToContainer(
+        containerId: Long,
+        ingredientIds: List<Long>,
+        expirationDate: LocalDateTime
+    ): Result<Unit> {
+        return kotlin.runCatching {
+            ingredientIds.forEach { id ->
+                ingredientApi.addIngredientToContainer(
+                    1,
+                    AddIngredientToContainerRequest(
+                        containerId = containerId,
+                        ingredientId = id,
+                        expirationDate = expirationDate.toString()
+                    )
+                )
+            }
+        }
     }
 
     override suspend fun getAllIngredients(): Result<List<Ingredient>> {

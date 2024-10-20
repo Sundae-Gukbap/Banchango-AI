@@ -1,6 +1,7 @@
 package com.sundaegukbap.banchango.core.data.api
 
 import com.sundaegukbap.banchango.core.data.api.model.AddIngredientContainerRequest
+import com.sundaegukbap.banchango.core.data.api.model.AddIngredientToContainerRequest
 import com.sundaegukbap.banchango.core.data.api.model.ContainerIngredientDtos
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,6 +18,12 @@ internal interface IngredientApi {
     suspend fun addIngredientContainer(
         @Path("userId") userId: Long,
         @Body addIngredientContainerRequest: AddIngredientContainerRequest,
+    ): Result<Unit>
+
+    @POST("/api/ingredients/{userId}")
+    suspend fun addIngredientToContainer(
+        @Path("userId") userId: Long,
+        @Body addIngredientToContainerRequest: AddIngredientToContainerRequest,
     ): Result<Unit>
 }
 

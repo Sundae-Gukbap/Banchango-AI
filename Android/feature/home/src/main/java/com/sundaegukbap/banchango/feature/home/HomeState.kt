@@ -8,6 +8,8 @@ data class HomeState(
     val ingredientContainers: List<IngredientContainer> = emptyList(),
     val kindIngredientContainerDetail: KindIngredientContainer? = null,
     val ingredients: List<Ingredient> = emptyList(),
+    val selectedIngredients: List<Ingredient> = emptyList(),
     val isLoading: Boolean = false,
+    val ingredientQuery: String = "",
     val isDetailShowing: Boolean = false,
 )

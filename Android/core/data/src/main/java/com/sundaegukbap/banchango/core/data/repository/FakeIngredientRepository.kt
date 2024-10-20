@@ -55,6 +55,14 @@ internal class FakeIngredientRepository @Inject constructor() : IngredientReposi
         return Result.success(Unit)
     }
 
+    override suspend fun addIngredientToContainer(
+        containerId: Long,
+        ingredientIds: List<Long>,
+        expirationDate: LocalDateTime
+    ): Result<Unit> {
+        return Result.success(Unit)
+    }
+
     override suspend fun getAllIngredients(): Result<List<Ingredient>> {
         return Result.success(
             listOf(
