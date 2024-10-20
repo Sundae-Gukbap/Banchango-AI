@@ -65,6 +65,13 @@ dependencies {
 
     // opencsv
     implementation(libs.open.csv)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    implementation(libs.room.paging)
+    kapt(libs.room.compiler)
 }
 
 fun getSecretKey(propertyKey: String): String {

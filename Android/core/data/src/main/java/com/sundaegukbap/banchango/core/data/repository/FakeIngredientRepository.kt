@@ -54,4 +54,28 @@ internal class FakeIngredientRepository @Inject constructor() : IngredientReposi
     override suspend fun addIngredientContainer(containerName: String): Result<Unit> {
         return Result.success(Unit)
     }
+
+    override suspend fun getAllIngredients(): Result<List<Ingredient>> {
+        return Result.success(
+            listOf(
+                Ingredient(1, "Ingredient 1", IngredientKind.SAUCE, "Ingredient 1 Image"),
+                Ingredient(2, "Ingredient 2", IngredientKind.VEGETABLE, "Ingredient 2 Image"),
+                Ingredient(3, "Ingredient 3", IngredientKind.MEAT, "Ingredient 3 Image"),
+                Ingredient(4, "Ingredient 4", IngredientKind.VEGETABLE, "Ingredient 4 Image"),
+                Ingredient(5, "Ingredient 5", IngredientKind.SAUCE, "Ingredient 5 Image"),
+            )
+        )
+    }
+
+    override suspend fun getIngredientsByNameLike(name: String): Result<List<Ingredient>> {
+        return Result.success(
+            listOf(
+                Ingredient(1, "Ingredient 1", IngredientKind.SAUCE, "Ingredient 1 Image"),
+                Ingredient(2, "Ingredient 2", IngredientKind.VEGETABLE, "Ingredient 2 Image"),
+                Ingredient(3, "Ingredient 3", IngredientKind.MEAT, "Ingredient 3 Image"),
+                Ingredient(4, "Ingredient 4", IngredientKind.VEGETABLE, "Ingredient 4 Image"),
+                Ingredient(5, "Ingredient 5", IngredientKind.SAUCE, "Ingredient 5 Image"),
+            )
+        )
+    }
 }
