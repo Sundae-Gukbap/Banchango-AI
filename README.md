@@ -91,10 +91,12 @@ PI를 통해 대량의 요청을 처리해야 하는 AI 시스템에 적합.
 ## 기능 구현
 
 ### 식자재 관리 
-<img src="https://github.com/user-attachments/assets/752bed55-e5fe-4dd7-9947-ef1ca84c2cf2" width="300"/>
-<img src="https://github.com/user-attachments/assets/5bb2b82b-352d-4357-8d29-24bbacf78c59" width="300"/>
-<img src="https://github.com/user-attachments/assets/b6b9db07-dc99-473e-a567-e13f1b83efe5" width="300"/>
+<img src="https://github.com/user-attachments/assets/752bed55-e5fe-4dd7-9947-ef1ca84c2cf2" height="600"/>
+<img src="https://github.com/user-attachments/assets/5bb2b82b-352d-4357-8d29-24bbacf78c59" height="600"/>
+<img src="https://github.com/user-attachments/assets/b6b9db07-dc99-473e-a567-e13f1b83efe5" height="600"/>
 
+- 사전에 전처리해둔 식자재 데이터를 유통기한과 함께 저장하여 관리
+- 각 식자재는 컨테이너(예. 냉장고1, 냉장고2)에 카테고리화 되어 보관
 
 
 
@@ -103,8 +105,14 @@ PI를 통해 대량의 요청을 처리해야 하는 AI 시스템에 적합.
 <img src="https://github.com/user-attachments/assets/bb3c8f51-08d9-44dd-9c7f-632b881adad7" width="300"/>
 <img src="https://github.com/user-attachments/assets/794791d4-cf84-4cf8-9801-f6e94473d00f" width="300"/>
 
-
-- 추천 받은 레시피에 대한 상세 조회 화면 구현
+- Word2Vec을 사용해 재료간의 의미적 관계를 반영한 레시피 추천
 - recipeId 로 Banchango API 에 GET 요청 후 데이터 json 형식 파싱
 - 움직이는 바텀 시트로 많은 양의 정보를 편리하게 확인 가능
 - 레시피 난이도, 양, 시간, 설명 제공
+
+## 구조도
+
+<img src="https://github.com/user-attachments/assets/7c91044f-78fb-4edd-8723-ad3724a4772a"/>
+
+- 학습된 AI모델을 FastAPI 서버위에 올려두고 본 서버와 Restful한 방식으로 레시피 추천
+- Docker-Compose 및 Git Actions를 사용한 CI/CD
