@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pandas
+numpy
+gensim
+scikit-learn
